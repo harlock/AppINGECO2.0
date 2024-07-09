@@ -1,0 +1,76 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MesaController;
+use App\Http\Controllers\ArticuloController;
+use App\Http\Controllers\lideresController;
+use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\RevisoresController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ExcelController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('homeUsers', [HomeController::class, 'actualizaTabla'])->name('home.users');
+    Route::post('descargar-excel', [ExcelController::class, 'descargarExcel'])->name('descargar.excel');
+
+    Route::middleware(['TypeAcces'])->group(function () {
+
+        Route::resource("usuarios", UsuariosController::class);
+        Route::get('revisores', [UsuariosController::class, 'indexRevisores'])->name('asign.revisores');
+        Route::resource('mesas', MesaController::class);
+        Route::get('artAdministrador', [ArticuloController::class, 'articAdministrador'])->name('art.admin');
+    });
+
+    Route::middleware(['UserAcces'])->group(function () {
+    });
+
+    //DESCARGA WORD
+    Route::get('articulos/{titulo}/download', [ArticuloController::class, 'download', 'index'])->name('art.download');
+    Route::get('download_zip', [ArtculoController::class, 'download_zip', 'index']);
+    Route::get('changeValueArticle', [ArticuloController::class, 'download_zip', 'index']);
+    //RUTAS EVALUADOR
+    Route::get('evaluar_art', [ArticuloController::class, 'index'])->name('list.art');
+    Route::resource('evaluar_art', ArticuloController::class)->except("index");
+
+    //RUTAS PERFIL
+    Route::get('/profileShow', [UsuariosController::class, 'show'])->name('show.profile');
+    Route::get('/profileEdit', [UsuariosController::class, 'edit']);
+    Route::get('/profileSaveEdit', [UsuariosController::class, 'profileEditSave']);
+    //editar
+    Route::put('/revisor/{id}', [UsuariosController::class, 'deleteRevisor'])->name('registro.revisor');
+    Route::put('/revisor/{id}', [UsuariosController::class, 'deleteRevisor'])->name('registro.revisor');
+
+    //Lideres
+    Route::get('revisores', [RevisoresController::class, 'index'])->name('list.revisores');
+    Route::get('lideres', [lideresController::class, 'index'])->name('asignaArticulos');
+    Route::get('lideresArticulos', [lideresController::class, 'vistaArtRev'])->name('vista.artic.rev');
+    Route::resource("lideres", lideresController::class);
+    Route::get('lideres/{id}/delete', [lideresController::class, 'eliminarRevArtic', 'index'])->name('rev.artic.delete');
+
+    //RUTAS ARTICULOS
+    Route::resource("enviar_articulo", ArticuloController::class)->except('index');
+    Route::get('articulosShow', [ArticuloController::class, 'showArticulos'])->name('show.art');
+
+    Route::get('articulos/{titulo}/download', [ArticuloController::class, 'download', 'index'])->name('art.download');
+    Route::get('articulos/{id_articulo}/destroy', [ArticuloController::class, 'destroy', 'index'])->name('art.destroy');
+    Route::get("enviar_articulo_email", [ArticuloController::class, 'sendEmail']);
+});
