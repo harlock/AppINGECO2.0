@@ -8,7 +8,7 @@ use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\RevisoresController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ExcelController;
-
+use App\Http\Controllers\ComprobantePagoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -73,4 +73,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('articulos/{titulo}/download', [ArticuloController::class, 'download', 'index'])->name('art.download');
     Route::get('articulos/{id_articulo}/destroy', [ArticuloController::class, 'destroy', 'index'])->name('art.destroy');
     Route::get("enviar_articulo_email", [ArticuloController::class, 'sendEmail']);
+
+    //COMPROBANTES DE PAGO
+    Route::resource('comprobantes_pagos', ComprobantePagoController::class);
+    Route::post('/comprobantes/store', [ComprobantePagoController::class, 'store'])->name('comprobantes.store');
 });
