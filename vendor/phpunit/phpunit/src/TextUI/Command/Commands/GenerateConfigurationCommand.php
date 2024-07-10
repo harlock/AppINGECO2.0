@@ -12,7 +12,10 @@ namespace PHPUnit\TextUI\Command;
 use function fgets;
 use function file_put_contents;
 use function getcwd;
+<<<<<<< HEAD
 use function sprintf;
+=======
+>>>>>>> 866483df05919612eff9466048410eb623192b07
 use function trim;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\XmlConfiguration\Generator;
@@ -59,7 +62,11 @@ final class GenerateConfigurationCommand implements Command
 
         $generator = new Generator;
 
+<<<<<<< HEAD
         $result = @file_put_contents(
+=======
+        file_put_contents(
+>>>>>>> 866483df05919612eff9466048410eb623192b07
             'phpunit.xml',
             $generator->generateDefaultConfiguration(
                 Version::series(),
@@ -70,6 +77,7 @@ final class GenerateConfigurationCommand implements Command
             ),
         );
 
+<<<<<<< HEAD
         if ($result !== false) {
             return Result::from(
                 sprintf(
@@ -90,6 +98,13 @@ final class GenerateConfigurationCommand implements Command
             Result::EXCEPTION,
         );
         // @codeCoverageIgnoreEnd
+=======
+        /* @noinspection MissingDirectorySeparatorInspection */
+        print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . '.' . PHP_EOL;
+        print 'Make sure to exclude the ' . $cacheDirectory . ' directory from version control.' . PHP_EOL;
+
+        return Result::from();
+>>>>>>> 866483df05919612eff9466048410eb623192b07
     }
 
     private function read(): string

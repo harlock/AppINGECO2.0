@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 
 use ZipArchive;
 use Illuminate\Support\Facades\File;
+use App\Models\ComprobantePago;
 
 class ArticuloController extends Controller
 {
@@ -162,8 +163,11 @@ class ArticuloController extends Controller
                 ->orderBy('users.created_at', 'desc')
                 ->get();
         }
+        $pagos = DB::table('comprobante_pagos')
+            ->select('id_articulo', 'comprobante', 'referencia', 'factura', 'constancia_fiscal')
+            ->get();
         //dd($Artic);
-        return view('articulos.index', compact('Artic'));
+        return view('articulos.index', compact('Artic','pagos'));
     }
     public function showArticulos()
     {
@@ -364,6 +368,7 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $mesas = Mesa::all();
         //dd($this->archivo);
         $request->validate([

@@ -3647,6 +3647,7 @@
         },
         {
             "name": "phpunit/phpunit",
+<<<<<<< HEAD
             "version": "10.5.27",
             "version_normalized": "10.5.27.0",
             "source": {
@@ -3658,6 +3659,19 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2425f713b2a5350568ccb1a2d3984841a23e83c5",
                 "reference": "2425f713b2a5350568ccb1a2d3984841a23e83c5",
+=======
+            "version": "10.5.26",
+            "version_normalized": "10.5.26.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "42e2f13ceaa2e34461bc89bea75407550b40b2aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/42e2f13ceaa2e34461bc89bea75407550b40b2aa",
+                "reference": "42e2f13ceaa2e34461bc89bea75407550b40b2aa",
+>>>>>>> 866483df05919612eff9466048410eb623192b07
                 "shasum": ""
             },
             "require": {
@@ -3667,6 +3681,7 @@
                 "ext-mbstring": "*",
                 "ext-xml": "*",
                 "ext-xmlwriter": "*",
+<<<<<<< HEAD
                 "myclabs/deep-copy": "^1.12.0",
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
@@ -3687,11 +3702,37 @@
                 "sebastian/recursion-context": "^5.0.0",
                 "sebastian/type": "^4.0.0",
                 "sebastian/version": "^4.0.1"
+=======
+                "myclabs/deep-copy": "^1.10.1",
+                "phar-io/manifest": "^2.0.3",
+                "phar-io/version": "^3.0.2",
+                "php": ">=8.1",
+                "phpunit/php-code-coverage": "^10.1.5",
+                "phpunit/php-file-iterator": "^4.0",
+                "phpunit/php-invoker": "^4.0",
+                "phpunit/php-text-template": "^3.0",
+                "phpunit/php-timer": "^6.0",
+                "sebastian/cli-parser": "^2.0",
+                "sebastian/code-unit": "^2.0",
+                "sebastian/comparator": "^5.0",
+                "sebastian/diff": "^5.0",
+                "sebastian/environment": "^6.0",
+                "sebastian/exporter": "^5.1",
+                "sebastian/global-state": "^6.0.1",
+                "sebastian/object-enumerator": "^5.0",
+                "sebastian/recursion-context": "^5.0",
+                "sebastian/type": "^4.0",
+                "sebastian/version": "^4.0"
+>>>>>>> 866483df05919612eff9466048410eb623192b07
             },
             "suggest": {
                 "ext-soap": "To be able to generate mocks based on WSDL files"
             },
+<<<<<<< HEAD
             "time": "2024-07-10T11:48:06+00:00",
+=======
+            "time": "2024-07-08T05:30:46+00:00",
+>>>>>>> 866483df05919612eff9466048410eb623192b07
             "bin": [
                 "phpunit"
             ],
@@ -3731,7 +3772,11 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
+<<<<<<< HEAD
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.27"
+=======
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.26"
+>>>>>>> 866483df05919612eff9466048410eb623192b07
             },
             "funding": [
                 {

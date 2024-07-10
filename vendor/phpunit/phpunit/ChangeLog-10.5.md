@@ -2,6 +2,7 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+<<<<<<< HEAD
 ## [10.5.27] - 2024-07-10
 
 ### Changed
@@ -12,6 +13,8 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5892](https://github.com/sebastianbergmann/phpunit/issues/5892): Errors during write of `phpunit.xml` are not handled correctly when `--generate-configuration` is used
 
+=======
+>>>>>>> 866483df05919612eff9466048410eb623192b07
 ## [10.5.26] - 2024-07-08
 
 ### Added
@@ -251,7 +254,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+<<<<<<< HEAD
 [10.5.27]: https://github.com/sebastianbergmann/phpunit/compare/10.5.26...10.5.27
+=======
+>>>>>>> 866483df05919612eff9466048410eb623192b07
 [10.5.26]: https://github.com/sebastianbergmann/phpunit/compare/10.5.25...10.5.26
 [10.5.25]: https://github.com/sebastianbergmann/phpunit/compare/10.5.24...10.5.25
 [10.5.24]: https://github.com/sebastianbergmann/phpunit/compare/10.5.23...10.5.24
