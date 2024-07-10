@@ -226,6 +226,13 @@
                                 <div class="px-2">Modalidad:</div>
                                 <div class="px-1" id="showModalidad"></div>
                             </div>
+
+                            <div class="d-flex">
+                                <div class="px-2">Vista previa del archivo:</div>
+                            </div>
+                            <div id="previewContent" style="width: 100%; height: 400px; border: 1px solid #ccc; overflow: auto;"></div>
+
+
                         </table>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -335,7 +342,7 @@
 </footer>
 
 @push("scripts")
-<script type="text/javascript">
+    <script type="text/javascript">
     var selectElement = document.getElementById("id_mesa");
     var showMesaElement = document.getElementById("showMesa");
 
@@ -353,13 +360,39 @@
 
         //var showMesa = document.getElementById("showMesa");
         //showMesa.innerHTML = document.getElementById("id_mesa").textContent;
+
+        var archivoInput = document.getElementById("archivoNombre");
+        var archivo = archivoInput.files[0];
+        if (archivo) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                mammoth.convertToHtml({ arrayBuffer: e.target.result })
+                    .then(displayResult)
+                    .catch(handleError);
+            };
+            reader.readAsArrayBuffer(archivo);
+        }
+
     }
+    function displayResult(result) {
+        var previewContent = document.getElementById("previewContent");
+        previewContent.innerHTML = result.value;
+    }
+
+    function handleError(err) {
+        console.log(err);
+    }
+
 
     selectElement.addEventListener("change", function(element) {
 
         var selectedOption = selectElement.options[selectElement.selectedIndex];
         var descripcion = selectedOption.getAttribute("data-description");
         showMesaElement.textContent = descripcion;
+    });
+    var archivoInput = document.getElementById("archivoNombre");
+    archivoInput.addEventListener("change", function() {
+        getDatos();
     });
 </script>
 @endpush
