@@ -109,8 +109,8 @@
                         </div>
                         <select name="revista" class="form-select" id="revista">
                             <option value="" selected="true" disabled="true">Selecciona una revista</option>
-                            <option value="FEGLININ">FEGLININ {{old("revista")}}</option>
-                            <option value="RECIE">RECIE {{old("revista")}}</option>
+                            <option value="FEGLININ" {{ old('revista') == 'FEGLININ' ? 'selected' : '' }}>FEGLININ</option>
+                            <option value="RECIE" {{ old('revista') == 'RECIE' ? 'selected' : '' }}>RECIE</option>
                         </select>
                         <div id="emailHelp" class="form-text">Seleccionar la revista de publicación. </div>
                     </div>
@@ -137,7 +137,7 @@
                                 @error('archivo') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror
                             </div>
                         </div>
-                        <input id="archivoNombre" type="file" name="archivo" class="form-control" placeholder="Inserte el archivo word" value="{{old("archivo")}}">
+                        <input id="archivoNombre" type="file" name="archivo" class="form-control" placeholder="Inserte el archivo word" value="{{old("archivo")}}" accept=".doc,.docx">
                         <div id="emailHelp" class="form-text">Selecciona artículo en formato word.</div>
                     </div>
                     <!-- SELECCIONAR MESA DE TRABAJO  -->
@@ -151,10 +151,13 @@
                             </div>
                         </div>
 
-                        <select name="id_mesa" class=" form-select" id="id_mesa">
+                        <select name="id_mesa" class="form-select" id="id_mesa">
                             <option value="" selected="true" disabled="true">Selecciona una mesa</option>
                             @foreach($mesas as $mesa)
-                            <option value="{{$mesa->id_mesa}}" data-description="{{$mesa->descripcion}}">{{$mesa->descripcion}} {{old("id_mesa")}}</option>
+                                <option value="{{$mesa->id_mesa}}" data-description="{{$mesa->descripcion}}"
+                                        {{ old('id_mesa') == $mesa->id_mesa ? 'selected' : '' }}>
+                                    {{$mesa->descripcion}}
+                                </option>
                             @endforeach
                         </select>
 
@@ -172,8 +175,8 @@
                         </div>
                         <select name="modalidad" class="form-select" id="modalidad">
                             <option value="" selected="true" disabled="true">Selecciona una modalidad</option>
-                            <option value="Virtual">Virtual {{old("modalidad")}}</option>
-                            <option value="Presencial">Presencial {{old("modalidad")}}</option>
+                            <option value="Virtual" {{ old('modalidad') == 'Virtual' ? 'selected' : '' }}>Virtual</option>
+                            <option value="Presencial" {{ old('modalidad') == 'Presencial' ? 'selected' : '' }}>Presencial</option>
                         </select>
                         <div id="emailHelp" class="form-text">Seleccionar modalidad en caso de aceptación del artículo. </div>
                     </div>

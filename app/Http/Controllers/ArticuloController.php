@@ -364,6 +364,7 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $mesas = Mesa::all();
         //dd($this->archivo);
         $request->validate([
