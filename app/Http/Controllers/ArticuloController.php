@@ -166,8 +166,17 @@ class ArticuloController extends Controller
         $pagos = DB::table('comprobante_pagos')
             ->select('id_articulo', 'comprobante', 'referencia', 'factura', 'constancia_fiscal')
             ->get();
+        //dd($pagos);
+
+        $comprobanteUrls = [];
+        foreach ($pagos as $pago) {
+            $comprobanteUrls[$pago->id_articulo] = [
+                'comprobante' => Storage::url($pago->comprobante),
+            ];
+        }
+        //dd($comprobanteUrls);
         //dd($Artic);
-        return view('articulos.index', compact('Artic','pagos'));
+        return view('articulos.index', compact('Artic','pagos', 'comprobanteUrls'));
     }
     public function showArticulos()
     {

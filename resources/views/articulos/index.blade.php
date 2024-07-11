@@ -111,12 +111,17 @@
                                     </td>
                                     <td class="d-flex justify-content-center">
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#modal{{$articu->id_articulo}}">
-                                            Evaluar <i class="bi bi-arrow-right-square-fill"></i>
-                                        </button>
-                                        @include("articulos.modal_evaluate")
-
+                                        @if($articu->estado != 1 && $articu->estado != 2)
+                                            <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#modal{{$articu->id_articulo}}">
+                                                Evaluar <i class="bi bi-arrow-right-square-fill"></i>
+                                            </button>
+                                            @include("articulos.modal_evaluate")
+                                        @else
+                                            <button type="button" class="btn btn-dark btn-sm" disabled>
+                                                Evaluado <i class="bi bi-arrow-right-square-fill"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                     <td>
                                         <!-- Button to trigger payment details modal -->
@@ -148,7 +153,7 @@
                                                             @foreach ($pagos as $pago)
                                                                 @if ($pago->id_articulo == $articu->id_articulo)
                                                                     <tr>
-                                                                        <td>{{$pago->comprobante}}</td>
+                                                                        <td><a href="{{ $comprobanteUrls[$articu->id_articulo]['comprobante'] }}" target="_blank">Ver Comprobante</a></td>
                                                                         <td>{{$pago->referencia}}</td>
                                                                         <td>{{$pago->factura}}</td>
                                                                         <td>{{$pago->constancia_fiscal}}</td>
