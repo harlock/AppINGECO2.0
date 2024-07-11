@@ -29,6 +29,7 @@ class ComprobantePagoController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $request->validate([
             'id_user' => 'required|integer',
             'id_articulo' => 'required|integer',
