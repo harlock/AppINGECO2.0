@@ -54,14 +54,16 @@
                                     $comprobanteExistente = App\Models\ComprobantePago::where('id_articulo', $articulo->id_articulo)->exists();
                                 @endphp
 
-                                @if($articulo->estado == 1 && !$comprobanteExistente)
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
-                                        Agregar comprobante de pago
-                                    </button>
-                                @else
-                                    <button type="button" class="btn btn-success" disabled>
-                                        Comprobante enviado
-                                    </button>
+                                @if($articulo->estado == 1)
+                                    @if(!$comprobanteExistente)
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
+                                            Agregar comprobante de pago
+                                        </button>
+                                    @else
+                                        <button type="button" class="btn btn-success" disabled>
+                                            Comprobante enviado
+                                        </button>
+                                    @endif
                                 @endif
 
                                 <!-- Modal -->
@@ -133,7 +135,6 @@
             </div>
         </div>
     </div>
-
 
     @if(Session::has('success'))
         <script>

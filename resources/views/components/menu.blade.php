@@ -43,7 +43,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('artAdministrador') }}">{{ __('Artículos ') }}</a>
                 </li>
-                @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('periodos.create') }}">Añadir Nuevo Periodo</a>
+                        </li>
+
+                    @endif
 
                 @if(Auth::user()->user_type==4)
                 <li class="nav-item">

@@ -9,6 +9,8 @@ use App\Http\Controllers\RevisoresController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ComprobantePagoController;
+use App\Http\Controllers\PeriodoArticuloController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -77,4 +79,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //COMPROBANTES DE PAGO
     Route::resource('comprobantes_pagos', ComprobantePagoController::class);
     Route::post('/comprobantes/store', [ComprobantePagoController::class, 'store'])->name('comprobantes.store');
+
+    // Rutas para el recurso "periodos"
+    Route::get('periodos/create', [PeriodoArticuloController::class, 'create'])->name('periodos.create');
+    Route::post('periodos', [PeriodoArticuloController::class, 'store'])->name('periodos.store');
 });
