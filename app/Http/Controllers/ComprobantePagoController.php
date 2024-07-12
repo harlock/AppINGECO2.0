@@ -31,14 +31,20 @@ class ComprobantePagoController extends Controller
     {
         //dd($request->all());
         $request->validate([
-            'id_user' => 'required|integer',
-            'id_articulo' => 'required|integer',
-            'comprobante' => 'required|mimes:pdf|max:2048',
+            'id_user' => 'required',
+            'id_articulo' => 'required',
+            'comprobante' => 'required|mimes:pdf|max:20482',//3 MEGAS, VALIDAR EL TAMAÑO DE LOS ARCHIVOS A SOLO 3MEGAS
             'referencia' => 'required|string|max:255',
             'factura' => 'required|boolean',
-            'constancia_fiscal' => 'nullable|mimes:pdf|max:2048',
+            'constancia_fiscal' => 'nullable|mimes:pdf|max:20482',//QUITAR ESTO DE AQUÍ PARA PONERLO ABAJO (FUERA DEL VALIDATE, PARA VALIDAR CON UNA CONDICION APARTE)
+        ],[
+            'comprobante.required' => 'Debe subir un comprobante de pago.',
+            'referencia.required' => 'Debe ingresar la referencia de pago.',
         ]);
 
+        //AGREGAR VALIDACIÓN DE CONSTANCIA FISCAL
+
+        //dd($request->all());
         // Lógica de almacenamiento
         $comprobante = new ComprobantePago();
         $comprobante->id_user = $request->id_user;

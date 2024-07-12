@@ -8,12 +8,29 @@
 
     <div class="row justify-content-center mt-4">
         <div class="col-10">
-            <div class="col">
-                <h3 class="justify-content-center alert bg-blue-800 d-flex text-white">
+
+                <h3 class="justify-content-center alert bg-blue-800 d-flex text-white mb-5">
                     Artículos enviados
                 </h3>
-            </div>
-            <br>
+
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            {{--ESTO LO QUITE PORQUE YA TENÍA LA ALERTA TOATSR CUANDO SE GUARDA EL ARCHIVO, ENTONCES PARA QUE NO SALGA DOS VECES EL MENSAJE}}
+            {{--@if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif--}}
 
             <div class="table-responsive-xl bg-white border rounded-lg mt-4 p-3 shadow-sm tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <table class="table">
@@ -81,11 +98,11 @@
                                                     <input type="hidden" name="id_user" value="{{ auth()->user()->id }}">
                                                     <div class="mb-3">
                                                         <label for="comprobante" class="form-label">Comprobante de pago (PDF)</label>
-                                                        <input type="file" class="form-control" id="comprobante" name="comprobante" accept="application/pdf" required>
+                                                        <input type="file" class="form-control" id="comprobante" name="comprobante" accept="application/pdf">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="referencia" class="form-label">Referencia</label>
-                                                        <input type="text" class="form-control" id="referencia" name="referencia" required>
+                                                        <input type="text" class="form-control" id="referencia" name="referencia">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">¿Requiere factura?</label>
