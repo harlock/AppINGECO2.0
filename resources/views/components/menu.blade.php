@@ -62,7 +62,7 @@
                     <a href="{{url('enviar_articulo/create')}}" class="nav-link">Enviar Artículos</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('show.art')}}" class="nav-link">Consultar Artículos</a>
+                    <a href="{{route('show.art')}}" class="nav-link">Artículos Enviados</a>
                 </li>
                 @endif
                 @if(Auth::user()->user_type==2)
