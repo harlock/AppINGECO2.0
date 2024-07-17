@@ -25,11 +25,6 @@
                                             <i class="bi bi-plus-square-fill"></i> Asignar artículo
                                         </button>
                                         @include("lideres.modal_asigna_autor")
-                                        <!--
-                                <button type="button" class="btn btn-outline-danger float-end" data-bs-toggle="modal" data-bs-target="#modaldeleteRevisor{{$usuario->id}}">
-                                    <i class="bi bi-trash-fill"></i> Eliminar de los revisores
-                                </button>
-                                -->
                                         @include("lideres.modal_delete_revisor")
                                     </li>
                                 @endforeach
@@ -39,17 +34,20 @@
                     <div class="col-6">
                         <div class="card-body">
                             <h5 class="card-title alert alert-primary">Revisores asignados</h5>
-                            <ul class="list-group">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="searchAssigned" placeholder="Buscar revisor o artículo...">
+                            </div>
+                            <ul class="list-group" id="assignedList">
                                 @foreach($lista_revisores->groupBy('nombreRevisores') as $nombreRevisor => $articulos)
-                                    <li class="list-group-item">
+                                    <li class="list-group-item revisor-item">
                                         <h4>
                                             <span style="color: #313278; font-size: 1.3rem;">Revisor: </span>
-                                            <span style="color: #5356dd; font-size: 1.3rem;">{{ $nombreRevisor }}</span>
+                                            <span class="revisor-name" style="color: #5356dd; font-size: 1.3rem;">{{ $nombreRevisor }}</span>
                                         </h4>
                                         <ul class="list-group mt-2">
                                             @foreach($articulos as $revisor)
                                                 <li class="list-group-item" style="background: #f6f6f6">
-                                                    <div>{{ $revisor->titulo }}</div>
+                                                    <div class="articulo-titulo">{{ $revisor->titulo }}</div>
                                                     <button type="button" class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#modaldelete{{$revisor->id}}">
                                                         <i class="bi bi-trash-fill"></i> Eliminar del artículo
                                                     </button>
@@ -67,4 +65,71 @@
         </div>
     </div>
 
+    @push("scripts")
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('searchAssigned');
+                const assignedList = document.getElementById('assignedList');
+                const listItems = Array.from(assignedList.querySelectorAll('.revisor-item'));
+
+                searchInput.addEventListener('keyup', function () {
+                    const filter = this.value;
+                    let matchedItems = [];
+                    let otherItems = [];
+
+                    listItems.forEach(function (item) {
+                        let revisorName = item.querySelector('.revisor-name').textContent;
+                        let articuloTitulos = item.querySelectorAll('.articulo-titulo');
+                        let regex = new RegExp(filter, 'gi');
+                        let matched = false;
+
+                        if (revisorName.match(regex)) {
+                            matched = true;
+                            item.querySelector('.revisor-name').innerHTML = revisorName.replace(regex, function (matchedText) {
+                                return `<span class="highlight">${matchedText}</span>`;
+                            });
+                        } else {
+                            item.querySelector('.revisor-name').innerHTML = revisorName;
+                        }
+
+                        articuloTitulos.forEach(function (titleElem) {
+                            let articuloTitulo = titleElem.textContent;
+                            if (articuloTitulo.match(regex)) {
+                                matched = true;
+                                titleElem.innerHTML = articuloTitulo.replace(regex, function (matchedText) {
+                                    return `<span class="highlight">${matchedText}</span>`;
+                                });
+                            } else {
+                                titleElem.innerHTML = articuloTitulo;
+                            }
+                        });
+
+                        if (matched) {
+                            matchedItems.push(item);
+                        } else {
+                            otherItems.push(item);
+                        }
+                    });
+
+                    assignedList.innerHTML = '';
+                    matchedItems.concat(otherItems).forEach(function (item) {
+                        assignedList.appendChild(item);
+                    });
+
+                    if (filter === '') {
+                        assignedList.innerHTML = '';
+                        listItems.forEach(function (item) {
+                            assignedList.appendChild(item);
+                        });
+                    }
+                });
+            });
+        </script>
+
+        <style>
+            .highlight {
+                background-color: yellow;
+            }
+        </style>
+    @endpush
 @endsection

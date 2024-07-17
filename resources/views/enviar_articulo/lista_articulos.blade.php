@@ -106,6 +106,8 @@
                                                             (PDF)</label>
                                                         <input type="file" class="form-control" id="comprobante"
                                                                name="comprobante" accept="application/pdf">
+                                                        <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
+                                                        
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="referencia" class="form-label">Referencia</label>
@@ -137,7 +139,10 @@
                                                                class="form-label">Constancia de situación fiscal (PDF)</label>
                                                         <input type="file" class="form-control" id="constancia_fiscal_{{ $articulo->id_articulo }}"
                                                                name="constancia_fiscal" accept="application/pdf">
+                                                        <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                                                     </div>
+
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
