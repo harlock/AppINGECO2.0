@@ -40,6 +40,7 @@
                     </div>
                 </div>
                 <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1  row-cols-lg-1 row-cols-xl-1 row-cols-xxl-2 justify-content-center">
+
                     <div class="mb-3 col">
                         <div class=" bd-highlight mb-3">
                             <label for="exampleInputEmail1" class="form-label"><h4>Nombre </h4></label>
@@ -48,6 +49,7 @@
                         <input type="text" id="nombre" name="nom_autor" class="form-control" placeholder="Escriba el nombre del autor" value="{{old("nom_autor")}}">
                         <div id="emailHelp" class="form-text">Nombre del autor</div>
                     </div>
+
                     <div class="mb-3 col">
                         <div class="d-flex flex-column bd-highlight mb-3">
                             <label for="exampleInputEmail1" class="form-label"><h4>Apellido paterno </h4></label>
@@ -199,15 +201,24 @@
                     </div>
 
                     <div class=" p-4 ">
-                        <div class=" d-flex">
+                        <div class="d-flex">
                             <div class="px-2">Correo de correspondencia:</div>
-                            <div class="px-2" id="showcorreo">{{auth()->user()->email}}</div>
+                            <div class="px-2" id="showCorreo"></div>
                         </div>
-                        <div class=" d-flex">
-                            <div class="px-2" d-flex"">Nombre:</div>
-                            <div class="px-1" id="showNombre"></div>
-                            <div class="px-1">{{auth()->user()->name}}</div>
-                            <div class="px-1">{{auth()->user()->ap_paterno}} {{auth()->user()->ap_materno}}</div>
+                        <div class="d-flex">
+                            <span class="px-2" style="color: red; font-size: small;">Se notificara el estado del artículo a este correo.</span>
+                        </div>
+                        <div class="d-flex">
+                            <div class="px-2">Nombre:</div>
+                            <div class="px-2" id="showNombre"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="px-2">Apellido Paterno:</div>
+                            <div class="px-2" id="showApellidoP"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="px-2">Apellido Materno:</div>
+                            <div class="px-2" id="showApellidoM"></div>
                         </div>
                         <table>
                             <div class="d-flex">
@@ -230,13 +241,10 @@
                                 <div class="px-1" id="showModalidad"></div>
                             </div>
 
-                            <div class="d-flex">
-                                <div class="px-2">Vista previa del archivo:</div>
-                            </div>
-                            <div id="previewContent" style="width: 100%; height: 400px; border: 1px solid #ccc; overflow: auto;"></div>
-
-
                         </table>
+                        <div class="d-flex justify-content-center mt-3">
+                            <button type="button" class="btn btn-info" id="verArchivoBtn">Ver archivo</button>
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -354,6 +362,15 @@
         //titulo viene del html y showTitulo es el que se muestra
         showTitulo.innerHTML = document.getElementById("titulo").value;
 
+        var nombre = document.getElementById("nombre").value;
+        var apellidoP = document.getElementById("apellio_p").value;
+        var apellidoM = document.getElementById("apellio_m").value;
+        var correo = document.getElementById("correo").value;
+
+        document.getElementById("showNombre").innerText = nombre;
+        document.getElementById("showApellidoP").innerText = apellidoP;
+        document.getElementById("showApellidoM").innerText = apellidoM;
+        document.getElementById("showCorreo").innerText = correo;
 
         var showModalidad = document.getElementById("showRevista");
         showModalidad.innerHTML = document.getElementById("revista").value;
@@ -364,38 +381,30 @@
         //var showMesa = document.getElementById("showMesa");
         //showMesa.innerHTML = document.getElementById("id_mesa").textContent;
 
-        var archivoInput = document.getElementById("archivoNombre");
-        var archivo = archivoInput.files[0];
-        if (archivo) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                mammoth.convertToHtml({ arrayBuffer: e.target.result })
-                    .then(displayResult)
-                    .catch(handleError);
-            };
-            reader.readAsArrayBuffer(archivo);
-        }
 
     }
-    function displayResult(result) {
-        var previewContent = document.getElementById("previewContent");
-        previewContent.innerHTML = result.value;
-    }
-
-    function handleError(err) {
-        console.log(err);
-    }
-
-
     selectElement.addEventListener("change", function(element) {
 
         var selectedOption = selectElement.options[selectElement.selectedIndex];
         var descripcion = selectedOption.getAttribute("data-description");
         showMesaElement.textContent = descripcion;
     });
-    var archivoInput = document.getElementById("archivoNombre");
-    archivoInput.addEventListener("change", function() {
-        getDatos();
+
+    document.getElementById('verArchivoBtn').addEventListener('click', function() {
+        var fileInput = document.getElementById('archivoNombre');
+        if (fileInput.files.length > 0) {
+            var file = fileInput.files[0];
+            var url = URL.createObjectURL(file);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } else {
+            alert('No se ha seleccionado ningún archivo.');
+        }
     });
 </script>
 @endpush

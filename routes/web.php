@@ -83,4 +83,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Rutas para el recurso "periodos"
     Route::get('periodos/create', [PeriodoArticuloController::class, 'create'])->name('periodos.create');
     Route::post('periodos', [PeriodoArticuloController::class, 'store'])->name('periodos.store');
+    Route::delete('periodos/{id}', [PeriodoArticuloController::class, 'destroy'])->name('periodos.destroy');
+    Route::get('periodos/{id}/edit', [PeriodoArticuloController::class, 'edit'])->name('periodos.edit');
+    Route::put('periodos/{id}', [PeriodoArticuloController::class, 'update'])->name('periodos.update');
+
 });

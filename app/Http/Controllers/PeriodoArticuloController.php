@@ -31,8 +31,19 @@ class PeriodoArticuloController extends Controller
     {
         $request->validate([
             'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date',
+            'fecha_fin'    => 'required|date|after:fecha_inicio',
         ]);
+
+        // Comprobar solapamiento de periodos
+        $periodoSolapado = PeriodoArticulo::where(function ($query) use ($request) {
+            $query->where('fecha_inicio', '<=', $request->fecha_fin)
+                ->where('fecha_fin', '>=', $request->fecha_inicio);
+        })->exists();
+
+        if ($periodoSolapado) {
+            return redirect()->route('periodos.create')
+                ->with('error', 'Las fechas del periodo se solapan con un periodo existente.');
+        }
 
         $periodo = new PeriodoArticulo;
         $periodo->fecha_inicio = $request->fecha_inicio;
@@ -56,7 +67,8 @@ class PeriodoArticuloController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $periodo = PeriodoArticulo::findOrFail($id);
+        return view('periodos.edit', compact('periodo'));
     }
 
     /**
@@ -64,7 +76,30 @@ class PeriodoArticuloController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'fecha_inicio' => 'required|date',
+            'fecha_fin'    => 'required|date|after:fecha_inicio',
+        ]);
+
+        // Comprobar solapamiento de periodos
+        $periodoSolapado = PeriodoArticulo::where('id_periodo', '!=', $id)
+            ->where(function ($query) use ($request) {
+                $query->where('fecha_inicio', '<=', $request->fecha_fin)
+                    ->where('fecha_fin', '>=', $request->fecha_inicio);
+            })->exists();
+
+        if ($periodoSolapado) {
+            return redirect()->route('periodos.edit', $id)
+                ->with('error', 'Las fechas del periodo se solapan con un periodo existente.');
+        }
+
+        $periodo = PeriodoArticulo::findOrFail($id);
+        $periodo->fecha_inicio = $request->fecha_inicio;
+        $periodo->fecha_fin = $request->fecha_fin;
+        $periodo->save();
+
+        return redirect()->route('periodos.create')
+            ->with('success', 'Periodo de artículo actualizado exitosamente.');
     }
 
     /**
@@ -72,6 +107,10 @@ class PeriodoArticuloController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $periodo = PeriodoArticulo::findOrFail($id);
+        $periodo->delete();
+
+        return redirect()->route('periodos.create')
+            ->with('success', 'Periodo de artículo eliminado exitosamente.');
     }
 }
