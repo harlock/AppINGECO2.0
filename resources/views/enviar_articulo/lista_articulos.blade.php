@@ -8,14 +8,29 @@
 
     <div class="row justify-content-center mt-4">
         <div class="col-10">
-            <div class="col">
-                <h3 class="justify-content-center alert bg-blue-800 d-flex text-white">
-                    Artículos enviados
-                </h3>
-            </div>
-            <br>
 
-            <div class="table-responsive-xl bg-white border rounded-lg mt-4 p-3 shadow-sm tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <h3 class="justify-content-center alert bg-blue-800 d-flex text-white mb-5">
+                Artículos enviados
+            </h3>
+
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <div class="table-responsive-xl bg-white border rounded-lg mt-4 p-3 shadow-sm tab-pane fade show active" id="home"
+                 role="tabpanel" aria-labelledby="home-tab">
                 <table class="table">
                     <thead>
                     <tr>
@@ -46,7 +61,8 @@
                             <td class="text-wrap text-break">{{$articulo->titulo }}</td>
                             <td>{{$articulo->modalidad }}</td>
                             <td class="font-semibold ">
-                                <a class="btn btn-primary" href="{{route('art.download',$articulo->titulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
+                                <a class="btn btn-primary" href="{{route('art.download',$articulo->titulo)}}">Descargar
+                                    <i class="bi bi-arrow-down-square-fill"></i></a>
                             </td>
                             <td class="text-wrap text-break">{{$articulo->descripcion }}</td>
                             <td>
@@ -56,7 +72,8 @@
 
                                 @if($articulo->estado == 1)
                                     @if(!$comprobanteExistente)
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
                                             Agregar comprobante de pago
                                         </button>
                                     @else
@@ -67,46 +84,69 @@
                                 @endif
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="comprobanteModal-{{ $articulo->id_articulo }}" tabindex="-1" aria-labelledby="comprobanteModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="comprobanteModal-{{ $articulo->id_articulo }}" tabindex="-1"
+                                     aria-labelledby="comprobanteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="comprobanteModalLabel">Agregar Comprobante de Pago</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <h5 class="modal-title" id="comprobanteModalLabel">Agregar Comprobante de
+                                                    Pago</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ route('comprobantes.store') }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ route('comprobantes.store') }}" method="POST"
+                                                  enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
-                                                    <input type="hidden" name="id_articulo" value="{{ $articulo->id_articulo }}">
+                                                    <input type="hidden" name="id_articulo"
+                                                           value="{{ $articulo->id_articulo }}">
                                                     <input type="hidden" name="id_user" value="{{ auth()->user()->id }}">
                                                     <div class="mb-3">
-                                                        <label for="comprobante" class="form-label">Comprobante de pago (PDF)</label>
-                                                        <input type="file" class="form-control" id="comprobante" name="comprobante" accept="application/pdf" required>
+                                                        <label for="comprobante" class="form-label">Comprobante de pago
+                                                            (PDF)</label>
+                                                        <input type="file" class="form-control" id="comprobante"
+                                                               name="comprobante" accept="application/pdf">
+                                                        <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
+                                                        
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="referencia" class="form-label">Referencia</label>
-                                                        <input type="text" class="form-control" id="referencia" name="referencia" required>
+                                                        <input type="text" class="form-control" id="referencia"
+                                                               name="referencia">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">¿Requiere factura?</label>
                                                         <div>
                                                             <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="factura" id="factura_si_{{ $articulo->id_articulo }}" value="1" required>
-                                                                <label class="form-check-label" for="factura_si_{{ $articulo->id_articulo }}">Sí</label>
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="factura" id="factura_si_{{ $articulo->id_articulo }}"
+                                                                       value="1">
+                                                                <label class="form-check-label"
+                                                                       for="factura_si_{{ $articulo->id_articulo }}">Sí</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="factura" id="factura_no_{{ $articulo->id_articulo }}" value="0" required>
-                                                                <label class="form-check-label" for="factura_no_{{ $articulo->id_articulo }}">No</label>
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="factura" id="factura_no_{{ $articulo->id_articulo }}"
+                                                                       value="0">
+                                                                <label class="form-check-label"
+                                                                       for="factura_no_{{ $articulo->id_articulo }}">No</label>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="mb-3" id="constancia_fiscal_group_{{ $articulo->id_articulo }}" style="display: none;">
-                                                        <label for="constancia_fiscal_{{ $articulo->id_articulo }}" class="form-label">Constancia de situación fiscal (PDF)</label>
-                                                        <input type="file" class="form-control" id="constancia_fiscal_{{ $articulo->id_articulo }}" name="constancia_fiscal" accept="application/pdf">
+                                                    <div class="mb-3" id="constancia_fiscal_group_{{ $articulo->id_articulo }}"
+                                                         style="display: none;">
+                                                        <label for="constancia_fiscal_{{ $articulo->id_articulo }}"
+                                                               class="form-label">Constancia de situación fiscal (PDF)</label>
+                                                        <input type="file" class="form-control" id="constancia_fiscal_{{ $articulo->id_articulo }}"
+                                                               name="constancia_fiscal" accept="application/pdf">
+                                                        <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                                                     </div>
+
+
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cerrar</button>
                                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                                 </div>
                                             </form>
@@ -116,7 +156,7 @@
 
                                 <script>
                                     document.querySelectorAll('input[name="factura"]').forEach((elem) => {
-                                        elem.addEventListener('change', function(event) {
+                                        elem.addEventListener('change', function (event) {
                                             const articuloId = event.target.closest('.modal').id.split('-').pop();
                                             const constanciaFiscalGroup = document.getElementById(`constancia_fiscal_group_${articuloId}`);
                                             if (event.target.value == 1) {
@@ -138,17 +178,7 @@
 
     @if(Session::has('success'))
         <script>
-            $(document).ready(function() {
-                toastr.success("{{ Session::get('success') }}");
-            });
+            toastr.success('{{ Session::get('success') }}')
         </script>
     @endif
-    @if(Session::has('error'))
-        <script>
-            $(document).ready(function() {
-                toastr.error("{{ Session::get('error') }}");
-            });
-        </script>
-    @endif
-
 @endsection

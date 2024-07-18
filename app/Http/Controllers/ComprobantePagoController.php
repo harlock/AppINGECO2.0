@@ -29,15 +29,37 @@ class ComprobantePagoController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+        // Validación inicial
         $request->validate([
-            'id_user' => 'required|integer',
-            'id_articulo' => 'required|integer',
-            'comprobante' => 'required|mimes:pdf|max:2048',
+            'id_user' => 'required',
+            'id_articulo' => 'required',
+            'comprobante' => 'required|mimes:pdf|max:5120',
             'referencia' => 'required|string|max:255',
             'factura' => 'required|boolean',
-            'constancia_fiscal' => 'nullable|mimes:pdf|max:2048',
+            'constancia_fiscal' => 'nullable|mimes:pdf|max:5120',
+        ], [
+            'id_user.required' => 'El campo usuario es obligatorio.',
+            'id_articulo.required' => 'El campo artículo es obligatorio.',
+            'comprobante.required' => 'Debe subir un comprobante de pago.',
+            'comprobante.mimes' => 'El comprobante de pago debe ser un archivo PDF.',
+            'comprobante.max' => 'El tamaño máximo permitido para el comprobante de pago es 5MB.',
+            'referencia.required' => 'Debe ingresar la referencia de pago.',
+            'referencia.string' => 'La referencia debe ser texto.',
+            'referencia.max' => 'La referencia no debe exceder los 255 caracteres.',
+            'factura.required' => 'Debe seleccionar si requiere factura o no la requiere.',
+            'factura.boolean' => 'El campo factura debe ser verdadero o falso.',
+            'constancia_fiscal.mimes' => 'La constancia fiscal debe ser un archivo PDF.',
+            'constancia_fiscal.max' => 'El tamaño máximo permitido para la constancia fiscal es 5MB.',
         ]);
+
+        // Validación adicional para 'constancia_fiscal' si 'factura' es 1
+        if ($request->factura == 1) {
+            $request->validate([
+                'constancia_fiscal' => 'required|mimes:pdf|max:20482',
+            ], [
+                'constancia_fiscal.required' => 'Debe subir la constancia de situación fiscal cuando selecciona "Sí" en factura.',
+            ]);
+        }
 
         // Lógica de almacenamiento
         $comprobante = new ComprobantePago();
@@ -54,6 +76,7 @@ class ComprobantePagoController extends Controller
         Session::flash('success', 'Se han enviado los comprobantes de pago');
         return redirect()->back();
     }
+
     /**
      * Display the specified resource.
      */
