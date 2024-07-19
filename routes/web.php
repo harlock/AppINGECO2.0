@@ -87,4 +87,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('periodos/{id}/edit', [PeriodoArticuloController::class, 'edit'])->name('periodos.edit');
     Route::put('periodos/{id}', [PeriodoArticuloController::class, 'update'])->name('periodos.update');
 
+    //Proteger enviar articulo
+    Route::middleware(['auth', 'check.periodo.activo'])->group(function () {
+        Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar.articulo.create');
+    });
+
+
 });

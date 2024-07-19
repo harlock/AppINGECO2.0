@@ -57,14 +57,20 @@
                     <a class="nav-link" href="{{ route('vista.artic.rev') }}">Seguimiento de artículos</a>
                 </li>
                 @endif
-                @if(Auth::user()->user_type==3)
-                <li class="nav-item">
-                    <a href="{{url('enviar_articulo/create')}}" class="nav-link">Enviar Artículos</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{route('show.art')}}" class="nav-link">Artículos Enviados</a>
-                </li>
-                @endif
+                    @if(Auth::user()->user_type == 3)
+                        @if ($periodoActivo)
+                            <li class="nav-item">
+                                <a href="{{ url('enviar_articulo/create') }}" class="nav-link">Enviar Artículos</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <span class="nav-link disabled">Enviar Artículos</span>
+                            </li>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ route('show.art') }}" class="nav-link">Artículos Enviados</a>
+                        </li>
+                    @endif
                 @if(Auth::user()->user_type==2)
                 <li class="nav-item">
                     <a href="{{url('evaluar_art')}}" class="nav-link">Evaluar Artículos</a>

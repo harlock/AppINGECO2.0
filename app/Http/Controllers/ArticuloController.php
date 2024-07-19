@@ -35,12 +35,15 @@ class ArticuloController extends Controller
     {
         $texto = trim($request->get('texto'));
         $usuario = Auth::user();
-        //dd($texto);
-        if ($texto == "/1") {
+
+        // Obtener artículos según el filtro de texto
+        if ($texto == "/1" || $texto == "/2" || $texto == "/4") {
+            $estado = str_replace("/", "", $texto);
+
             $Artic = AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
                 ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
                 ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
-                ->where('articulos.estado', 1)
+                ->where('articulos.estado', $estado)
                 ->where("articulos.id_mesa", $usuario->id_mesa)
                 ->where("asigna_revisores.id_user", $usuario->id)
                 ->select(
@@ -55,53 +58,7 @@ class ArticuloController extends Controller
                     'users.name',
                     'users.ap_paterno',
                     'users.email',
-                    'users.ap_materno',
-                )
-                ->orderBy('users.created_at', 'desc')
-                ->get();
-        } elseif ($texto == "/2") {
-            $Artic = AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
-                ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
-                ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
-                ->where('articulos.estado', 2)
-                ->where("articulos.id_mesa", $usuario->id_mesa)
-                ->where("asigna_revisores.id_user", $usuario->id)
-                ->select(
-                    'articulos.id_articulo',
-                    'articulos.revista',
-                    'articulos.titulo',
-                    'articulos.estado',
-                    'articulos.modalidad',
-                    'articulos.archivo',
-                    'mesas.descripcion',
-                    'users.id',
-                    'users.name',
-                    'users.email',
-                    'users.ap_paterno',
-                    'users.ap_materno',
-                )
-                ->orderBy('users.created_at', 'desc')
-                ->get();
-        } elseif ($texto == "/4") {
-            $Artic = AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
-                ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
-                ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
-                ->where('articulos.estado', 4)
-                ->where("articulos.id_mesa", $usuario->id_mesa)
-                ->where("asigna_revisores.id_user", $usuario->id)
-                ->select(
-                    'articulos.id_articulo',
-                    'articulos.revista',
-                    'articulos.titulo',
-                    'articulos.estado',
-                    'articulos.modalidad',
-                    'articulos.archivo',
-                    'mesas.descripcion',
-                    'users.id',
-                    'users.name',
-                    'users.ap_paterno',
-                    'users.email',
-                    'users.ap_materno',
+                    'users.ap_materno'
                 )
                 ->orderBy('users.created_at', 'desc')
                 ->get();
@@ -130,12 +87,12 @@ class ArticuloController extends Controller
                     'users.name',
                     'users.ap_paterno',
                     'users.email',
-                    'users.ap_materno',
+                    'users.ap_materno'
                 )
                 ->orderBy('users.created_at', 'desc')
                 ->get();
         } else {
-            $Artic =  AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
+            $Artic = AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
                 ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
                 ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
                 ->where("articulos.id_mesa", $usuario->id_mesa)
@@ -158,26 +115,30 @@ class ArticuloController extends Controller
                     'users.name',
                     'users.email',
                     'users.ap_paterno',
-                    'users.ap_materno',
+                    'users.ap_materno'
                 )
                 ->orderBy('users.created_at', 'desc')
                 ->get();
         }
+
+        // Obtener pagos y sus URLs
         $pagos = DB::table('comprobante_pagos')
             ->select('id_articulo', 'comprobante', 'referencia', 'factura', 'constancia_fiscal')
             ->get();
-        //dd($pagos);
 
         $comprobanteUrls = [];
         foreach ($pagos as $pago) {
             $comprobanteUrls[$pago->id_articulo] = [
                 'comprobante' => Storage::url($pago->comprobante),
+                'referencia' => $pago->referencia,
+                'factura' => $pago->factura,
+                'constancia_fiscal' => $pago->constancia_fiscal ? Storage::url($pago->constancia_fiscal) : null
             ];
         }
-        //dd($comprobanteUrls);
-        //dd($Artic);
-        return view('articulos.index', compact('Artic','pagos', 'comprobanteUrls'));
+
+        return view('articulos.index', compact('Artic', 'pagos', 'comprobanteUrls'));
     }
+
     public function showArticulos()
     {
         $usuario = Auth::user();
@@ -297,10 +258,10 @@ class ArticuloController extends Controller
                 ->orderBy('users.created_at', 'desc')
                 ->get();
         } else {
-           // dd("ok");
+            // dd("ok");
             $Artic = DB::table('articulos')
-               // ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
-                
+                // ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
+
                 ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
                 ->join('users', 'users.id', '=', 'articulos.id_user')
                 ->where(function ($query) use ($texto) {

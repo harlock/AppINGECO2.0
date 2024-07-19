@@ -20,8 +20,15 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
+        \App\Http\Middleware\CheckPeriodoActivo::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
+
+    protected $routeMiddleware = [
+        // otros middlewares
+        'check.periodo.activo' => \App\Http\Middleware\CheckPeriodoActivo::class,
+    ];
+
 
     /**
      * The application's route middleware groups.
