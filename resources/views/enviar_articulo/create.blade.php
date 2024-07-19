@@ -354,58 +354,64 @@
 
 @push("scripts")
     <script type="text/javascript">
-    var selectElement = document.getElementById("id_mesa");
-    var showMesaElement = document.getElementById("showMesa");
+        // Obtener los elementos del DOM
+        var selectElement = document.getElementById("id_mesa");
+        var showMesaElement = document.getElementById("showMesa");
 
-    function getDatos() {
-        var showTitulo = document.getElementById("showTitulo");
-        //titulo viene del html y showTitulo es el que se muestra
-        showTitulo.innerHTML = document.getElementById("titulo").value;
+        // Función para mostrar los datos en el HTML
+        function getDatos() {
+            // Obtener y mostrar el título
+            var showTitulo = document.getElementById("showTitulo");
+            showTitulo.innerHTML = document.getElementById("titulo").value;
 
-        var nombre = document.getElementById("nombre").value;
-        var apellidoP = document.getElementById("apellio_p").value;
-        var apellidoM = document.getElementById("apellio_m").value;
-        var correo = document.getElementById("correo").value;
+            // Obtener y mostrar los datos del usuario
+            var nombre = document.getElementById("nombre").value;
+            var apellidoP = document.getElementById("apellio_p").value;
+            var apellidoM = document.getElementById("apellio_m").value;
+            var correo = document.getElementById("correo").value;
 
-        document.getElementById("showNombre").innerText = nombre;
-        document.getElementById("showApellidoP").innerText = apellidoP;
-        document.getElementById("showApellidoM").innerText = apellidoM;
-        document.getElementById("showCorreo").innerText = correo;
+            document.getElementById("showNombre").innerText = nombre;
+            document.getElementById("showApellidoP").innerText = apellidoP;
+            document.getElementById("showApellidoM").innerText = apellidoM;
+            document.getElementById("showCorreo").innerText = correo;
 
-        var showModalidad = document.getElementById("showRevista");
-        showModalidad.innerHTML = document.getElementById("revista").value;
+            // Obtener y mostrar la modalidad
+            var showRevista = document.getElementById("showRevista");
+            showRevista.innerHTML = document.getElementById("revista").value;
 
-        var showModalidad = document.getElementById("showModalidad");
-        showModalidad.innerHTML = document.getElementById("modalidad").value;
+            var showModalidad = document.getElementById("showModalidad");
+            showModalidad.innerHTML = document.getElementById("modalidad").value;
 
-        //var showMesa = document.getElementById("showMesa");
-        //showMesa.innerHTML = document.getElementById("id_mesa").textContent;
-
-
-    }
-    selectElement.addEventListener("change", function(element) {
-
-        var selectedOption = selectElement.options[selectElement.selectedIndex];
-        var descripcion = selectedOption.getAttribute("data-description");
-        showMesaElement.textContent = descripcion;
-    });
-
-    document.getElementById('verArchivoBtn').addEventListener('click', function() {
-        var fileInput = document.getElementById('archivoNombre');
-        if (fileInput.files.length > 0) {
-            var file = fileInput.files[0];
-            var url = URL.createObjectURL(file);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = file.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        } else {
-            alert('No se ha seleccionado ningún archivo.');
+            // Mostrar la descripción de la mesa (opcional)
+            // var showMesa = document.getElementById("showMesa");
+            // showMesa.innerHTML = document.getElementById("id_mesa").textContent;
         }
-    });
-</script>
+
+        // Evento para actualizar la descripción de la mesa al cambiar la selección
+        selectElement.addEventListener("change", function() {
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var descripcion = selectedOption.getAttribute("data-description");
+            showMesaElement.textContent = descripcion;
+        });
+
+        // Evento para manejar la descarga del archivo
+        document.getElementById('verArchivoBtn').addEventListener('click', function() {
+            var fileInput = document.getElementById('archivoNombre');
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var url = URL.createObjectURL(file);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = file.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } else {
+                alert('No se ha seleccionado ningún archivo.');
+            }
+        });
+    </script>
+
 @endpush
 @endsection
