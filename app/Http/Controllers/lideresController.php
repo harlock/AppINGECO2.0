@@ -171,7 +171,7 @@ class lideresController extends Controller
                 )
                 ->orderBy('users.created_at', 'desc')
                 ->get();
-        } elseif ($texto == "/5") {
+        } elseif ($texto == "/6") {
             $Artic = DB::table('asigna_revisores')
                 ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
                 ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
@@ -183,6 +183,29 @@ class lideresController extends Controller
                         ->orWhere('articulos.modalidad', 'LIKE', '%' . $texto . '%')
                         ->orWhere('articulos.revista', 'LIKE', '%' . $texto . '%');
                 })
+                ->select(
+                    'articulos.id_articulo',
+                    'articulos.revista',
+                    'articulos.titulo',
+                    'articulos.estado',
+                    'articulos.modalidad',
+                    'articulos.archivo',
+                    'mesas.descripcion',
+                    'users.id',
+                    'users.telefono',
+                    'users.email',
+                    DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
+
+                )
+                ->orderBy('users.created_at', 'desc')
+                ->get();
+        } elseif ($texto == "/5") {
+            $Artic = DB::table('asigna_revisores')
+                ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
+                ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
+                ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
+                ->where('articulos.estado', 5)
+                ->where("articulos.id_mesa", $usuario->id_mesa)
                 ->select(
                     'articulos.id_articulo',
                     'articulos.revista',

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Illuminate\Support\Facades\File;
 use App\Models\ComprobantePago;
+use Illuminate\Support\Facades\Session;
 
 class ArticuloController extends Controller
 {
@@ -37,7 +38,7 @@ class ArticuloController extends Controller
         $usuario = Auth::user();
 
         // Obtener artículos según el filtro de texto
-        if ($texto == "/1" || $texto == "/2" || $texto == "/4") {
+        if ($texto == "/1" || $texto == "/2" || $texto == "/4" || $texto == "/5") {
             $estado = str_replace("/", "", $texto);
 
             $Artic = AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
@@ -62,7 +63,7 @@ class ArticuloController extends Controller
                 )
                 ->orderBy('users.created_at', 'desc')
                 ->get();
-        } elseif ($texto == "/5") {
+        } elseif ($texto == "/6") {
             $Artic = DB::table('asigna_revisores')
                 ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
                 ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
@@ -123,7 +124,7 @@ class ArticuloController extends Controller
 
         // Obtener pagos y sus URLs
         $pagos = DB::table('comprobante_pagos')
-            ->select('id_articulo', 'comprobante', 'referencia', 'factura', 'constancia_fiscal')
+            ->select('id_articulo', 'comprobante', 'referencia', 'factura', 'constancia_fiscal', 'deleted_at')
             ->get();
 
         $comprobanteUrls = [];
@@ -132,11 +133,15 @@ class ArticuloController extends Controller
                 'comprobante' => Storage::url($pago->comprobante),
                 'referencia' => $pago->referencia,
                 'factura' => $pago->factura,
-                'constancia_fiscal' => $pago->constancia_fiscal ? Storage::url($pago->constancia_fiscal) : null
+                'constancia_fiscal' => $pago->constancia_fiscal ? Storage::url($pago->constancia_fiscal) : null,
+                'deleted_at' => $pago->deleted_at
             ];
         }
 
-        return view('articulos.index', compact('Artic', 'pagos', 'comprobanteUrls'));
+        $articulosConPagos = $pagos->pluck('id_articulo')->toArray();
+        //dd($articulosConPagos);
+        //dd($Artic);
+        return view('articulos.index', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos'));
     }
 
     public function showArticulos()
@@ -146,6 +151,7 @@ class ArticuloController extends Controller
         $articulos = DB::table('articulos')
             ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
             ->join('users', 'users.id', '=', 'articulos.id_user')
+            ->leftJoin('comprobante_pagos', 'comprobante_pagos.id_articulo', '=', 'articulos.id_articulo')
             ->where("users.id", $usuario->id)
             ->select(
                 'articulos.id_articulo',
@@ -155,6 +161,7 @@ class ArticuloController extends Controller
                 'articulos.modalidad',
                 'articulos.archivo',
                 'mesas.descripcion',
+                'comprobante_pagos.observacion',
                 'users.id',
             )
             ->orderBy('articulos.created_at', 'desc')
@@ -231,7 +238,7 @@ class ArticuloController extends Controller
                 )
                 ->orderBy('users.created_at', 'desc')
                 ->get();
-        } elseif ($texto == "/5") {
+        } elseif ($texto == "/6") {
             $Artic = DB::table('asigna_revisores')
                 ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
                 ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
@@ -242,6 +249,27 @@ class ArticuloController extends Controller
                         ->orWhere('articulos.modalidad', 'LIKE', '%' . $texto . '%')
                         ->orWhere('articulos.revista', 'LIKE', '%' . $texto . '%');
                 })
+                ->select(
+                    'articulos.id_articulo',
+                    'articulos.revista',
+                    'articulos.titulo',
+                    'articulos.estado',
+                    'articulos.modalidad',
+                    'articulos.archivo',
+                    'mesas.descripcion',
+                    'users.id',
+                    DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
+                    'users.telefono',
+                    'users.email',
+                )
+                ->orderBy('users.created_at', 'desc')
+                ->get();
+        }elseif ($texto == "/5") {
+            $Artic = DB::table('asigna_revisores')
+                ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
+                ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
+                ->join('users', 'users.id', '=', 'articulos.id_user')
+                ->where('articulos.estado', 5)
                 ->select(
                     'articulos.id_articulo',
                     'articulos.revista',
@@ -483,15 +511,51 @@ class ArticuloController extends Controller
     {
         //        dd($evaluar_art);
 
-        $request->validate([
-            'estado' => 'required'
+        $validated = $request->validate([
+            'estado' => 'required|integer',
+            'archivo' => 'nullable|file|mimes:doc,docx|max:5120'
         ]);
-        //   $arti=Articulo::find($request->artid);
+
+        // Actualizar el estado del artículo
         $evaluar_art->update([
-            "estado" => $request->estado,
+            'estado' => $validated['estado'],
         ]);
-        return redirect()->back();
+
+        if ($validated['estado'] == 5 && $request->hasFile('archivo')) {
+
+            $file = $request->file('archivo')->store('archivos/articulos', 'public');
+
+            $evaluar_art->update([
+                'archivo' => $file,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Artículo reenviado con éxito.');
     }
+
+    public function updateArchivo(Request $request, Articulo $articulo)
+    {
+        $validated = $request->validate([
+            'archivo' => 'required|file|mimes:doc,docx|max:5120',
+        ],[
+            'archivo.required' => 'Debes seleccionar un archivo',
+            'archivo.max' => 'El tamaño máximo es de 5MB.'
+        ]);
+
+        if ($request->hasFile('archivo')) {
+            // Almacenar el archivo
+            $file = $request->file('archivo')->store('archivos/articulos', 'public');
+
+            // Actualizar el artículo
+            $articulo->update([
+                'archivo' => $file,
+                'estado' => 1,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Archivo corregido subido con éxito.');
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -514,4 +578,36 @@ class ArticuloController extends Controller
 
         return redirect()->back()->with('success', 'Articulo eliminado definitivamente');
     }
+
+    public function regresarPago(Request $request, $id_articulo)
+    {
+        $request->validate([
+            'observacion' => 'required|string|max:255',
+        ],[
+            'observacion.required' => 'Debe escribir al menos una observación que tenga el pago.',
+            'observacion.max' => 'La observación no debe sobrepasar los 255 carácteres.'
+        ]);
+
+        $comprobante = ComprobantePago::where('id_articulo', $id_articulo)->first();
+
+        if ($comprobante) {
+            $comprobante->deleted_at = now(); // Marca el comprobante como eliminado
+            $comprobante->observacion = $request->observacion; // Guarda la observación
+
+            if ($comprobante->constancia_fiscal) {
+                Storage::delete($comprobante->constancia_fiscal);
+            }
+
+            $comprobante->constancia_fiscal = null;
+            $comprobante->save();
+
+            Session::flash('success', 'Pago regresado exitosamente.');
+        } else {
+            Session::flash('error', 'No se encontró el comprobante de pago.');
+        }
+
+        return redirect()->back();
+    }
+
+
 }

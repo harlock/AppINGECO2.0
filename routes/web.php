@@ -79,6 +79,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //COMPROBANTES DE PAGO
     Route::resource('comprobantes_pagos', ComprobantePagoController::class);
     Route::post('/comprobantes/store', [ComprobantePagoController::class, 'store'])->name('comprobantes.store');
+    Route::post('/regresar-pago/{id_articulo}', [ArticuloController::class, 'regresarPago'])->name('regresar-pago');
+    Route::put('/articulos/{articulo}/updateArchivo', [ArticuloController::class, 'updateArchivo'])->name('articulos.updateArchivo');
 
     // Rutas para el recurso "periodos"
     Route::get('periodos/create', [PeriodoArticuloController::class, 'create'])->name('periodos.create');
@@ -89,7 +91,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     //Proteger enviar articulo
     Route::middleware(['auth', 'check.periodo.activo'])->group(function () {
-        Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar.articulo.create');
+        Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar_articulo.create');
     });
 
 

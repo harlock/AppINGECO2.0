@@ -50,6 +50,7 @@
                     <button class="btn bg-yellow-100 btn-texto m-1 " data-texto="4">En proceso de revisión </button>
                     <button class="btn bg-green-100 btn-texto m-1"  data-texto="1">Aceptado</button>
                     <button class="btn bg-red-100 btn-texto m-1"  data-texto="2">Rechazado</button>
+                    <button class="btn bg-blue-100 btn-texto m-1"  data-texto="5">Aceptado con cambios</button>
                     <form class=" m-1 " action="{{ route('art.admin') }}" method="GET">
                         <button class="btn bg-gray-300 " type="submit">Quitar filtro </button>
                     </form>
@@ -89,7 +90,7 @@
                             </thead>
                             <tbody id="tablaNombres">
                             @foreach($Artic as $articu)
-                            <tr class="rounded-xl {{$articu->estado == 0 ? "bg-gray-100" : ($articu->estado == 1 ? "bg-green-100" : ($articu->estado == 2 ? "bg-red-100" : "bg-yellow-100"))}}">
+                            <tr class="rounded-xl {{$articu->estado == 0 ? "bg-gray-100" : ($articu->estado == 1 ? "bg-green-100" : ($articu->estado == 2 ? "bg-red-100" : ($articu->estado == 5 ? 'bg-blue-100' : "bg-yellow-100")))}}">
                                 <td class=""><strong>
                                     {{$articu->id_articulo}}
                                     
@@ -120,6 +121,8 @@
                                     <i class="bi bi-bookmark-check-fill"></i> Aceptado
                                     @elseif($articu->estado == 2)
                                     <i class="bi bi-bookmark-x-fill"></i> Rechazado
+                                    @elseif($articu->estado == 5)
+                                        <i class="bi bi-bookmark-star-fill"></i> Aceptado con cambios
                                     @else
                                     <i class="bi bi-bookmark-dash-fill"></i> En proceso de revisión
                                     @endif

@@ -61,17 +61,32 @@ class ComprobantePagoController extends Controller
             ]);
         }
 
-        // Lógica de almacenamiento
-        $comprobante = new ComprobantePago();
-        $comprobante->id_user = $request->id_user;
-        $comprobante->id_articulo = $request->id_articulo;
-        $comprobante->comprobante = $request->file('comprobante')->store('comprobantes', 'public');
-        $comprobante->referencia = $request->referencia;
-        $comprobante->factura = $request->factura;
-        if ($request->factura == 1 && $request->hasFile('constancia_fiscal')) {
-            $comprobante->constancia_fiscal = $request->file('constancia_fiscal')->store('constancias', 'public');
+        // Buscar el comprobante existente
+        $comprobante = ComprobantePago::where('id_articulo', $request->id_articulo)->first();
+
+        if ($comprobante) {
+            // Si el comprobante ya existe, actualiza los campos
+            $comprobante->comprobante = $request->file('comprobante')->store('comprobantes', 'public');
+            $comprobante->referencia = $request->referencia;
+            $comprobante->factura = $request->factura;
+            if ($request->factura == 1 && $request->hasFile('constancia_fiscal')) {
+                $comprobante->constancia_fiscal = $request->file('constancia_fiscal')->store('constancias', 'public');
+            }
+            $comprobante->deleted_at = null; // Asegurarse de que el comprobante no esté marcado como eliminado
+            $comprobante->save();
+        } else {
+            // Si el comprobante no existe, crea uno nuevo
+            $comprobante = new ComprobantePago();
+            $comprobante->id_user = $request->id_user;
+            $comprobante->id_articulo = $request->id_articulo;
+            $comprobante->comprobante = $request->file('comprobante')->store('comprobantes', 'public');
+            $comprobante->referencia = $request->referencia;
+            $comprobante->factura = $request->factura;
+            if ($request->factura == 1 && $request->hasFile('constancia_fiscal')) {
+                $comprobante->constancia_fiscal = $request->file('constancia_fiscal')->store('constancias', 'public');
+            }
+            $comprobante->save();
         }
-        $comprobante->save();
 
         Session::flash('success', 'Se han enviado los comprobantes de pago');
         return redirect()->back();
