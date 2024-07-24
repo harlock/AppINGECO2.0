@@ -41,8 +41,8 @@
                         <th class="text-center">Archivo</th>
                         <th class="text-center">Mesa asignada</th>
                         <th class="text-center">Comprobante de pago</th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
+                        <th class="text-center">Observación de pagos</th>
+                        <th class="text-center">Envio de Artículo</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -76,7 +76,7 @@
 
                                 @if($articulo->estado == 1 || $articulo->estado == 5)
                                     @if($comprobanteExistente && $comprobanteExistente->deleted_at)
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
                                             Agregar nuevo comprobante de pago
                                         </button>
@@ -181,14 +181,14 @@
                             <td>
                                 @if($articulo->observacion)
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#observacionesModal-{{ $articulo->id_articulo }}" title="Ver Observaciones">
-                                        <i class="fa fa-comments"></i>
+                                        Observación en pagos <i class="fa fa-comments"></i>
                                     </button>
                                 @endif
                             </td>
                             <td>
                                 @if($articulo->estado == 5)
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#archivoModal-{{ $articulo->id_articulo }}" title="Cargar Archivo">
-                                        <i class="fa fa-file"></i>
+                                        Reenviar Artículo <i class="fa fa-file"></i>
                                     </button>
                                 @endif
                             </td>
