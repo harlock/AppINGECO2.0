@@ -42,49 +42,50 @@
                     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1  row-cols-lg-1 row-cols-xl-1 row-cols-xxl-2 justify-content-center">
 
                         <div class="mb-3 col">
-                            <div class=" bd-highlight mb-3">
-                                <label for="exampleInputEmail1" class="form-label"><h4>Nombre </h4></label>
+                            <div class="bd-highlight mb-3">
+                                <label for="nombre" class="form-label"><h4>Nombre</h4></label>
                                 <div class="col-10">@error('nom_autor') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror</div>
                             </div>
-                            <input type="text" id="nombre" name="nom_autor" class="form-control" placeholder="Escriba el nombre del autor" value="{{old("nom_autor")}} ">
+                            <input type="text" id="nombre" name="nom_autor" class="form-control" placeholder="Escriba el nombre del autor" value="{{ old('nom_autor') }}">
                             <div id="emailHelp" class="form-text">Nombre del autor</div>
                         </div>
 
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
-                                <label for="exampleInputEmail1" class="form-label"><h4>Apellido paterno </h4></label>
+                                <label for="apellio_p" class="form-label"><h4>Apellido paterno</h4></label>
                                 <div class="col-10">@error('ap_autor') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror</div>
                             </div>
-                            <input type="text" id="apellio_p" name="ap_autor" class="form-control" placeholder="Escriba el apellido paterno del autor" value="{{old("ap_autor")}}">
+                            <input type="text" id="apellio_p" name="ap_autor" class="form-control" placeholder="Escriba el apellido paterno del autor" value="{{ old('ap_autor') }}">
                             <div id="emailHelp" class="form-text">Apellido paterno del autor</div>
                         </div>
+
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
-                                <label for="exampleInputEmail1" class="form-label"><h4>Apellido materno </h4></label>
+                                <label for="apellio_m" class="form-label"><h4>Apellido materno</h4></label>
                                 <div class="col-10">@error('am_autor') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror</div>
                             </div>
-                            <input type="text" id="apellio_m" name="am_autor" class="form-control" placeholder="Escriba el apellido materno del autor" value="{{old("am_autor")}}">
-                            <div id="emailHelp" class="form-text">Apellido materno del Autor</div>
+                            <input type="text" id="apellio_m" name="am_autor" class="form-control" placeholder="Escriba el apellido materno del autor" value="{{ old('am_autor') }}">
+                            <div id="emailHelp" class="form-text">Apellido materno del autor</div>
                         </div>
-
-
 
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
-                                <label for="exampleInputEmail1" class="form-label"><h4>Correo</h4></label>
+                                <label for="correo" class="form-label"><h4>Correo</h4></label>
                                 <div class="col-10">@error('correo') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror</div>
                             </div>
-                            <input type="text" id="correo" name="correo" class="form-control" placeholder="Escriba su correo del autor" value="{{old("correo")}}">
+                            <input type="text" id="correo" name="correo" class="form-control" placeholder="Escriba su correo del autor" value="{{ old('correo') }}">
                             <div id="emailHelp" class="form-text">Correo del autor</div>
                         </div>
+
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
-                                <label for="exampleInputEmail1" class="form-label"><h4>Teléfono</h4></label>
+                                <label for="tel" class="form-label"><h4>Teléfono</h4></label>
                                 <div class="col-10">@error('tel') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror</div>
                             </div>
-                            <input type="text" name="tel" class="form-control" placeholder="Ingrese el telefono" value="{{old("tel")}}">
+                            <input type="text" id="tel" name="tel" class="form-control" placeholder="Ingrese el teléfono" value="{{ old('tel') }}">
                             <div id="emailHelp" class="form-text">Teléfono del autor</div>
                         </div>
+
 
                     </div>
                 </div>

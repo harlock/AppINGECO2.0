@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AutoresCorrespondencia extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected $primaryKey = 'id_autor';
+
     protected $fillable = [
         'nom_autor',
         'ap_autor',
@@ -17,6 +19,9 @@ class AutoresCorrespondencia extends Model
         'correo',
         'tel',
     ];
-    protected $primaryKey = 'id_autor';
 
+    public function articulos()
+    {
+        return $this->hasMany('App\Models\Articulo', 'id_autor', 'id_autor');
+    }
 }

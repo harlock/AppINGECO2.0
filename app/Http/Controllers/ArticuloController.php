@@ -366,54 +366,56 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
-        $mesas = Mesa::all();
-        //dd($this->archivo);
+        // Validación de los datos del formulario
         $request->validate([
             'revista' => 'required',
             'titulo' => 'required|unique:articulos',
             'archivo' => 'required|file|max:5120|mimes:docx',
-            'id_mesa' => 'required',
+            'id_mesa' => 'nullable|exists:mesas,id_mesa',
             'modalidad' => 'required',
-            //'id_autor' => 'required',
-            //'nom_autor' => 'required|string',
-            //'ap_autor' => 'required|string',
-            //'am_autor' => 'required|string',
-            //'correo' => 'required|email|unique:Autores_Correspondencias',
-            //'tel' => 'required|numeric|digits:10',
+            'nom_autor' => 'required|string',
+            'ap_autor' => 'required|string',
+            'am_autor' => 'required|string',
+            'correo' => 'required|email|unique:autores_correspondencias,correo',
+            'tel' => 'required|numeric|digits:10',
         ], [
-            'revista' => 'Seleccionar una revista.',
-            'titulo.required' => 'Agrega el título del artículo.',
-            'titulo.unique' => 'Ya existe este título.',
-
-            'archivo.required' => 'Agrega el archivo.',
-            'archivo.max' => 'El archivo no debe ser mayor a 5mb.',
-            'archivo.mimes' => 'El archivo debe ser tipo WORD.',
-
-            'id_mesa.required' => 'Agrega la mesa.',
-
-            'modalidad.required' => 'Seleccione la modalidad.'
-            /*
-            'nom_autor.required' => 'Agrega el nombre del autor.',
-            'nom_autor.string' => 'El nombre del autor debe ser insertado correctamente.',
-            'ap_autor.required' => 'Agrega el apellido paterno del autor.',
-            'ap_autor.string' => 'El apellido paterno del autor debe ser insertado correctamente.',
-            'am_autor.required' => 'Agrega el apellido materno del autor.',
-            'am_autor.string' => 'El apellido materno del autor debe ser insertado correctamente.',
-
-
-            'correo.required' => 'Agrega el correo electrónico del autor.',
-            'correo.unique' => 'Este correo electrónico ya existe.',
-
-            'tel.required' => 'Agrega el telefono del autor.',
-            'tel.numeric' => 'El teléfono no lleva letras.',
-            'tel.digits' => 'El teléfono debe llevar 10 digitos.',
-            */
+            'revista.required' => 'Es necesario seleccionar una revista.',
+            'titulo.required' => 'El título del artículo es obligatorio.',
+            'titulo.unique' => 'Ya existe un artículo con este título. Elija otro.',
+            'archivo.required' => 'Debe adjuntar un archivo para el artículo.',
+            'archivo.file' => 'El archivo debe ser un documento.',
+            'archivo.max' => 'El tamaño del archivo no puede superar los 5 MB.',
+            'archivo.mimes' => 'El archivo debe estar en formato DOCX.',
+            'id_mesa.exists' => 'La mesa seleccionada no es válida.',
+            'modalidad.required' => 'La modalidad del artículo es necesaria.',
+            'nom_autor.required' => 'Es necesario colocar el nombre del autor.',
+            'nom_autor.string' => 'El nombre del autor debe ser una cadena de texto.',
+            'ap_autor.required' => 'Es necesario colocar el apellido paterno del autor.',
+            'ap_autor.string' => 'El apellido paterno debe ser una cadena de texto.',
+            'am_autor.required' => 'Es necesario colocar el apellido materno del autor.',
+            'am_autor.string' => 'El apellido materno debe ser una cadena de texto.',
+            'correo.required' => 'Es necesario colocar el correo electrónico del autor.',
+            'correo.email' => 'El correo electrónico debe tener un formato válido.',
+            'correo.unique' => 'El correo electrónico ya está registrado en el sistema.',
+            'tel.required' => 'Es necesario colocar el teléfono del autor.',
+            'tel.numeric' => 'El teléfono debe contener únicamente números.',
+            'tel.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
         ]);
 
+        // Manejo del archivo
         $file = $request->file('archivo')->store('archivos/articulos', 'public');
-        // dd($file);
 
+        // Crear o encontrar el autor
+        $autor = AutoresCorrespondencia::firstOrCreate([
+            'correo' => $request->correo
+        ], [
+            'nom_autor' => $request->nom_autor,
+            'ap_autor' => $request->ap_autor,
+            'am_autor' => $request->am_autor,
+            'tel' => $request->tel,
+        ]);
+
+        // Crear el artículo
         Articulo::create([
             'revista' => $request->revista,
             'titulo' => $request->titulo,
@@ -421,14 +423,14 @@ class ArticuloController extends Controller
             'modalidad' => $request->modalidad,
             'id_mesa' => $request->id_mesa,
             'id_user' => auth()->user()->id,
+            'id_autor' => $autor->id_autor,
         ]);
 
-
-        //$this->sendEmail($request->correo);
-        //return view('enviar_articulo.create', compact('mesas'))->with('message','se ha creado el registro correctamente');
-        return redirect()->route('enviar_articulo.create')->with('success', 'Artículo registrado correctamente, los revisores se pondran en contacto con el autor de correspondencia por medio del correo electrónico proporcionado.');
-        //return view('enviar_articulo.create')->with('success', 'Artículo registrado correctamente, los revisores se pondran en contacto con el autor de correspondencia por medio del correo electrónico proporcionado.');
+        return redirect()->route('enviar_articulo.create')->with('success', 'Artículo registrado correctamente.');
     }
+
+
+
 
     public function download($titulo)
     {

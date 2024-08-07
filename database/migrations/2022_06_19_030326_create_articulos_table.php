@@ -18,18 +18,18 @@ class CreateArticulosTable extends Migration
             $table->string('titulo')->unique();
             $table->boolean('estado')->default(0)->nullable();
             $table->string('archivo');
-    
+
             $table->unsignedBigInteger('id_mesa')->nullable();
-            $table->foreign('id_mesa')->references('id_mesa')->on('mesas');
-    
+            $table->foreign('id_mesa')->references('id_mesa')->on('mesas')->onDelete('set null'); // Añadir onDelete('set null') para manejar casos de eliminación
+
             $table->unsignedBigInteger('id_autor')->nullable();
-            $table->foreign('id_autor')->references('id_autor')->on('autores_correspondencias');
-    
+            $table->foreign('id_autor')->references('id_autor')->on('autores_correspondencias')->onDelete('set null'); // Añadir onDelete('set null') para manejar casos de eliminación
+
             $table->timestamps();
             $table->softDeletes();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      *
@@ -37,7 +37,11 @@ class CreateArticulosTable extends Migration
      */
     public function down()
     {
+        Schema::table('articulos', function (Blueprint $table) {
+            $table->dropForeign(['id_mesa']);
+            $table->dropForeign(['id_autor']);
+        });
+
         Schema::dropIfExists('articulos');
     }
-    
 }
