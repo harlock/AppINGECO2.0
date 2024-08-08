@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ArticulosEmail;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\lideresController;
@@ -93,6 +95,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['auth', 'check.periodo.activo'])->group(function () {
         Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar_articulo.create');
     });
+
+    //CORREOS
+    Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar_articulo.create');
+    Route::post('enviar_articulo', [ArticuloController::class, 'store'])->name('enviar_articulo.store');
+    Route::post('evaluar_art', [ArticuloController::class, 'update'])->name('evaluar_art.update');
+    Route::post('lideres', [lideresController::class, 'store'])->name('lideres.store');
+
 
 
 });

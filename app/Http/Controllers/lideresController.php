@@ -8,6 +8,8 @@ use App\Models\Mesa;
 use App\Models\Articulo;
 use App\Models\AsignaRevisores;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RevisorAsignadoEmail;
 use Illuminate\Support\Facades\DB;
 
 class lideresController extends Controller
@@ -277,10 +279,21 @@ class lideresController extends Controller
             'id_articulo' => $request->id_articulo,
             'id_user' => $request->id,
         ]);
+
+        $articulo = DB::table('articulos')->where('id_articulo', $request->id_articulo)->first();
+        $revisor = DB::table('users')->where('id', $request->id)->first();
+
         //dd($request->id_articulo);
         $cambiarArticulo = DB::table("articulos")
             ->where('id_articulo', $request->id_articulo)
             ->update(['estado' => '4']);
+
+        // Enviar el correo al revisor
+        Mail::to($revisor->email)->send(new RevisorAsignadoEmail(
+            $articulo->titulo,
+            $articulo->revista,
+            $articulo->modalidad
+        ));
 
         return redirect()->route('lideres.index')->with('success', 'Autor asignado correctamente.');
     }

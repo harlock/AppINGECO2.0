@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Response;
 use function GuzzleHttp\Promise\all;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ArticlesMail;
+use App\Mail\ArticulosEmail;
+use App\Mail\ArticulosAceptadosEmail;
+use App\Mail\ArticulosRechazadosEmail;
+use App\Mail\ArticulosAceptadosCambiosEmail;
 use Illuminate\Support\Facades\Storage;
 
 use ZipArchive;
@@ -416,7 +420,7 @@ class ArticuloController extends Controller
         ]);
 
         // Crear el artículo
-        Articulo::create([
+        $articulo = Articulo::create([
             'revista' => $request->revista,
             'titulo' => $request->titulo,
             'archivo' => $file,
@@ -426,7 +430,9 @@ class ArticuloController extends Controller
             'id_autor' => $autor->id_autor,
         ]);
 
-        return redirect()->route('enviar_articulo.create')->with('success', 'Artículo registrado correctamente.');
+        Mail::to($autor->correo)->send(new ArticulosEmail($articulo->titulo, $articulo->revista, $articulo->modalidad));
+
+        return redirect()->route('enviar_articulo.create')->with('success', 'Artículo registrado correctamente, los revisores se pondran en contacto con el autor de correspondencia por medio del correo electrónico proporcionado.');
     }
 
 
@@ -523,6 +529,42 @@ class ArticuloController extends Controller
             'estado' => $validated['estado'],
         ]);
 
+        // Si el estado es 1, enviar un correo de aceptado
+        if ($validated['estado'] == 1) {
+            $autor = $evaluar_art->autorCorrespondencia;
+
+            // Enviar el correo
+            Mail::to($autor->correo)->send(new ArticulosAceptadosEmail(
+                $evaluar_art->titulo,
+                $evaluar_art->revista,
+                $evaluar_art->modalidad
+            ));
+        }
+
+        // Si el estado es 2, enviar un correo de rechazado
+        if ($validated['estado'] == 2) {
+            $autor = $evaluar_art->autorCorrespondencia;
+
+            // Enviar el correo
+            Mail::to($autor->correo)->send(new ArticulosRechazadosEmail(
+                $evaluar_art->titulo,
+                $evaluar_art->revista,
+                $evaluar_art->modalidad
+            ));
+        }
+
+        // Si el estado es 5, enviar un correo de aceptado con cambios
+        if ($validated['estado'] == 5) {
+            $autor = $evaluar_art->autorCorrespondencia;
+
+            // Enviar el correo
+            Mail::to($autor->correo)->send(new ArticulosAceptadosCambiosEmail(
+                $evaluar_art->titulo,
+                $evaluar_art->revista,
+                $evaluar_art->modalidad
+            ));
+        }
+
         if ($validated['estado'] == 5 && $request->hasFile('archivo')) {
 
             $file = $request->file('archivo')->store('archivos/articulos', 'public');
@@ -532,7 +574,7 @@ class ArticuloController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Artículo reenviado con éxito.');
+        return redirect()->back()->with('success', 'Artículo evaluado con éxito.');
     }
 
     public function updateArchivo(Request $request, Articulo $articulo)
