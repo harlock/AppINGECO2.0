@@ -20,7 +20,7 @@ class AutoresCorrespondencia extends Model
         'tel',
     ];
 
-    public function articulos()
+    public function articulo()
     {
         return $this->hasMany('App\Models\Articulo', 'id_autor', 'id_autor');
     }

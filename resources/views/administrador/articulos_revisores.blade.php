@@ -36,7 +36,7 @@
                                 }
                             });
                         });
-                    }); 
+                    });
                 </script>
                 <script>
                     $(document).ready(function() {
@@ -81,7 +81,7 @@
                                     <th class="font-bold">Mesa</th>
                                     <th class="font-bold">Nombre del artículo</th>
                                     <th class="font-bold">Autor</th>
-                               
+
 
                                     <th class="font-bold">Modalidad</th>
                                     <th class="font-bold">Estado</th>
@@ -93,7 +93,7 @@
                             <tr class="rounded-xl {{$articu->estado == 0 ? "bg-gray-100" : ($articu->estado == 1 ? "bg-green-100" : ($articu->estado == 2 ? "bg-red-100" : ($articu->estado == 5 ? 'bg-blue-100' : "bg-yellow-100")))}}">
                                 <td class=""><strong>
                                     {{$articu->id_articulo}}
-                                    
+
                                 </strong>
                                 </td>
                                 <td class="">

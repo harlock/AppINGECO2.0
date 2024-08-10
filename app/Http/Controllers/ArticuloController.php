@@ -45,84 +45,86 @@ class ArticuloController extends Controller
         if ($texto == "/1" || $texto == "/2" || $texto == "/4" || $texto == "/5") {
             $estado = str_replace("/", "", $texto);
 
-            $Artic = AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
-                ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
-                ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
-                ->where('articulos.estado', $estado)
-                ->where("articulos.id_mesa", $usuario->id_mesa)
-                ->where("asigna_revisores.id_user", $usuario->id)
+            $Artic = DB::table('asigna_revisores as ar')
+                ->join('articulos as a', 'a.id_articulo', '=', 'ar.id_articulo')
+                ->join('mesas as m', 'm.id_mesa', '=', 'a.id_mesa')
+                ->leftJoin('autores_correspondencias as ac', 'ac.id_autor', '=', 'a.id_autor')
+                ->where('a.estado', $estado)
+                ->where('a.id_mesa', $usuario->id_mesa)
+                ->where('ar.id_user', $usuario->id)
                 ->select(
-                    'articulos.id_articulo',
-                    'articulos.revista',
-                    'articulos.titulo',
-                    'articulos.estado',
-                    'articulos.modalidad',
-                    'articulos.archivo',
-                    'mesas.descripcion',
-                    'users.id',
-                    'users.name',
-                    'users.ap_paterno',
-                    'users.email',
-                    'users.ap_materno'
+                    'a.id_articulo',
+                    'a.revista',
+                    'a.titulo',
+                    'a.estado',
+                    'a.modalidad',
+                    'a.archivo',
+                    'm.descripcion',
+                    'ac.id_autor',
+                    'ac.nom_autor',
+                    'ac.ap_autor',
+                    'ac.correo',
+                    'ac.tel'
                 )
-                ->orderBy('users.created_at', 'desc')
+                ->orderBy('a.created_at', 'desc')
                 ->get();
         } elseif ($texto == "/6") {
-            $Artic = DB::table('asigna_revisores')
-                ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
-                ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
-                ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
-                ->where("articulos.id_mesa", $usuario->id_mesa)
-                ->where("asigna_revisores.id_user", $usuario->id)
+            $Artic = DB::table('asigna_revisores as ar')
+                ->join('articulos as a', 'a.id_articulo', '=', 'ar.id_articulo')
+                ->join('mesas as m', 'm.id_mesa', '=', 'a.id_mesa')
+                ->leftJoin('autores_correspondencias as ac', 'ac.id_autor', '=', 'a.id_autor')
+                ->where('a.id_mesa', $usuario->id_mesa)
+                ->where('ar.id_user', $usuario->id)
                 ->where(function ($query) use ($texto) {
                     $query
-                        ->orWhere('articulos.titulo', 'LIKE', '%' . $texto . '%')
-                        ->orWhere('articulos.modalidad', 'LIKE', '%' . $texto . '%')
-                        ->orWhere('articulos.revista', 'LIKE', '%' . $texto . '%');
+                        ->orWhere('a.titulo', 'LIKE', '%' . $texto . '%')
+                        ->orWhere('a.modalidad', 'LIKE', '%' . $texto . '%')
+                        ->orWhere('a.revista', 'LIKE', '%' . $texto . '%');
                 })
                 ->select(
-                    'articulos.id_articulo',
-                    'articulos.revista',
-                    'articulos.titulo',
-                    'articulos.estado',
-                    'articulos.modalidad',
-                    'articulos.archivo',
-                    'mesas.descripcion',
-                    'users.id',
-                    'users.name',
-                    'users.ap_paterno',
-                    'users.email',
-                    'users.ap_materno'
+                    'a.id_articulo',
+                    'a.revista',
+                    'a.titulo',
+                    'a.estado',
+                    'a.modalidad',
+                    'a.archivo',
+                    'm.descripcion',
+                    'ac.id_autor',
+                    'ac.nom_autor',
+                    'ac.ap_autor',
+                    'ac.correo',
+                    'ac.tel'
                 )
-                ->orderBy('users.created_at', 'desc')
+                ->orderBy('a.created_at', 'desc')
                 ->get();
         } else {
-            $Artic = AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
-                ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
-                ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
-                ->where("articulos.id_mesa", $usuario->id_mesa)
-                ->where("asigna_revisores.id_user", $usuario->id)
+            $Artic = DB::table('asigna_revisores as ar')
+                ->join('articulos as a', 'a.id_articulo', '=', 'ar.id_articulo')
+                ->join('mesas as m', 'm.id_mesa', '=', 'a.id_mesa')
+                ->leftJoin('autores_correspondencias as ac', 'ac.id_autor', '=', 'a.id_autor')
+                ->where('a.id_mesa', $usuario->id_mesa)
+                ->where('ar.id_user', $usuario->id)
                 ->where(function ($query) use ($texto) {
                     $query
-                        ->orWhere('articulos.titulo', 'LIKE', '%' . $texto . '%')
-                        ->orWhere('articulos.modalidad', 'LIKE', '%' . $texto . '%')
-                        ->orWhere('articulos.revista', 'LIKE', '%' . $texto . '%');
+                        ->orWhere('a.titulo', 'LIKE', '%' . $texto . '%')
+                        ->orWhere('a.modalidad', 'LIKE', '%' . $texto . '%')
+                        ->orWhere('a.revista', 'LIKE', '%' . $texto . '%');
                 })
                 ->select(
-                    'articulos.id_articulo',
-                    'articulos.revista',
-                    'articulos.titulo',
-                    'articulos.estado',
-                    'articulos.modalidad',
-                    'articulos.archivo',
-                    'mesas.descripcion',
-                    'users.id',
-                    'users.name',
-                    'users.email',
-                    'users.ap_paterno',
-                    'users.ap_materno'
+                    'a.id_articulo',
+                    'a.revista',
+                    'a.titulo',
+                    'a.estado',
+                    'a.modalidad',
+                    'a.archivo',
+                    'm.descripcion',
+                    'ac.id_autor',
+                    'ac.nom_autor',
+                    'ac.ap_autor',
+                    'ac.correo',
+                    'ac.tel'
                 )
-                ->orderBy('users.created_at', 'desc')
+                ->orderBy('a.created_at', 'desc')
                 ->get();
         }
 
@@ -143,10 +145,10 @@ class ArticuloController extends Controller
         }
 
         $articulosConPagos = $pagos->pluck('id_articulo')->toArray();
-        //dd($articulosConPagos);
-        //dd($Artic);
+
         return view('articulos.index', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos'));
     }
+
 
     public function showArticulos()
     {

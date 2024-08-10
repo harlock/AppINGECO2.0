@@ -77,30 +77,32 @@
 
     @push("scripts")
         <script type="text/javascript">
-            document.getElementById('searchAssigned').addEventListener('input', function () {
-                let filter = this.value.toLowerCase();
-                let listItems = document.getElementById('assignedList').getElementsByTagName('li');
-                Array.from(listItems).forEach(function (item) {
-                    let text = item.textContent || item.innerText;
-                    let usuarioInfo = item.querySelectorAll('.usuario-info, h4');
-                    let found = false;
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('searchAssigned');
+                const assignedList = document.getElementById('assignedList');
 
-                    usuarioInfo.forEach(function (span) {
-                        let innerText = span.textContent || span.innerText;
-                        if (innerText.toLowerCase().includes(filter)) {
-                            found = true;
-                            span.innerHTML = innerText.replace(new RegExp(filter, 'gi'), function (matched) {
-                                return `<span class="highlight">${matched}</span>`;
-                            });
-                        } else {
-                            span.innerHTML = innerText;
-                        }
+                searchInput.addEventListener('input', function () {
+                    const filter = searchInput.value.toLowerCase();
+                    const listItems = assignedList.getElementsByTagName('li');
+
+                    Array.from(listItems).forEach(item => {
+                        const text = item.textContent || item.innerText;
+                        const isVisible = text.toLowerCase().includes(filter);
+
+                        // Highlight matched text
+                        item.innerHTML = highlightText(text, filter);
+                        item.style.display = isVisible ? '' : 'none';
                     });
-
-                    item.style.display = found ? '' : 'none';
                 });
+
+                function highlightText(text, filter) {
+                    if (!filter.trim()) return text;
+                    const regex = new RegExp(`(${filter})`, 'gi');
+                    return text.replace(regex, match => `<span class="highlight">${match}</span>`);
+                }
             });
         </script>
+
 
         <style>
             .highlight {

@@ -4,21 +4,21 @@
 
         <div class="row  w-full p-5">
             <div class="d-flex  row">
-                <div class="pe-3">
+                <div class="pe-3 mb-5">
                     <a class="btn btn-primary " href="/"><i class="bi bi-box-arrow-left"></i> Inicio</a>
 
                 </div>
-                <div class="col-10">
-                    <h3 class=" justify-content-center alert alert-success d-flex  ">
-                        <p> Registro de artículos</p>
-
+                <div class="col-10 mx-auto">
+                    <h3 class="alert alert-success d-flex justify-content-center text-center">
+                        <p>Registro de artículos</p>
                     </h3>
                 </div>
 
-                @if(!$periodoActivo)
+
+            @if(!$periodoActivo)
                     <div class="col-10">
                         <h3 class="justify-content-center alert alert-danger d-flex">
-                            <p><span>EL periodo para registro de artículos ha terminado.</span></p>
+                            <p><span>El periodo para registro de artículos ha terminado.</span></p>
                         </h3>
                     </div>
                 @endif
@@ -203,12 +203,14 @@
 
                         <div class=" p-4 ">
                             <div class="d-flex">
+                                <span class="px-2" style="color: red; font-size: small;">Se notificará mediante correo electrónico el estado de su artículo.
+                                    Revisar en la bandeja de entrada o spam en el siguiente correo. </span>
+                            </div>
+                            <div class="d-flex">
                                 <div class="px-2">Correo de correspondencia:</div>
                                 <div class="px-2" id="showCorreo"></div>
                             </div>
-                            <div class="d-flex">
-                                <span class="px-2" style="color: red; font-size: small;">Se notificara el estado del artículo a este correo.</span>
-                            </div>
+
                             <div class="d-flex">
                                 <div class="px-2">Nombre:</div>
                                 <div class="px-2" id="showNombre"></div>
@@ -234,7 +236,7 @@
 
                                 <div class="d-flex">
                                     <div class="px-2">Mesa:</div>
-                                    <div class="px-1" id="showMesa"></div>
+                                    <div class="px-1" id="showMesa">{{ $articulo->mesa->descripcion ?? 'No asignada' }}</div>
                                 </div>
 
                                 <div class="d-flex">

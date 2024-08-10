@@ -48,10 +48,18 @@
                                             @foreach($articulos as $revisor)
                                                 <li class="list-group-item" style="background: #f6f6f6">
                                                     <div class="articulo-titulo">{{ $revisor->titulo }}</div>
-                                                    <button type="button" class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#modaldelete{{$revisor->id}}">
+                                                    @php
+                                                        $estado = $revisor->estado;
+                                                        $disableButton = !in_array($estado, [0, 4]); // Deshabilita si el estado no es 0 o 4
+                                                    @endphp
+                                                    <button type="button" class="btn btn-outline-danger mt-2"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modaldelete{{$revisor->id}}"
+                                                            @if($disableButton) disabled @endif>
                                                         <i class="bi bi-trash-fill"></i> Eliminar del artículo
                                                     </button>
                                                 </li>
+
                                                 @include("lideres.modal_delete_revisor_articulo", ['revisor' => $revisor])
                                             @endforeach
                                         </ul>

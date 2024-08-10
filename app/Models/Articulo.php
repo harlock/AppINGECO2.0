@@ -18,16 +18,15 @@ class Articulo extends Model
         'archivo',
         'id_mesa',
         'id_user',
-        // Añadir 'id_autor' para la relación
         'id_autor',
     ];
 
-    public function mesas()
+    public function mesa()
     {
         return $this->hasOne('App\Models\Mesa', 'id_mesa', 'id_mesa');
     }
 
-    public function autorCorrespondencia()
+    public function AutoresCorrespondencia()
     {
         return $this->belongsTo('App\Models\AutoresCorrespondencia', 'id_autor', 'id_autor');
     }

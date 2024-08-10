@@ -110,8 +110,9 @@
                                         {{$articu->modalidad}}
                                     </td>
                                     <td class=" ">
-                                        {{$articu->arti()->email}}
+                                        {{ $articu->correo ?? 'No está registrado' }}
                                     </td>
+
                                     <td class=" text-wrap text-break">
                                         {{$articu->titulo}}
                                     </td>

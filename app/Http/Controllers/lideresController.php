@@ -225,10 +225,10 @@ class lideresController extends Controller
                 ->orderBy('users.created_at', 'desc')
                 ->get();
         } else {
-            $Artic = DB::table('articulos')
-               // ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
+            $Artic = DB::table('asigna_revisores')
+               ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
                 ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
-                //->join('users', 'users.id', '=', 'asigna_revisores.id_user')
+                ->join('users', 'users.id', '=', 'asigna_revisores.id_user')
                 ->where("articulos.id_mesa", $usuario->id_mesa)
                 ->where(function ($query) use ($texto) {
                    // $query->WhereRaw("CONCAT(users.name, ' ', users.ap_paterno, ' ',users.ap_materno) LIKE ?", ['%' . $texto . '%'])
@@ -244,13 +244,13 @@ class lideresController extends Controller
                     'articulos.modalidad',
                     'articulos.archivo',
                     'mesas.descripcion',
-                  //  'users.id',
-                   // 'users.telefono',
-                   // 'users.email',
-                    //DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
+                    'users.id',
+                    'users.telefono',
+                    'users.email',
+                    DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
 
                 )
-               // ->orderBy('users.created_at', 'desc')
+               ->orderBy('users.created_at', 'desc')
                 ->get();
         }
         //dd($Artic);
