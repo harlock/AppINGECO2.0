@@ -82,7 +82,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //COMPROBANTES DE PAGO
     Route::resource('comprobantes_pagos', ComprobantePagoController::class);
     Route::post('/comprobantes/store', [ComprobantePagoController::class, 'store'])->name('comprobantes.store');
-    Route::post('/regresar-pago/{id_articulo}', [ArticuloController::class, 'regresarPago'])->name('regresar-pago');
+    Route::post('/regresar-pago/{id_articulo}', [ContadoresController::class, 'regresarPago'])->name('regresar-pago');
     Route::put('/articulos/{articulo}/updateArchivo', [ArticuloController::class, 'updateArchivo'])->name('articulos.updateArchivo');
 
     // Rutas para el recurso "periodos"
@@ -105,6 +105,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     //Contadores
     Route::get('contadores/index', [ContadoresController::class, 'index'])->name('contadores.index');
+    Route::post('/validar-pago/{id_articulo}', [ContadoresController::class, 'validarPago'])->name('validar-pago');
+    Route::get('contadores/index/{estado_pago?}', [ContadoresController::class, 'index'])->name('contadores.index');
 
 
 

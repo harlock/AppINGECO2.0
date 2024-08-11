@@ -29,6 +29,7 @@ class ComprobantePagoController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         // Validación inicial
         $request->validate([
             'id_user' => 'required',
@@ -72,6 +73,8 @@ class ComprobantePagoController extends Controller
             if ($request->factura == 1 && $request->hasFile('constancia_fiscal')) {
                 $comprobante->constancia_fiscal = $request->file('constancia_fiscal')->store('constancias', 'public');
             }
+            $comprobante->estado_pago = 2; // Establece el estado de pago a 2 "PROCESO DE REVISIÓN"
+            $comprobante->observacion = null;
             $comprobante->deleted_at = null; // Asegurarse de que el comprobante no esté marcado como eliminado
             $comprobante->save();
         } else {
@@ -85,6 +88,7 @@ class ComprobantePagoController extends Controller
             if ($request->factura == 1 && $request->hasFile('constancia_fiscal')) {
                 $comprobante->constancia_fiscal = $request->file('constancia_fiscal')->store('constancias', 'public');
             }
+            $comprobante->estado_pago = 2; // Establece el estado de pago a 2 "PROCESO DE REVISIÓN"
             $comprobante->save();
         }
 

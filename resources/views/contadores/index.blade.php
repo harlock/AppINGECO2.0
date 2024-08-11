@@ -69,7 +69,21 @@
                         });
                     </script>
                     <div class="d-flex  ">
-                        <form class=" m-1 " action="{{ route('contadores.index') }}" method="GET">
+                        <form class="m-1" action="{{ route('contadores.index') }}" method="GET">
+                            <a href="{{ route('contadores.index', ['estado_pago' => 1]) }}"
+                               class="btn btn-success m-1">
+                                Pagos Validados
+                            </a>
+
+                            <a href="{{ route('contadores.index', ['estado_pago' => 0]) }}"
+                               class="btn btn-danger m-1">
+                                Pagos Regresados
+                            </a>
+
+                            <a href="{{ route('contadores.index', ['estado_pago' => 2]) }}"
+                               class="btn btn-warning m-1">
+                                Pagos sin revisar
+                            </a>
                             <button class="btn bg-gray-300 " type="submit">Quitar filtro </button>
                         </form>
                     </div>
@@ -92,7 +106,11 @@
                             </thead>
                             <tbody id="tablaNombres">
                             @foreach($Artic as $articu)
-                                <tr class="{{$articu->estado == 0 ? "bg-gray-100" : ($articu->estado == 1 ? "bg-green-100" : ($articu->estado == 2 ? "bg-red-100" : ($articu->estado == 5 ? 'bg-blue-100' : "bg-yellow-100")))}}">
+                                @php
+                                    $estadoPago = $comprobanteUrls[$articu->id_articulo]['estado_pago'] ?? 2;
+                                @endphp
+
+                                <tr class="{{ $estadoPago == 0 ? 'bg-red-100' : ($estadoPago == 1 ? 'bg-green-100' : 'bg-yellow-100') }}">
                                     <td class="">
                                         {{$articu->id_articulo}}
                                     </td>
@@ -105,18 +123,27 @@
                                     <td class=" ">
                                         {{ $articu->correo ?? 'No está registrado' }}
                                     </td>
-
                                     <td class=" text-wrap text-break">
                                         {{$articu->titulo}}
                                     </td>
                                     <td>
                                         @if (in_array($articu->id_articulo, $articulosConPagos))
-                                            <!-- Button to trigger payment details modal -->
-                                            <button type="button" class="btn btn-primary btn-sm consultar-pagos-btn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#consultarPagosModal{{$articu->id_articulo}}">
-                                                Consultar Pagos <i class="bi bi-cash-coin"></i>
-                                            </button>
+                                            @php
+                                                $estadoPago = $comprobanteUrls[$articu->id_articulo]['estado_pago'] ?? 2;
+                                            @endphp
+
+                                            @if ($estadoPago == 0)
+                                                <button type="button" class="btn btn-secondary btn-sm consultar-pagos-btn" disabled>
+                                                    Pago Regresado <i class="bi bi-x-circle"></i>
+                                                </button>
+                                            @else
+                                                <!-- Button to trigger payment details modal -->
+                                                <button type="button" class="btn btn-primary btn-sm consultar-pagos-btn"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#consultarPagosModal{{$articu->id_articulo}}">
+                                                    Consultar Pagos <i class="bi bi-cash-coin"></i>
+                                                </button>
+                                            @endif
                                         @else
                                             <button type="button" class="btn btn-secondary btn-sm consultar-pagos-btn" disabled>
                                                 Sin pago para consultar <i class="bi bi-x-circle"></i>
@@ -180,6 +207,21 @@
                                                         </table>
                                                     </div>
                                                     <div class="modal-footer">
+                                                        @php
+                                                            $estadoPago = $comprobanteUrls[$articu->id_articulo]['estado_pago'] ?? 2;
+                                                        @endphp
+
+                                                        @if ($estadoPago == 0)
+                                                            <button type="button" class="btn btn-secondary" disabled>Pago regresado</button>
+                                                        @elseif ($estadoPago == 1)
+                                                            <button type="button" class="btn btn-secondary" disabled>Pago ya Validado</button>
+                                                        @else
+                                                            <form id="validarPagoForm{{$articu->id_articulo}}" action="{{ route('validar-pago', $articu->id_articulo) }}" method="POST">
+                                                                @csrf
+                                                                <button type="button" class="btn btn-warning validar-pago-btn" data-articulo-id="{{$articu->id_articulo}}">Validar Pago</button>
+                                                            </form>
+                                                        @endif
+
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                     </div>
                                                 </div>
@@ -189,9 +231,17 @@
                                     </td>
                                     <td>
                                         @if (in_array($articu->id_articulo, $articulosConPagos))
-                                            @if ($comprobanteUrls[$articu->id_articulo]['deleted_at'])
+                                            @php
+                                                $estadoPago = $comprobanteUrls[$articu->id_articulo]['estado_pago'] ?? 2;
+                                            @endphp
+
+                                            @if ($estadoPago == 0)
                                                 <button type="button" class="btn btn-secondary btn-sm" disabled>
-                                                    Pago Regresado <i class="bi bi-x-circle"></i>
+                                                    Pago regresado <i class="bi bi-x-circle"></i>
+                                                </button>
+                                            @elseif ($estadoPago == 1)
+                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
+                                                    Pago Validado <i class="bi bi-check-circle"></i>
                                                 </button>
                                             @else
                                                 <!-- Button to trigger return payment modal -->
@@ -252,6 +302,15 @@
             </div>
         </div>
     </div>
+    <script>
+        document.querySelectorAll('.validar-pago-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                var articuloId = this.getAttribute('data-articulo-id');
+                var formId = 'validarPagoForm' + articuloId;
+                document.getElementById(formId).submit();
+            });
+        });
+    </script>
     <script>
         // Script para mostrar SweetAlert antes de enviar el formulario de regreso de pago
         document.querySelectorAll('.regresar-pago-btn').forEach(button => {

@@ -18,7 +18,8 @@ class ComprobantePago extends Model
         'referencia',
         'factura',
         'constancia_fiscal',
-        'observacion'
+        'observacion',
+        'estado_pago'
     ];
 
     public function user()

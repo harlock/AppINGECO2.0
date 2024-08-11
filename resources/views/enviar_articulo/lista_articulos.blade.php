@@ -74,8 +74,8 @@
                                     $comprobanteExistente = App\Models\ComprobantePago::where('id_articulo', $articulo->id_articulo)->first();
                                 @endphp
 
-                                @if($articulo->estado == 1 || $articulo->estado == 5)
-                                    @if($comprobanteExistente && $comprobanteExistente->deleted_at)
+                                @if($articulo->estado == 1)
+                                    @if($comprobanteExistente && $comprobanteExistente->estado_pago==0)
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
                                             Agregar nuevo comprobante de pago

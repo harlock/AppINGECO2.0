@@ -134,7 +134,7 @@
                                     </td>
                                     <td class="d-flex justify-content-center">
                                         <!-- Button trigger modal -->
-                                        @if($articu->estado != 1 && $articu->estado != 2 && $articu->estado != 5)
+                                        @if($articu->estado != 1 && $articu->estado != 2)
                                             <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal"
                                                     data-bs-target="#modal{{$articu->id_articulo}}">
                                                 Evaluar <i class="bi bi-arrow-right-square-fill"></i>
