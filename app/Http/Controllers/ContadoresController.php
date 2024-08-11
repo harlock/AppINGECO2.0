@@ -19,6 +19,8 @@ use App\Mail\ArticulosEmail;
 use App\Mail\ArticulosAceptadosEmail;
 use App\Mail\ArticulosRechazadosEmail;
 use App\Mail\ArticulosAceptadosCambiosEmail;
+use App\Mail\PagosRegresados;
+use App\Mail\PagosValidados;
 use Illuminate\Support\Facades\Storage;
 
 use ZipArchive;
@@ -36,36 +38,37 @@ class ContadoresController extends Controller
 
         $texto = trim($request->get('texto'));
 
-        // Si hay un estado_pago en la URL, filtramos por estado_pago
-        if ($estado_pago !== null) {
-            $Artic = DB::table('articulos')
-                ->join('comprobante_pagos', 'comprobante_pagos.id_articulo', '=', 'articulos.id_articulo')
-                ->where('articulos.estado', 1);
+        $query = DB::table('articulos')
+            ->join('comprobante_pagos', 'comprobante_pagos.id_articulo', '=', 'articulos.id_articulo')
+            ->where('articulos.estado', 1);
 
-            // Si el estado_pago es 2, incluir también los registros donde estado_pago sea null
+        if ($estado_pago !== null) {
             if ($estado_pago == 2) {
-                $Artic->where(function ($query) {
-                    $query->where('comprobante_pagos.estado_pago', 2)
+                $query->where(function ($subQuery) {
+                    $subQuery->where('comprobante_pagos.estado_pago', 2)
                         ->orWhereNull('comprobante_pagos.estado_pago');
                 });
             } else {
-                // Para otros valores de estado_pago, filtrar directamente
-                $Artic->where('comprobante_pagos.estado_pago', $estado_pago);
+                $query->where('comprobante_pagos.estado_pago', $estado_pago);
             }
-
-            $Artic = $Artic->select('articulos.*')->get();
-
-        } else {
-            // Filtro de búsqueda por texto
-            $Artic = DB::table('articulos')
-                ->where('estado', 1)
-                ->where(function ($query) use ($texto) {
-                    $query->where('titulo', 'LIKE', '%' . $texto . '%')
-                        ->orWhere('modalidad', 'LIKE', '%' . $texto . '%')
-                        ->orWhere('revista', 'LIKE', '%' . $texto . '%');
-                })
-                ->get();
         }
+
+        if (!empty($texto)) {
+            $query->where(function ($subQuery) use ($texto) {
+                $subQuery->where('articulos.titulo', 'LIKE', '%' . $texto . '%')
+                    ->orWhere('articulos.modalidad', 'LIKE', '%' . $texto . '%')
+                    ->orWhere('articulos.revista', 'LIKE', '%' . $texto . '%');
+            });
+        }
+
+        $Artic = $query->select('articulos.*')->get();
+
+        // Obtener correos de autores
+        $autores = DB::table('articulos')
+            ->join('autores_correspondencias', 'autores_correspondencias.id_autor', '=', 'articulos.id_autor')
+            ->select('articulos.id_articulo', 'autores_correspondencias.correo')
+            ->get()
+            ->keyBy('id_articulo');
 
         // Obtener pagos y sus URLs
         $pagos = DB::table('comprobante_pagos')
@@ -86,7 +89,7 @@ class ContadoresController extends Controller
 
         $articulosConPagos = $pagos->pluck('id_articulo')->toArray();
 
-        return view('contadores.index', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos'));
+        return view('contadores.index', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos', 'autores'));
     }
 
     /**
@@ -145,6 +148,17 @@ class ContadoresController extends Controller
             $comprobante->estado_pago = 1; // Cambiar el estado de pago a 1
             $comprobante->save();
 
+            // Obtener la información del artículo
+            $articulo = Articulo::find($id_articulo);
+            $autor = AutoresCorrespondencia::find($articulo->id_autor);
+
+            // Enviar el correo al autor
+            Mail::to($autor->correo)->send(new PagosValidados(
+                $articulo->titulo,
+                $articulo->revista,
+                $articulo->modalidad
+            ));
+
             Session::flash('success', 'Pago validado exitosamente.');
         } else {
             Session::flash('error', 'No se encontró el comprobante de pago.');
@@ -177,6 +191,17 @@ class ContadoresController extends Controller
             //ESTADO 0 ES REGRESADO
             $comprobante->estado_pago = 0;
             $comprobante->save();
+
+            // Obtener la información del artículo
+            $articulo = Articulo::find($id_articulo);
+            $autor = AutoresCorrespondencia::find($articulo->id_autor);
+
+            // Enviar el correo al autor
+            Mail::to($autor->correo)->send(new PagosRegresados(
+                $articulo->titulo,
+                $articulo->revista,
+                $articulo->modalidad
+            ));
 
             Session::flash('success', 'Pago regresado exitosamente.');
         } else {

@@ -95,7 +95,6 @@
                         <table class="table ">
                             <thead>
                             <tr class="bg-gray-100 text-black">
-                                <th>ID</th>
                                 <th class="">Revista</th>
                                 <th class="">Modalidad</th>
                                 <th class="">Correo</th>
@@ -108,12 +107,10 @@
                             @foreach($Artic as $articu)
                                 @php
                                     $estadoPago = $comprobanteUrls[$articu->id_articulo]['estado_pago'] ?? 2;
+                                    $correoAutor = $autores[$articu->id_articulo]->correo ?? 'No está registrado';
                                 @endphp
 
                                 <tr class="{{ $estadoPago == 0 ? 'bg-red-100' : ($estadoPago == 1 ? 'bg-green-100' : 'bg-yellow-100') }}">
-                                    <td class="">
-                                        {{$articu->id_articulo}}
-                                    </td>
                                     <td class=" ">
                                         {{$articu->revista}}
                                     </td>
@@ -121,7 +118,7 @@
                                         {{$articu->modalidad}}
                                     </td>
                                     <td class=" ">
-                                        {{ $articu->correo ?? 'No está registrado' }}
+                                        {{ $correoAutor }}
                                     </td>
                                     <td class=" text-wrap text-break">
                                         {{$articu->titulo}}

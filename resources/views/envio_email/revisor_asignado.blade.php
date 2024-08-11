@@ -7,7 +7,7 @@
     <title>Revisor Asignado</title>
 </head>
 <body>
-<h1>Estimado Revisor</h1>
+<h1>Estimado Revisor.</h1>
 <p>Se le ha asignado un nuevo artículo para revisión.</p>
 <p><strong>Título:</strong> {{ $titulo }}</p>
 <p><strong>Revista:</strong> {{ $revista }}</p>
@@ -15,6 +15,6 @@
 <p>Por favor, inicie sesión en el sistema para acceder al artículo.</p>
 <br>
 <p>Saludos cordiales,</p>
-<p>El equipo de AppIngeco</p>
+<p>El equipo de AppIngeco.</p>
 </body>
 </html>

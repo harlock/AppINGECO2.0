@@ -102,6 +102,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('enviar_articulo', [ArticuloController::class, 'store'])->name('enviar_articulo.store');
     Route::post('evaluar_art', [ArticuloController::class, 'update'])->name('evaluar_art.update');
     Route::post('lideres', [lideresController::class, 'store'])->name('lideres.store');
+    Route::post('contadores', [ContadoresController::class, 'regresarPago'])->name('contadores.regresarPago');
+    Route::post('contadores', [ContadoresController::class, 'validarPago'])->name('contadores.validarPago');
+    Route::post('articulosShow', [ArticuloController::class, 'updateArchivo'])->name('articulosShow.updateArchivo');
 
     //Contadores
     Route::get('contadores/index', [ContadoresController::class, 'index'])->name('contadores.index');

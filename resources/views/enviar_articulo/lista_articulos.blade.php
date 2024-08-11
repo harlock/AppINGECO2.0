@@ -6,8 +6,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <div class="row justify-content-center mt-4">
-        <div class="col-11">
+    <div class="row justify-content-center">
+        <div class="col-12 justify-content-center my-5 mx-10">
 
             <h3 class="justify-content-center alert bg-blue-800 d-flex text-white mb-5">
                 Artículos enviados
@@ -29,6 +29,7 @@
                 </div>
             @endif
 
+            <div class="tab-content rounded-lg" id="tabContent">
             <div class="table-responsive-xl bg-white border rounded-lg mt-4 p-3 shadow-sm tab-pane fade show active" id="home"
                  role="tabpanel" aria-labelledby="home-tab">
                 <table class="table">
@@ -240,6 +241,7 @@
                     @endforeach
                     </tbody>
                 </table>
+            </div>
             </div>
         </div>
     </div>

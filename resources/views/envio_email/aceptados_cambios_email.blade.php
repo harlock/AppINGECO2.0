@@ -10,7 +10,7 @@
 {{--<h1>{{ $details ['title'] }}</h1>
 <p>{{ $details ['body']}}</p>
 <br>--}}
-<p> Articulo Evaluado: Aceptado con Cambios</p>
+<p> Articulo Evaluado: Aceptado con Cambios.</p>
 <h1>{{ $titulo }}</h1>
 <p><strong>Revista:</strong> {{ $revista }}</p>
 <p><strong>Modalidad:</strong> {{ $modalidad }}</p>

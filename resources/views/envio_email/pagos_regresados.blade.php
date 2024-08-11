@@ -7,13 +7,13 @@
     <title>Email</title>
 </head>
 <body>
-{{--<h1>{{ $details ['title'] }}</h1>
-<p>{{ $details ['body']}}</p>
-<br>--}}
-<p> Articulo Evaluado: Aceptado.</p>
+<p> Pago Regresado.</p>
+<p> Su pago del siguiente artículo ha sido regresado, por favor, inicie sesión en el sistema para verificar las observaciones correspondientes. </p>
 <h1>{{ $titulo }}</h1>
 <p><strong>Revista:</strong> {{ $revista }}</p>
 <p><strong>Modalidad:</strong> {{ $modalidad }}</p>
-<p> Recuerda que debes subir el pago en el sistema.</p>
+<br>
+<p>Saludos cordiales,</p>
+<p>El equipo de AppIngeco.</p>
 </body>
 </html>

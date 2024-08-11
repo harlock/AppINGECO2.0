@@ -19,6 +19,7 @@ use App\Mail\ArticulosEmail;
 use App\Mail\ArticulosAceptadosEmail;
 use App\Mail\ArticulosRechazadosEmail;
 use App\Mail\ArticulosAceptadosCambiosEmail;
+use App\Mail\ReenvioArticulosEmail;
 use Illuminate\Support\Facades\Storage;
 
 use ZipArchive;
@@ -587,6 +588,21 @@ class ArticuloController extends Controller
                 'archivo' => $file,
 
             ]);
+        }
+
+        // Obtener el revisor asignado al artículo desde la tabla asigna_revisores
+        $asignacion = DB::table('asigna_revisores')->where('id_articulo', $articulo->id_articulo)->first();
+        if ($asignacion) {
+            $revisor = DB::table('users')->where('id', $asignacion->id_user)->first();
+
+            if ($revisor) {
+                // Enviar el correo al revisor
+                Mail::to($revisor->email)->send(new ReenvioArticulosEmail(
+                    $articulo->titulo,
+                    $articulo->revista,
+                    $articulo->modalidad
+                ));
+            }
         }
 
         return redirect()->back()->with('success', 'Artículo reenviado con éxito.');

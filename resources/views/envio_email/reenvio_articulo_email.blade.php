@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email</title>
+    <title>Artículo Reenviado</title>
 </head>
 <body>
-{{--<h1>{{ $details ['title'] }}</h1>
-<p>{{ $details ['body']}}</p>
-<br>--}}
-<p> Articulo Evaluado: Aceptado.</p>
-<h1>{{ $titulo }}</h1>
+<h1>Estimado Revisor.</h1>
+<p>El artículo que había aceptado con cambios, ya ha sido reenviado.</p>
+<p><strong>Título:</strong> {{ $titulo }}</p>
 <p><strong>Revista:</strong> {{ $revista }}</p>
 <p><strong>Modalidad:</strong> {{ $modalidad }}</p>
-<p> Recuerda que debes subir el pago en el sistema.</p>
+<p>Por favor, inicie sesión en el sistema para acceder al artículo.</p>
+<br>
+<p>Saludos cordiales,</p>
+<p>El equipo de AppIngeco.</p>
 </body>
 </html>
