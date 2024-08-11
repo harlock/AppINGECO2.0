@@ -143,6 +143,20 @@
                             <input id="archivoNombre" type="file" name="archivo" class="form-control" placeholder="Inserte el archivo word" value="{{old("archivo")}}" accept=".doc,.docx">
                             <div id="emailHelp" class="form-text">Selecciona artículo en formato word.</div>
                         </div>
+
+                        <div class="mb-3 col">
+                            <div class="d-flex flex-column bd-highlight mb-3">
+                                <label for="archivo_plagio" class="form-label">
+                                    <h4>Archivo de Plagio*</h4>
+                                </label>
+                                <div class="col-10">
+                                    @error('archivo_plagio') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                            <input id="archivo_plagio" type="file" name="archivo_plagio" class="form-control" placeholder="Inserte el archivo de plagio" value="{{ old('archivo_plagio') }}" accept=".pdf" required>
+                            <div id="emailHelp" class="form-text">Selecciona un archivo en formato PDF.</div>
+                        </div>
+
                         <!-- SELECCIONAR MESA DE TRABAJO  -->
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">

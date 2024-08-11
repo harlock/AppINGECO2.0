@@ -34,7 +34,7 @@ class RevisorAsignadoEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('jesusmagallon5118@gmail.com', 'AppIngeco'),
+            from: new Address('sistemaingeco@gmail.com', 'AppIngeco'),
             subject: 'Asignación de Artículo para Revisión',
         );
     }

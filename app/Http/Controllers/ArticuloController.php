@@ -357,6 +357,7 @@ class ArticuloController extends Controller
             'revista' => 'required',
             'titulo' => 'required|unique:articulos',
             'archivo' => 'required|file|max:5120|mimes:docx',
+            'archivo_plagio' => 'required|file|max:5120|mimes:pdf',
             'id_mesa' => 'nullable|exists:mesas,id_mesa',
             'modalidad' => 'required',
             'nom_autor' => 'required|string',
@@ -372,6 +373,10 @@ class ArticuloController extends Controller
             'archivo.file' => 'El archivo debe ser un documento.',
             'archivo.max' => 'El tamaño del archivo no puede superar los 5 MB.',
             'archivo.mimes' => 'El archivo debe estar en formato DOCX.',
+            'archivo_plagio.required' => 'Debe adjuntar el archivo de plagio.',
+            'archivo_plagio.file' => 'El archivo de plagio debe ser un documento.',
+            'archivo_plagio.max' => 'El tamaño del archivo de plagio no puede superar los 5 MB.',
+            'archivo_plagio.mimes' => 'El archivo de plagio debe estar en formato PDF.',
             'id_mesa.exists' => 'La mesa seleccionada no es válida.',
             'modalidad.required' => 'La modalidad del artículo es necesaria.',
             'nom_autor.required' => 'Es necesario colocar el nombre del autor.',
@@ -388,8 +393,11 @@ class ArticuloController extends Controller
             'tel.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
         ]);
 
-        // Manejo del archivo
-        $file = $request->file('archivo')->store('archivos/articulos', 'public');
+        // Manejo del archivo principal
+        $archivo = $request->file('archivo')->store('archivos/articulos', 'public');
+
+        // Manejo del archivo de plagio
+        $archivoPlagio = $request->file('archivo_plagio')->store('archivos/plagio', 'public');
 
         // Crear o encontrar el autor
         $autor = AutoresCorrespondencia::firstOrCreate([
@@ -405,16 +413,18 @@ class ArticuloController extends Controller
         $articulo = Articulo::create([
             'revista' => $request->revista,
             'titulo' => $request->titulo,
-            'archivo' => $file,
+            'archivo' => basename($archivo),
+            'archivo_plagio' => basename($archivoPlagio),
             'modalidad' => $request->modalidad,
             'id_mesa' => $request->id_mesa,
             'id_user' => auth()->user()->id,
             'id_autor' => $autor->id_autor,
         ]);
 
+        // Enviar correo al autor de correspondencia
         Mail::to($autor->correo)->send(new ArticulosEmail($articulo->titulo, $articulo->revista, $articulo->modalidad));
 
-        return redirect()->route('enviar_articulo.create')->with('success', 'Artículo registrado correctamente, los revisores se pondran en contacto con el autor de correspondencia por medio del correo electrónico proporcionado.');
+        return redirect()->route('enviar_articulo.create')->with('success', 'Artículo registrado correctamente, los revisores se pondrán en contacto con el autor de correspondencia por medio del correo electrónico proporcionado.');
     }
 
 

@@ -18,6 +18,7 @@ class CreateArticulosTable extends Migration
             $table->string('titulo')->unique();
             $table->boolean('estado')->default(0)->nullable();
             $table->string('archivo');
+            $table->string('archivo_plagio');
 
             $table->unsignedBigInteger('id_mesa')->nullable();
             $table->foreign('id_mesa')->references('id_mesa')->on('mesas')->onDelete('set null'); // Añadir onDelete('set null') para manejar casos de eliminación

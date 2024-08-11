@@ -17,6 +17,7 @@ class Articulo extends Model
         'estado',
         'modalidad',
         'archivo',
+        'archivo_plagio',
         'id_mesa',
         'id_user',
         // Añadir 'id_autor' para la relación
