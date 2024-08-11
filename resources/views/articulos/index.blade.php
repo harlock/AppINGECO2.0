@@ -93,8 +93,6 @@
                                 <th class="">Estado</th>
                                 <th class="">Artículo</th>
                                 <th class="">Evaluación</th>
-                                <th class="">Consultar Pagos</th>
-                                <th class="">Regresar Pago</th>
                             </tr>
                             </thead>
                             <tbody id="tablaNombres">
@@ -149,125 +147,6 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if (in_array($articu->id_articulo, $articulosConPagos))
-                                            <!-- Button to trigger payment details modal -->
-                                            <button type="button" class="btn btn-primary btn-sm consultar-pagos-btn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#consultarPagosModal{{$articu->id_articulo}}">
-                                                Consultar Pagos <i class="bi bi-cash-coin"></i>
-                                            </button>
-                                        @else
-                                            <button type="button" class="btn btn-secondary btn-sm consultar-pagos-btn" disabled>
-                                                Sin pago para consultar <i class="bi bi-x-circle"></i>
-                                            </button>
-                                        @endif
-
-                                        <!-- Modal para consultar pagos -->
-                                        <div class="modal fade" id="consultarPagosModal{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="consultarPagosModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="consultarPagosModalLabel">Consultar Pagos</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                            <tr>
-                                                                <th>Comprobante</th>
-                                                                <th>Referencia</th>
-                                                                <th>Factura</th>
-                                                                <th>Constancia Fiscal</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            @foreach ($pagos as $pago)
-                                                                @if ($pago->id_articulo == $articu->id_articulo)
-                                                                    <tr>
-                                                                        <td>
-                                                                            @if ($comprobanteUrls[$articu->id_articulo]['comprobante'])
-                                                                                <a href="{{ $comprobanteUrls[$articu->id_articulo]['comprobante'] }}" target="_blank">Ver Comprobante</a>
-                                                                            @else
-                                                                                No hay comprobante de pago
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if (isset($comprobanteUrls[$articu->id_articulo]['referencia']))
-                                                                                {{ $comprobanteUrls[$articu->id_articulo]['referencia'] }}
-                                                                            @else
-                                                                                No hay referencia de pago
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if (isset($comprobanteUrls[$articu->id_articulo]['factura']))
-                                                                                {{ $comprobanteUrls[$articu->id_articulo]['factura'] == 1 ? 'Si' : 'No' }}
-                                                                            @else
-                                                                                Sin factura
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if ($comprobanteUrls[$articu->id_articulo]['constancia_fiscal'])
-                                                                                <a href="{{ $comprobanteUrls[$articu->id_articulo]['constancia_fiscal'] }}" target="_blank">Ver Constancia</a>
-                                                                            @else
-                                                                                Sin Constancia fiscal
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                @endif
-                                                            @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        @if (in_array($articu->id_articulo, $articulosConPagos))
-                                            @if ($comprobanteUrls[$articu->id_articulo]['deleted_at'])
-                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
-                                                    Pago Regresado <i class="bi bi-x-circle"></i>
-                                                </button>
-                                            @else
-                                                <!-- Button to trigger return payment modal -->
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#regresarPagoModal{{$articu->id_articulo}}">
-                                                    Regresar Pago <i class="bi bi-arrow-counterclockwise"></i>
-                                                </button>
-                                                <!-- Modal para regresar pago -->
-                                                <div class="modal fade" id="regresarPagoModal{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="regresarPagoModalLabel{{$articu->id_articulo}}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="regresarPagoModalLabel{{$articu->id_articulo}}">¿Explica por qué deseas regresar el Pago?</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <form class="regresar-pago-form" action="{{ route('regresar-pago', $articu->id_articulo) }}" method="POST">
-                                                                @csrf
-                                                                <div class="modal-body">
-                                                                    <div class="mb-3">
-                                                                        <label for="observacion{{$articu->id_articulo}}" class="form-label">Observación</label>
-                                                                        <textarea id="observacion{{$articu->id_articulo}}" name="observacion" class="form-control" rows="3" required></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                                    <button type="button" class="btn btn-danger regresar-pago-btn">Regresar Pago</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @else
-                                            <button type="button" class="btn btn-secondary btn-sm" disabled>
-                                                Sin Pago <i class="bi bi-x-circle"></i>
-                                            </button>
-                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -291,28 +170,6 @@
             </div>
         </div>
     </div>
-    <script>
-        // Script para mostrar SweetAlert antes de enviar el formulario de regreso de pago
-        document.querySelectorAll('.regresar-pago-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-                const form = this.closest('form');
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "Esta acción no se puede deshacer",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sí, regresar pago'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-    </script>
     @if(Session::has('success'))
         <script>
             toastr.success('{{ Session::get('success') }}')

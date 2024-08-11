@@ -19,6 +19,7 @@
                             <option value="" selected="true" disabled="true">Asignar como...</option>
                                 <option value="4">Líder</option>
                                 <option value="2">Revisor</option>
+                                <option value="5">Contador</option>
                         </select>
                         </div>
                     </div>

@@ -143,6 +143,14 @@ class UsuariosController extends Controller
             //dd($user->id);
             // dd($request->user_type );
             $user->update(["user_type" => $request->user_type,]);
+        } elseif ($request->user_type == 5) {
+            $request->validate([
+                "user_type" => "required"
+            ]);
+            $user = User::find($request->usuar);
+            //dd($user->id);
+            // dd($request->user_type );
+            $user->update(["user_type" => $request->user_type,]);
         }
 
 

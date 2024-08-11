@@ -76,6 +76,11 @@
                     <a href="{{url('evaluar_art')}}" class="nav-link">Evaluar Artículos</a>
                 </li>
                 @endif
+                    @if(Auth::user()->user_type==5)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('contadores.index') }}">Seguimiento de pagos</a>
+                        </li>
+                    @endif
 
 
                 <!-- Menu de usuario-->

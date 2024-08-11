@@ -236,7 +236,7 @@
 
                                 <div class="d-flex">
                                     <div class="px-2">Mesa:</div>
-                                    <div class="px-1" id="showMesa">{{ $articulo->mesa->descripcion ?? 'No asignada' }}</div>
+                                    <div class="px-1" id="showMesa">{{ $articulo->mesas->descripcion ?? 'No asignada' }}</div>
                                 </div>
 
                                 <div class="d-flex">

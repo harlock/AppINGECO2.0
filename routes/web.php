@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ComprobantePagoController;
 use App\Http\Controllers\PeriodoArticuloController;
+use App\Http\Controllers\ContadoresController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +102,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('enviar_articulo', [ArticuloController::class, 'store'])->name('enviar_articulo.store');
     Route::post('evaluar_art', [ArticuloController::class, 'update'])->name('evaluar_art.update');
     Route::post('lideres', [lideresController::class, 'store'])->name('lideres.store');
+
+    //Contadores
+    Route::get('contadores/index', [ContadoresController::class, 'index'])->name('contadores.index');
 
 
 
