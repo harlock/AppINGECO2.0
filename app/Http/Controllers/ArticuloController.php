@@ -575,11 +575,11 @@ class ArticuloController extends Controller
             // Actualizar el artículo
             $articulo->update([
                 'archivo' => $file,
-                'estado' => 1,
+
             ]);
         }
 
-        return redirect()->back()->with('success', 'Archivo corregido subido con éxito.');
+        return redirect()->back()->with('success', 'Artículo reenviado con éxito.');
     }
 
 
@@ -605,7 +605,7 @@ class ArticuloController extends Controller
         return redirect()->back()->with('success', 'Articulo eliminado definitivamente');
     }
 
-    public function regresarPago(Request $request, $id_articulo)
+    /*public function regresarPago(Request $request, $id_articulo)
     {
         $request->validate([
             'observacion' => 'required|string|max:255',
@@ -633,7 +633,7 @@ class ArticuloController extends Controller
         }
 
         return redirect()->back();
-    }
+    }*/
 
 
 }
