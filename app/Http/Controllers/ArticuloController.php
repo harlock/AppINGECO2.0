@@ -128,7 +128,14 @@ class ArticuloController extends Controller
         }
 
         //dd($Artic);
-        return view('articulos.index', compact('Artic'));
+
+        $autores = DB::table('articulos')
+            ->join('autores_correspondencias', 'autores_correspondencias.id_autor', '=', 'articulos.id_autor')
+            ->select('articulos.id_articulo', 'autores_correspondencias.correo')
+            ->get()
+            ->keyBy('id_articulo');
+
+        return view('articulos.index', compact('Artic', 'autores'));
     }
 
     public function showArticulos()
@@ -302,7 +309,33 @@ class ArticuloController extends Controller
                 ->get();
         }
         //dd($Artic);
-        return view('administrador.articulos_revisores', compact('Artic'));
+
+        $pagos = DB::table('comprobante_pagos')
+            ->select('id_articulo', 'comprobante', 'referencia', 'factura', 'constancia_fiscal', 'deleted_at', 'estado_pago')
+            ->where('estado_pago', 1)
+            ->get();
+
+        $comprobanteUrls = [];
+        foreach ($pagos as $pago) {
+            $comprobanteUrls[$pago->id_articulo] = [
+                'comprobante' => Storage::url($pago->comprobante),
+                'referencia' => $pago->referencia,
+                'factura' => $pago->factura,
+                'constancia_fiscal' => $pago->constancia_fiscal ? Storage::url($pago->constancia_fiscal) : null,
+                'deleted_at' => $pago->deleted_at,
+                'estado_pago' => $pago->estado_pago
+            ];
+        }
+
+        $articulosConPagos = $pagos->pluck('id_articulo')->toArray();
+
+        $autores = DB::table('articulos')
+            ->join('autores_correspondencias', 'autores_correspondencias.id_autor', '=', 'articulos.id_autor')
+            ->select('articulos.id_articulo', 'autores_correspondencias.correo', 'autores_correspondencias.nom_autor', 'autores_correspondencias.ap_autor', 'autores_correspondencias.am_autor', 'autores_correspondencias.tel')
+            ->get()
+            ->keyBy('id_articulo');
+
+        return view('administrador.articulos_revisores', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos', 'autores'));
     }
 
     /**
@@ -364,7 +397,7 @@ class ArticuloController extends Controller
             'nom_autor' => 'required|string',
             'ap_autor' => 'required|string',
             'am_autor' => 'required|string',
-            'correo' => 'required|email|unique:autores_correspondencias,correo',
+            'correo' => 'required|email',
             'tel' => 'required|numeric|digits:10',
         ], [
             'revista.required' => 'Es necesario seleccionar una revista.',
@@ -388,7 +421,6 @@ class ArticuloController extends Controller
             'am_autor.string' => 'El apellido materno debe ser una cadena de texto.',
             'correo.required' => 'Es necesario colocar el correo electrónico del autor.',
             'correo.email' => 'El correo electrónico debe tener un formato válido.',
-            'correo.unique' => 'El correo electrónico ya está registrado en el sistema.',
             'tel.required' => 'Es necesario colocar el teléfono del autor.',
             'tel.numeric' => 'El teléfono debe contener únicamente números.',
             'tel.digits' => 'El teléfono debe tener exactamente 10 dígitos.',

@@ -97,6 +97,9 @@
                             </thead>
                             <tbody id="tablaNombres">
                             @foreach($Artic as $articu)
+                                @php
+                                    $correoAutor = $autores[$articu->id_articulo]->correo ?? 'No está registrado';
+                                @endphp
                                 <tr class="{{$articu->estado == 0 ? "bg-gray-100" : ($articu->estado == 1 ? "bg-green-100" : ($articu->estado == 2 ? "bg-red-100" : ($articu->estado == 5 ? 'bg-blue-100' : "bg-yellow-100")))}}">
                                     <td class="">
                                         {{$articu->id_articulo}}
@@ -108,7 +111,7 @@
                                         {{$articu->modalidad}}
                                     </td>
                                     <td class=" ">
-                                        {{ $articu->correo ?? 'No está registrado' }}
+                                        {{ $correoAutor }}
                                     </td>
 
                                     <td class=" text-wrap text-break">

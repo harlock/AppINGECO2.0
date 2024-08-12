@@ -86,10 +86,18 @@
                                     <th class="font-bold">Modalidad</th>
                                     <th class="font-bold">Estado</th>
                                     <th class="font-bold"></th>
+                                    <th class="font-bold">Consultar Pagos</th>
                                 </tr>
                             </thead>
                             <tbody id="tablaNombres">
                             @foreach($Artic as $articu)
+                                @php
+                                    $nomAutor = $autores[$articu->id_articulo]->nom_autor ?? 'No está registrado';
+                                    $apAutor = $autores[$articu->id_articulo]->ap_autor ?? 'No está registrado';
+                                    $amAutor = $autores[$articu->id_articulo]->am_autor ?? 'No está registrado';
+                                    $correoAutor = $autores[$articu->id_articulo]->correo ?? 'No está registrado';
+                                    $telAutor = $autores[$articu->id_articulo]->tel ?? 'No está registrado';
+                                @endphp
                             <tr class="rounded-xl {{$articu->estado == 0 ? "bg-gray-100" : ($articu->estado == 1 ? "bg-green-100" : ($articu->estado == 2 ? "bg-red-100" : ($articu->estado == 5 ? 'bg-blue-100' : "bg-yellow-100")))}}">
                                 <td class=""><strong>
                                     {{$articu->id_articulo}}
@@ -106,9 +114,11 @@
                                     {{$articu->titulo}}
                                 </td>
                                 <td class="text-wrap text-break">
-                                    {{$articu->nombreCompleto}} 
-                                     {{$articu->email}} 
-                                     {{$articu->telefono}} 
+                                    {{ $nomAutor }}
+                                    {{ $apAutor }}
+                                    {{ $amAutor }}
+                                    {{ $correoAutor }}
+                                    {{ $telAutor }}
                                 </td>
                                
                                 <td class=" text-wrap text-break">
@@ -132,6 +142,87 @@
 
                                 <td class="">
                                     <a class="btn btn-primary" href="{{route('art.download',$articu->titulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
+                                </td>
+
+                                <td>
+                                    @if (in_array($articu->id_articulo, $articulosConPagos))
+                                        @php
+                                            $estadoPago = $comprobanteUrls[$articu->id_articulo]['estado_pago'] ?? 2;
+                                        @endphp
+
+                                        @if ($estadoPago == 0)
+                                            <button type="button" class="btn btn-secondary btn-sm consultar-pagos-btn" disabled>
+                                                Pago Regresado <i class="bi bi-x-circle"></i>
+                                            </button>
+                                        @else
+                                            <!-- Button to trigger payment details modal -->
+                                            <button type="button" class="btn btn-primary btn-sm consultar-pagos-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#consultarPagosModal{{$articu->id_articulo}}">
+                                                Consultar Pagos <i class="bi bi-cash-coin"></i>
+                                            </button>
+                                        @endif
+                                    @else
+                                        <button type="button" class="btn btn-secondary btn-sm consultar-pagos-btn" disabled>
+                                            Sin pago para consultar <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    @endif
+                                        <!-- Modal para consultar pagos -->
+                                        <div class="modal fade" id="consultarPagosModal{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="consultarPagosModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="consultarPagosModalLabel">Consultar Pagos</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>Comprobante</th>
+                                                                <th>Referencia</th>
+                                                                <th>Factura</th>
+                                                                <th>Constancia Fiscal</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach ($pagos as $pago)
+                                                                @if ($pago->id_articulo == $articu->id_articulo)
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if ($comprobanteUrls[$articu->id_articulo]['comprobante'])
+                                                                                <a href="{{ $comprobanteUrls[$articu->id_articulo]['comprobante'] }}" target="_blank">Ver Comprobante</a>
+                                                                            @else
+                                                                                No hay comprobante de pago
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (isset($comprobanteUrls[$articu->id_articulo]['referencia']))
+                                                                                {{ $comprobanteUrls[$articu->id_articulo]['referencia'] }}
+                                                                            @else
+                                                                                No hay referencia de pago
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (isset($comprobanteUrls[$articu->id_articulo]['factura']))
+                                                                                {{ $comprobanteUrls[$articu->id_articulo]['factura'] == 1 ? 'Si' : 'No' }}
+                                                                            @else
+                                                                                Sin factura
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            @if ($comprobanteUrls[$articu->id_articulo]['constancia_fiscal'])
+                                                                                <a href="{{ $comprobanteUrls[$articu->id_articulo]['constancia_fiscal'] }}" target="_blank">Ver Constancia</a>
+                                                                            @else
+                                                                                Sin Constancia fiscal
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                @endif
+                                                            @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                 </td>
 
                             </tr>
