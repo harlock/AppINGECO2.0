@@ -211,20 +211,21 @@
                     <div class="modal-content">
                         <div class="modal-header text-center">
                             <h3 class="modal-title" id="exampleModalLabel">
-                                ¿Estas seguro de que deseas enviar el artículo?
+                                ¿Estás seguro de que deseas enviar el artículo?
                             </h3>
                         </div>
 
-                        <div class=" p-4 ">
+                        <div class="modal-body p-4">
                             <div class="d-flex">
-                                <span class="px-2" style="color: red; font-size: small;">Se notificará mediante correo electrónico el estado de su artículo.
-                                    Revisar en la bandeja de entrada o spam en el siguiente correo. </span>
+                    <span class="px-2" style="color: red; font-size: small;">
+                        Se notificará mediante correo electrónico el estado de su artículo.
+                        Revisar en la bandeja de entrada o spam en el siguiente correo.
+                    </span>
                             </div>
                             <div class="d-flex">
                                 <div class="px-2">Correo de correspondencia:</div>
                                 <div class="px-2" id="showCorreo"></div>
                             </div>
-
                             <div class="d-flex">
                                 <div class="px-2">Nombre:</div>
                                 <div class="px-2" id="showNombre"></div>
@@ -237,39 +238,43 @@
                                 <div class="px-2">Apellido Materno:</div>
                                 <div class="px-2" id="showApellidoM"></div>
                             </div>
-                            <table>
-                                <div class="d-flex">
-                                    <div class="px-2">Revista:</div>
-                                    <div class="px-1" id="showRevista"></div>
-                                </div>
+                            <div class="d-flex">
+                                <div class="px-2">Revista:</div>
+                                <div class="px-1" id="showRevista"></div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="px-2">Título:</div>
+                                <div class="px-1" id="showTitulo"></div>
+                            </div>
 
-                                <div class="d-flex">
-                                    <div class="px-2">Titulo:</div>
-                                    <div class="px-1" id="showTitulo"></div>
-                                </div>
+                            <div class="d-flex">
+                                <div class="px-2">Mesa:</div>
+                                <div class="px-1" id="showMesa"></div>
+                            </div>
 
-                                <div class="d-flex">
-                                    <div class="px-2">Mesa:</div>
-                                    <div class="px-1" id="showMesa">{{ $articulo->mesas->descripcion ?? 'No asignada' }}</div>
+                            <div class="d-flex">
+                                <div class="px-2">Archivo:</div>
+                                <div class="px-1">
+                                    <a href="#" id="archivoDownloadLink">Descargar Archivo DOCX</a>
                                 </div>
-
-                                <div class="d-flex">
-                                    <div class="px-2">Modalidad:</div>
-                                    <div class="px-1" id="showModalidad"></div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="px-2">Archivo de Plagio:</div>
+                                <div class="px-1">
+                                    <a href="#" id="archivoPlagioDownloadLink">Descargar Archivo de Plagio PDF</a>
                                 </div>
-
-                            </table>
-                            <div class="d-flex justify-content-center mt-3">
-                                <button type="button" class="btn btn-info" id="verArchivoBtn">Ver archivo</button>
                             </div>
                         </div>
-                        <div class="modal-footer justify-content-center">
+
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success">Enviar</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Aceptar</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+
             <br>
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -370,64 +375,37 @@
     </footer>
 
     @push("scripts")
-        <script type="text/javascript">
-            // Obtener los elementos del DOM
-            var selectElement = document.getElementById("id_mesa");
-            var showMesaElement = document.getElementById("showMesa");
-
-            // Función para mostrar los datos en el HTML
+        <script>
             function getDatos() {
-                // Obtener y mostrar el título
-                var showTitulo = document.getElementById("showTitulo");
-                showTitulo.innerHTML = document.getElementById("titulo").value;
+                // Obtener los valores del formulario
+                const nombre = document.getElementById('nombre').value;
+                const ap_autor = document.getElementById('apellio_p').value;
+                const am_autor = document.getElementById('apellio_m').value;
+                const correo = document.getElementById('correo').value;
+                const revista = document.getElementById('revista').value;
+                const titulo = document.getElementById('titulo').value;
+                const id_mesa = document.getElementById('id_mesa').selectedOptions[0].text;
+                const archivo = document.getElementById('archivoNombre').files[0]?.name;
+                const archivo_plagio = document.getElementById('archivo_plagio').files[0]?.name;
 
-                // Obtener y mostrar los datos del usuario
-                var nombre = document.getElementById("nombre").value;
-                var apellidoP = document.getElementById("apellio_p").value;
-                var apellidoM = document.getElementById("apellio_m").value;
-                var correo = document.getElementById("correo").value;
+                // Actualizar los elementos del modal
+                document.getElementById('showNombre').innerText = nombre;
+                document.getElementById('showApellidoP').innerText = ap_autor;
+                document.getElementById('showApellidoM').innerText = am_autor;
+                document.getElementById('showCorreo').innerText = correo;
+                document.getElementById('showRevista').innerText = revista;
+                document.getElementById('showTitulo').innerText = titulo;
+                document.getElementById('showMesa').innerText = id_mesa;
 
-                document.getElementById("showNombre").innerText = nombre;
-                document.getElementById("showApellidoP").innerText = apellidoP;
-                document.getElementById("showApellidoM").innerText = apellidoM;
-                document.getElementById("showCorreo").innerText = correo;
+                const archivoDownloadLink = document.getElementById('archivoDownloadLink');
+                const archivoPlagioDownloadLink = document.getElementById('archivoPlagioDownloadLink');
 
-                // Obtener y mostrar la modalidad
-                var showRevista = document.getElementById("showRevista");
-                showRevista.innerHTML = document.getElementById("revista").value;
+                archivoDownloadLink.href = archivo ? URL.createObjectURL(document.getElementById('archivoNombre').files[0]) : '#';
+                archivoDownloadLink.innerText = archivo ? ` (${archivo})` : 'No disponible';
 
-                var showModalidad = document.getElementById("showModalidad");
-                showModalidad.innerHTML = document.getElementById("modalidad").value;
-
-                // Mostrar la descripción de la mesa (opcional)
-                // var showMesa = document.getElementById("showMesa");
-                // showMesa.innerHTML = document.getElementById("id_mesa").textContent;
+                archivoPlagioDownloadLink.href = archivo_plagio ? URL.createObjectURL(document.getElementById('archivo_plagio').files[0]) : '#';
+                archivoPlagioDownloadLink.innerText = archivo_plagio ? ` (${archivo_plagio})` : 'No disponible';
             }
-
-            // Evento para actualizar la descripción de la mesa al cambiar la selección
-            selectElement.addEventListener("change", function() {
-                var selectedOption = selectElement.options[selectElement.selectedIndex];
-                var descripcion = selectedOption.getAttribute("data-description");
-                showMesaElement.textContent = descripcion;
-            });
-
-            // Evento para manejar la descarga del archivo
-            document.getElementById('verArchivoBtn').addEventListener('click', function() {
-                var fileInput = document.getElementById('archivoNombre');
-                if (fileInput.files.length > 0) {
-                    var file = fileInput.files[0];
-                    var url = URL.createObjectURL(file);
-                    var a = document.createElement('a');
-                    a.href = url;
-                    a.download = file.name;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                } else {
-                    alert('No se ha seleccionado ningún archivo.');
-                }
-            });
         </script>
 
     @endpush

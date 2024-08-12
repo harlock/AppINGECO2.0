@@ -6,8 +6,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <div class="row justify-content-center">
-        <div class="col-12 justify-content-center my-5 mx-10">
+    <div class="row justify-content-center mt-4">
+        <div class="col-12">
 
             <h3 class="justify-content-center alert bg-blue-800 d-flex text-white mb-5">
                 Artículos enviados
@@ -29,11 +29,9 @@
                 </div>
             @endif
 
-            <div class="tab-content rounded-lg" id="tabContent">
-            <div class="table-responsive-xl bg-white border rounded-lg mt-4 p-3 shadow-sm tab-pane fade show active" id="home"
-                 role="tabpanel" aria-labelledby="home-tab">
-                <table class="table">
-                    <thead>
+            <div class="table-responsive bg-white border rounded-lg mt-4 p-3 shadow-sm tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <table class="table table-bordered">
+                    <thead class="table-light">
                     <tr>
                         <th class="text-center">Estado</th>
                         <th class="text-center">Revista</th>
@@ -49,7 +47,7 @@
                     <tbody>
                     @foreach ($articulos as $articulo)
                         <tr class="{{ $articulo->estado == 0 ? 'bg-gray-100' : ($articulo->estado == 1 ? 'bg-green-100' : ($articulo->estado == 2 ? 'bg-red-100' : ($articulo->estado == 5 ? 'bg-blue-100' : 'bg-yellow-100'))) }}">
-                            <td class="">
+                            <td class="text-center">
                                 @if($articulo->estado == 0)
                                     <i class="bi bi-bookmark-dash-fill"></i> Sin revisar
                                 @elseif($articulo->estado == 1)
@@ -62,27 +60,26 @@
                                     <i class="bi bi-bookmark-dash-fill"></i> En proceso de revisión
                                 @endif
                             </td>
-                            <td>{{$articulo->revista }}</td>
-                            <td class="text-wrap text-break">{{$articulo->titulo }}</td>
-                            <td>{{$articulo->modalidad }}</td>
-                            <td class="font-semibold ">
+                            <td class="text-center">{{ $articulo->revista }}</td>
+                            <td class="text-wrap text-break">{{ $articulo->titulo }}</td>
+                            <td class="text-center">{{ $articulo->modalidad }}</td>
+                            <td class="text-center">
                                 <a class="btn btn-primary" href="{{route('art.download',$articulo->titulo)}}">Descargar
                                     <i class="bi bi-arrow-down-square-fill"></i></a>
                             </td>
-                            <td class="text-wrap text-break">{{$articulo->descripcion }}</td>
-                            <td>
+                            <td class="text-wrap text-break">{{ $articulo->descripcion }}</td>
+                            <td class="text-center">
                                 @php
                                     $comprobanteExistente = App\Models\ComprobantePago::where('id_articulo', $articulo->id_articulo)->first();
                                 @endphp
 
                                 @if($articulo->estado == 1)
-                                    @if($comprobanteExistente && $comprobanteExistente->estado_pago==0)
+                                    @if($comprobanteExistente && $comprobanteExistente->estado_pago == 0)
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
                                             Agregar nuevo comprobante de pago
                                         </button>
                                     @elseif(!$comprobanteExistente)
-                                        <!-- Si no existe ningún comprobante, muestra el botón como habilitado -->
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                 data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
                                             Agregar comprobante de pago
@@ -118,7 +115,6 @@
                                                         <input type="file" class="form-control" id="comprobante"
                                                                name="comprobante" accept="application/pdf">
                                                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
-
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="referencia" class="form-label">Referencia</label>
@@ -152,8 +148,6 @@
                                                                name="constancia_fiscal" accept="application/pdf">
                                                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                                                     </div>
-
-
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -179,14 +173,14 @@
                                     });
                                 </script>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @if($articulo->observacion)
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#observacionesModal-{{ $articulo->id_articulo }}" title="Ver Observaciones">
                                         Observación en pagos <i class="fa fa-comments"></i>
                                     </button>
                                 @endif
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @if($articulo->estado == 5)
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#archivoModal-{{ $articulo->id_articulo }}" title="Cargar Archivo">
                                         Reenviar Artículo <i class="fa fa-file"></i>
@@ -231,19 +225,18 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                             <button type="submit" class="btn btn-primary">Guardar</button>
-                                        </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
             </div>
-            </div>
+            </td>
+            </tr>
+            @endforeach
+            </tbody>
+            </table>
         </div>
+    </div>
     </div>
 
     @if(Session::has('success'))
