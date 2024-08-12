@@ -432,7 +432,7 @@ class ArticuloController extends Controller
         // Manejo del archivo de plagio
         $archivoPlagio = $request->file('archivo_plagio')->store('archivos/plagio', 'public');
 
-        // Crear o encontrar el autor
+
         $autor = AutoresCorrespondencia::firstOrCreate([
             'correo' => $request->correo
         ], [
@@ -446,15 +446,14 @@ class ArticuloController extends Controller
         $articulo = Articulo::create([
             'revista' => $request->revista,
             'titulo' => $request->titulo,
-            'archivo' => basename($archivo),
-            'archivo_plagio' => basename($archivoPlagio),
+            'archivo' => $archivo, // Se guarda la ruta completa
+            'archivo_plagio' => $archivoPlagio, // Se guarda la ruta completa
             'modalidad' => $request->modalidad,
             'id_mesa' => $request->id_mesa,
             'id_user' => auth()->user()->id,
             'id_autor' => $autor->id_autor,
         ]);
 
-        // Enviar correo al autor de correspondencia
         Mail::to($autor->correo)->send(new ArticulosEmail($articulo->titulo, $articulo->revista, $articulo->modalidad));
 
         return redirect()->route('enviar_articulo.create')->with('success', 'Artículo registrado correctamente, los revisores se pondrán en contacto con el autor de correspondencia por medio del correo electrónico proporcionado.');
