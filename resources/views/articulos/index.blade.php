@@ -91,8 +91,10 @@
                                 <th class="">Correo</th>
                                 <th class="">Nombre del artículo</th>
                                 <th class="">Estado</th>
-                                <th class="">Artículo</th>
+                                <th class="">Archivo Artículo</th>
+                                <th class="">Archivo Antiplagio</th>
                                 <th class="">Evaluación</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody id="tablaNombres">
@@ -130,10 +132,15 @@
                                             <i class="bi bi-bookmark-dash-fill"> </i> En proceso de revisión
                                         @endif
                                     </td>
-                                    <td class="">
+                                    <td class="text-center">
                                         <a class="btn btn-primary btn-sm"
                                            href="{{route('art.download',$articu->titulo)}}">Descargar <i
                                                     class="bi bi-arrow-down-square-fill"></i></a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articu->titulo) }}">Antiplagio
+                                            <i class="bi bi-arrow-down-square-fill"></i>
+                                        </a>
                                     </td>
                                     <td class="d-flex justify-content-center">
                                         <!-- Button trigger modal -->
@@ -154,6 +161,9 @@
                                 </tr>
                             @endforeach
                             <tr>
+                                <td class="bg-gray-400"></td>
+                                <td class="bg-gray-400"></td>
+                                <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>

@@ -79,7 +79,9 @@
                                 <th class="font-bold text-center">Evaluador</th>
                                 <th class="font-bold text-center">Modalidad</th>
                                 <th class="font-bold text-center">Estado</th>
-                                <th class="font-bold text-center"></th>
+                                <th class="font-bold text-center">Archivo Artículo</th>
+                                <th class="font-bold text-center">Archivo Antiplagio</th>
+
                             </tr>
                         </thead>
                         <tbody id="tablaNombres">
@@ -116,8 +118,14 @@
 
 
 
-                            <td class="">
+                            <td class="text-center">
                                 <a class="btn btn-primary" href="{{route('art.download',$articu->titulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articu->titulo) }}"> Antiplagio
+                                    <i class="bi bi-arrow-down-square-fill"></i>
+                                </a>
+
                             </td>
 
                         </tr>

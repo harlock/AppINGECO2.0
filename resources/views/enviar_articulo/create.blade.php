@@ -1,5 +1,12 @@
 @extends('layouts.app')
 @section('content')
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <div class="container py-5">
 
         <div class="row  w-full p-5">
@@ -259,9 +266,9 @@
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <div class="px-2">Archivo de Plagio:</div>
+                                <div class="px-2">Archivo de Antiplagio:</div>
                                 <div class="px-1">
-                                    <a href="#" id="archivoPlagioDownloadLink">Descargar Archivo de Plagio PDF</a>
+                                    <a href="#" id="archivoPlagioDownloadLink">Descargar Archivo de Antilagio PDF</a>
                                 </div>
                             </div>
                         </div>
@@ -300,7 +307,9 @@
                                 <th class=" text-center">Revista</th>
                                 <th class=" text-center">Nombre del artículo</th>
                                 <th class=" text-center">Modalidad</th>
-                                <th class=" text-center">Archivo</th>
+                                <th class=" text-center">Archivo Artículo</th>
+                                <th class=" text-center">Archivo Antiplagio</th>
+
                                 <th class=" text-center">Mesa asignada</th>
                             </tr>
                             </thead>
@@ -324,13 +333,18 @@
                                     <td class="font-semibold ">
                                         <a class="btn btn-primary" href="{{route('art.download',$articulo->titulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
                                     </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articulo->titulo) }}">Antiplagio
+                                            <i class="bi bi-arrow-down-square-fill"></i>
+                                        </a>
+                                    </td>
                                     <td class="text-wrap text-break">{{$articulo->descripcion }}</td>
                                     <td>
-
-                                        <a href="{{route('art.destroy',$articulo->id_articulo)}}" class=" btn btn-danger">
-                                            Eliminar
-                                        </a>
-
+                                        @if ($articulo->estado == 0)
+                                            <a href="#" class="btn btn-danger btn-sm delete-btn" data-id="{{ $articulo->id_articulo }}">Eliminar</a>
+                                        @else
+                                            <button class="btn btn-secondary btn-sm" disabled>Eliminar</button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

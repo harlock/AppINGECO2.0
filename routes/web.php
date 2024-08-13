@@ -70,6 +70,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('articulos/{titulo}/download', [ArticuloController::class, 'download', 'index'])->name('art.download');
     Route::get('download_zip', [ArtculoController::class, 'download_zip', 'index']);
     Route::get('changeValueArticle', [ArticuloController::class, 'download_zip', 'index']);
+
+    //Descargar PDF
+    Route::get('/articulos/download/{titulo}', [ArticuloController::class, 'download'])->name('art.download');
+    Route::get('/articulos/downloadPlagio/{titulo}', [ArticuloController::class, 'downloadPlagio'])->name('art.downloadPlagio');
+
     //RUTAS EVALUADOR
     Route::get('evaluar_art', [ArticuloController::class, 'index'])->name('list.art');
     Route::resource('evaluar_art', ArticuloController::class)->except("index");
