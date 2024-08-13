@@ -38,6 +38,7 @@
                         <th class="text-center">Nombre del artículo</th>
                         <th class="text-center">Modalidad</th>
                         <th class="text-center">Archivo</th>
+                        <th class="text-center">Archivo Plagio</th>
                         <th class="text-center">Mesa asignada</th>
                         <th class="text-center">Comprobante de pago</th>
                         <th class="text-center">Observación de pagos</th>
@@ -67,6 +68,12 @@
                                 <a class="btn btn-primary" href="{{route('art.download',$articulo->titulo)}}">Descargar
                                     <i class="bi bi-arrow-down-square-fill"></i></a>
                             </td>
+                            <td class="text-center">
+                                <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articulo->titulo) }}">Descargar Plagio
+                                    <i class="bi bi-arrow-down-square-fill"></i>
+                                </a>
+                            </td>
+
                             <td class="text-wrap text-break">{{ $articulo->descripcion }}</td>
                             <td class="text-center">
                                 @php

@@ -79,7 +79,9 @@
                                 <th class="font-bold text-center">Evaluador</th>
                                 <th class="font-bold text-center">Modalidad</th>
                                 <th class="font-bold text-center">Estado</th>
-                                <th class="font-bold text-center"></th>
+                                <th class="font-bold text-center">Archivo</th>
+                                <th class="font-bold text-center">Archivo Plagio</th>
+
                             </tr>
                         </thead>
                         <tbody id="tablaNombres">
@@ -118,6 +120,12 @@
 
                             <td class="">
                                 <a class="btn btn-primary" href="{{route('art.download',$articu->titulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
+                            </td>
+                            <td class="">
+                                <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articu->titulo) }}">Descargar Plagio
+                                    <i class="bi bi-arrow-down-square-fill"></i>
+                                </a>
+
                             </td>
 
                         </tr>

@@ -91,7 +91,8 @@
                                 <th class="">Correo</th>
                                 <th class="">Nombre del artículo</th>
                                 <th class="">Estado</th>
-                                <th class="">Artículo</th>
+                                <th class="">Archivo</th>
+                                <th class="">Archivo Plagio</th>
                                 <th class="">Evaluación</th>
                             </tr>
                             </thead>
@@ -135,6 +136,12 @@
                                            href="{{route('art.download',$articu->titulo)}}">Descargar <i
                                                     class="bi bi-arrow-down-square-fill"></i></a>
                                     </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articu->titulo) }}">Descargar Plagio
+                                            <i class="bi bi-arrow-down-square-fill"></i>
+                                        </a>
+
+                                    </td>
                                     <td class="d-flex justify-content-center">
                                         <!-- Button trigger modal -->
                                         @if($articu->estado != 1 && $articu->estado != 2)
@@ -154,6 +161,9 @@
                                 </tr>
                             @endforeach
                             <tr>
+                                <td class="bg-gray-400"></td>
+                                <td class="bg-gray-400"></td>
+                                <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>

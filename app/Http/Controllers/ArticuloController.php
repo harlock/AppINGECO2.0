@@ -59,6 +59,7 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     'users.name',
@@ -88,6 +89,7 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     'users.name',
@@ -116,6 +118,7 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     'users.name',
@@ -487,6 +490,25 @@ class ArticuloController extends Controller
 
         //return redirect()->back();
     }
+
+    public function downloadPlagio($titulo)
+    {
+        // Buscar el artículo por título
+        $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
+
+        // Obtener la ruta del archivo
+        $pathToFile = storage_path('app/public/' . $articulo->archivo_plagio);
+
+        // Verificar si el archivo existe
+        if (!file_exists($pathToFile)) {
+            return redirect()->back()->with('error', 'El archivo no se encuentra disponible.');
+        }
+
+
+        // Descargar el archivo
+        return response()->download($pathToFile);
+    }
+
 
     public function download_zip()
     {
