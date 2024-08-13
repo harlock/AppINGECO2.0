@@ -467,28 +467,20 @@ class ArticuloController extends Controller
 
     public function download($titulo)
     {
-        //dd($titulo);
+        // Obtener el artículo
         $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
         $pathToFile = storage_path('app/public/' . $articulo->archivo);
 
-        //dd($articulo->estado);
+        // Obtener el tipo de usuario autenticado
+        $userType = Auth::user()->user_type ?? null;
 
-        if ($articulo->estado == 0) {
-
-            $articulo = DB::table("articulos")
-                ->where('titulo', $titulo)
-                ->update(['estado' => '3']);
+        // Actualizar el estado del artículo solo si el tipo de usuario es 2
+        if ($userType == 2 && $articulo->estado == 0) {
+            $articulo->update(['estado' => '3']);
         }
-        $response = response()->download($pathToFile)->send();
-        //$articulo = Articulo::where('titulo', $titulo)->update('estado','3');
-        //dd($articulo);
-        //dd($pathToFile);
-        //response()->download($pathToFile);
 
-        // return redirect()->route('list.art');
-
-
-        //return redirect()->back();
+        // Descargar el archivo
+        return response()->download($pathToFile);
     }
 
     public function downloadPlagio($titulo)
