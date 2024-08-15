@@ -106,66 +106,73 @@
                                 @endif
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="comprobanteModal-{{ $articulo->id_articulo }}" tabindex="-1"
-                                     aria-labelledby="comprobanteModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="comprobanteModal-{{ $articulo->id_articulo }}" tabindex="-1" aria-labelledby="comprobanteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="comprobanteModalLabel">Agregar Comprobante de
-                                                    Pago</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
+                                                <h5 class="modal-title" id="comprobanteModalLabel">Agregar Comprobante de Pago</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ route('comprobantes.store') }}" method="POST"
-                                                  enctype="multipart/form-data">
+
+                                            <form action="{{ route('comprobantes.store') }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
-                                                    <input type="hidden" name="id_articulo"
-                                                           value="{{ $articulo->id_articulo }}">
+                                                    <input type="hidden" name="id_articulo" value="{{ $articulo->id_articulo }}">
                                                     <input type="hidden" name="id_user" value="{{ auth()->user()->id }}">
+
                                                     <div class="mb-3">
-                                                        <label for="comprobante" class="form-label">Comprobante de pago
-                                                            (PDF)</label>
-                                                        <input type="file" class="form-control" id="comprobante"
-                                                               name="comprobante" accept="application/pdf">
+                                                        <label for="comprobante" class="form-label">Comprobante de pago (PDF)</label>
+                                                        <input type="file" class="form-control @error('comprobante') is-invalid @enderror" id="comprobante" name="comprobante" accept="application/pdf">
+                                                        @error('comprobante')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                        @enderror
                                                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                                                     </div>
+
                                                     <div class="mb-3">
                                                         <label for="referencia" class="form-label">Referencia</label>
-                                                        <input type="text" class="form-control" id="referencia"
-                                                               name="referencia">
+                                                        <input type="text" class="form-control @error('referencia') is-invalid @enderror" id="referencia" name="referencia" value="{{ old('referencia') }}">
+                                                        @error('referencia')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                        @enderror
                                                     </div>
+
                                                     <div class="mb-3">
                                                         <label class="form-label">¿Requiere factura?</label>
                                                         <div>
                                                             <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                       name="factura" id="factura_si_{{ $articulo->id_articulo }}"
-                                                                       value="1">
-                                                                <label class="form-check-label"
-                                                                       for="factura_si_{{ $articulo->id_articulo }}">Sí</label>
+                                                                <input class="form-check-input @error('factura') is-invalid @enderror" type="radio" name="factura" id="factura_si_{{ $articulo->id_articulo }}" value="1" {{ old('factura') == '1' ? 'checked' : '' }}>
+                                                                <label class="form-check-label" for="factura_si_{{ $articulo->id_articulo }}">Sí</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                       name="factura" id="factura_no_{{ $articulo->id_articulo }}"
-                                                                       value="0">
-                                                                <label class="form-check-label"
-                                                                       for="factura_no_{{ $articulo->id_articulo }}">No</label>
+                                                                <input class="form-check-input @error('factura') is-invalid @enderror" type="radio" name="factura" id="factura_no_{{ $articulo->id_articulo }}" value="0" {{ old('factura') == '0' ? 'checked' : '' }}>
+                                                                <label class="form-check-label" for="factura_no_{{ $articulo->id_articulo }}">No</label>
                                                             </div>
                                                         </div>
+                                                        @error('factura')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                        @enderror
                                                     </div>
-                                                    <div class="mb-3" id="constancia_fiscal_group_{{ $articulo->id_articulo }}"
-                                                         style="display: none;">
-                                                        <label for="constancia_fiscal_{{ $articulo->id_articulo }}"
-                                                               class="form-label">Constancia de situación fiscal (PDF)</label>
-                                                        <input type="file" class="form-control" id="constancia_fiscal_{{ $articulo->id_articulo }}"
-                                                               name="constancia_fiscal" accept="application/pdf">
+
+                                                    <div class="mb-3" id="constancia_fiscal_group_{{ $articulo->id_articulo }}" style="{{ old('factura') == '1' ? 'display: block;' : 'display: none;' }}">
+                                                        <label for="constancia_fiscal_{{ $articulo->id_articulo }}" class="form-label">Constancia de situación fiscal (PDF)</label>
+                                                        <input type="file" class="form-control @error('constancia_fiscal') is-invalid @enderror" id="constancia_fiscal_{{ $articulo->id_articulo }}" name="constancia_fiscal" accept="application/pdf">
+                                                        @error('constancia_fiscal')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                        @enderror
                                                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                                 </div>
                                             </form>
@@ -174,15 +181,28 @@
                                 </div>
 
                                 <script>
-                                    document.querySelectorAll('input[name="factura"]').forEach((elem) => {
-                                        elem.addEventListener('change', function (event) {
-                                            const articuloId = event.target.closest('.modal').id.split('-').pop();
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        document.querySelectorAll('.modal').forEach((modal) => {
+                                            const articuloId = modal.id.split('-').pop();
+                                            const facturaValue = modal.querySelector('input[name="factura"]:checked')?.value;
                                             const constanciaFiscalGroup = document.getElementById(`constancia_fiscal_group_${articuloId}`);
-                                            if (event.target.value == 1) {
+
+                                            if (facturaValue === '1') {
                                                 constanciaFiscalGroup.style.display = 'block';
                                             } else {
                                                 constanciaFiscalGroup.style.display = 'none';
                                             }
+
+                                            modal.querySelectorAll('input[name="factura"]').forEach((elem) => {
+                                                elem.addEventListener('change', function (event) {
+                                                    const constanciaFiscalGroup = document.getElementById(`constancia_fiscal_group_${articuloId}`);
+                                                    if (event.target.value == '1') {
+                                                        constanciaFiscalGroup.style.display = 'block';
+                                                    } else {
+                                                        constanciaFiscalGroup.style.display = 'none';
+                                                    }
+                                                });
+                                            });
                                         });
                                     });
                                 </script>
@@ -249,7 +269,7 @@
                                 </div>
                             </div>
                         </div>
-            </div>
+            </div>  
             </td>
             </tr>
             @endforeach

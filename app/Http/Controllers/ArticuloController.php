@@ -480,15 +480,19 @@ class ArticuloController extends Controller
             'tel.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
         ]);
 
+        // Guardar los datos del formulario en la sesión para reutilizarlos en caso de error
+        $request->session()->flash('form_data', $request->except('_token'));
+
         // Manejo del archivo principal
         $archivo = $request->file('archivo')->store('archivos/articulos', 'public');
 
         // Manejo del archivo de plagio
         $archivoPlagio = $request->file('archivo_plagio')->store('archivos/plagio', 'public');
 
-
-        $autor = AutoresCorrespondencia::create([
-            'correo' => $request->correo,
+        // Crear o recuperar el autor
+        $autor = AutoresCorrespondencia::firstOrCreate([
+            'correo' => $request->correo
+        ], [
             'nom_autor' => $request->nom_autor,
             'ap_autor' => $request->ap_autor,
             'am_autor' => $request->am_autor,
@@ -507,8 +511,10 @@ class ArticuloController extends Controller
             'id_autor' => $autor->id_autor,
         ]);
 
+        // Enviar correo electrónico
         Mail::to($autor->correo)->send(new ArticulosEmail($articulo->titulo, $articulo->revista, $articulo->modalidad));
 
+        // Redirigir con mensaje de éxito
         return redirect()->route('enviar_articulo.create')->with('success', 'Artículo registrado correctamente, los revisores se pondrán en contacto con el autor de correspondencia por medio del correo electrónico proporcionado.');
     }
 
