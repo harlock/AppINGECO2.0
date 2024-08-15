@@ -20,8 +20,9 @@ class Articulo extends Model
         'archivo_plagio',
         'id_mesa',
         'id_user',
-        // Añadir 'id_autor' para la relación
         'id_autor',
+        'carta_aceptacion',
+        'fecha_reenvio',
     ];
 
     public function mesas()

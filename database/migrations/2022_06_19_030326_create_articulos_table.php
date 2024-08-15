@@ -25,6 +25,7 @@ class CreateArticulosTable extends Migration
 
             $table->unsignedBigInteger('id_autor')->nullable();
             $table->foreign('id_autor')->references('id_autor')->on('autores_correspondencias')->onDelete('set null'); // Añadir onDelete('set null') para manejar casos de eliminación
+            $table->string('carta_aceptacion');
 
             $table->timestamps();
             $table->softDeletes();

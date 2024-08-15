@@ -60,6 +60,9 @@ class ArticuloController extends Controller
                     'articulos.modalidad',
                     'articulos.archivo',
                     'articulos.archivo_plagio',
+                    'articulos.created_at',
+                    'articulos.updated_at',
+                    'articulos.fecha_reenvio',
                     'mesas.descripcion',
                     'users.id',
                     'users.name',
@@ -90,6 +93,9 @@ class ArticuloController extends Controller
                     'articulos.modalidad',
                     'articulos.archivo',
                     'articulos.archivo_plagio',
+                    'articulos.created_at',
+                    'articulos.updated_at',
+                    'articulos.fecha_reenvio',
                     'mesas.descripcion',
                     'users.id',
                     'users.name',
@@ -119,6 +125,9 @@ class ArticuloController extends Controller
                     'articulos.modalidad',
                     'articulos.archivo',
                     'articulos.archivo_plagio',
+                    'articulos.created_at',
+                    'articulos.updated_at',
+                    'articulos.fecha_reenvio',
                     'mesas.descripcion',
                     'users.id',
                     'users.name',
@@ -157,6 +166,10 @@ class ArticuloController extends Controller
                 'articulos.estado',
                 'articulos.modalidad',
                 'articulos.archivo',
+                'articulos.carta_aceptacion',
+                'articulos.fecha_reenvio',
+                'articulos.created_at',
+                'articulos.updated_at',
                 'mesas.descripcion',
                 'comprobante_pagos.observacion',
                 'users.id',
@@ -185,6 +198,8 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.carta_aceptacion',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
@@ -206,6 +221,8 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.carta_aceptacion',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
@@ -227,6 +244,8 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.carta_aceptacion',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
@@ -253,6 +272,8 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.carta_aceptacion',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
@@ -274,11 +295,38 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.carta_aceptacion',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
                     'users.telefono',
                     'users.email',
+                )
+                ->orderBy('users.created_at', 'desc')
+                ->get();
+        } elseif ($texto == "/7") {
+            $Artic = DB::table('articulos')
+                ->join('comprobante_pagos', 'articulos.id_articulo', '=', 'comprobante_pagos.id_articulo')
+                ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
+                ->join('users', 'users.id', '=', 'articulos.id_user')
+                ->where('articulos.estado', 1) // Solo artículos aceptados
+                ->where('estado_pago', 1)
+                ->select(
+                    'articulos.id_articulo',
+                    'articulos.revista',
+                    'articulos.titulo',
+                    'articulos.estado',
+                    'articulos.modalidad',
+                    'articulos.archivo',
+                    'articulos.carta_aceptacion',
+                    'articulos.archivo_plagio',
+                    'mesas.descripcion',
+                    'comprobante_pagos.estado_pago',
+                    'users.id',
+                    DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
+                    'users.telefono',
+                    'users.email'
                 )
                 ->orderBy('users.created_at', 'desc')
                 ->get();
@@ -302,6 +350,8 @@ class ArticuloController extends Controller
                     'articulos.estado',
                     'articulos.modalidad',
                     'articulos.archivo',
+                    'articulos.carta_aceptacion',
+                    'articulos.archivo_plagio',
                     'mesas.descripcion',
                     'users.id',
                     DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto"),
@@ -331,6 +381,7 @@ class ArticuloController extends Controller
         }
 
         $articulosConPagos = $pagos->pluck('id_articulo')->toArray();
+        //dd($articulosConPagos);
 
         $autores = DB::table('articulos')
             ->join('autores_correspondencias', 'autores_correspondencias.id_autor', '=', 'articulos.id_autor')
@@ -436,9 +487,8 @@ class ArticuloController extends Controller
         $archivoPlagio = $request->file('archivo_plagio')->store('archivos/plagio', 'public');
 
 
-        $autor = AutoresCorrespondencia::firstOrCreate([
-            'correo' => $request->correo
-        ], [
+        $autor = AutoresCorrespondencia::create([
+            'correo' => $request->correo,
             'nom_autor' => $request->nom_autor,
             'ap_autor' => $request->ap_autor,
             'am_autor' => $request->am_autor,
@@ -496,6 +546,16 @@ class ArticuloController extends Controller
             return redirect()->back()->with('error', 'El archivo no se encuentra disponible.');
         }
 
+
+        // Descargar el archivo
+        return response()->download($pathToFile);
+    }
+
+    public function downloadCarta($titulo)
+    {
+        // Obtener el artículo
+        $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
+        $pathToFile = storage_path('app/public/' . $articulo->carta_aceptacion);
 
         // Descargar el archivo
         return response()->download($pathToFile);
@@ -559,7 +619,8 @@ class ArticuloController extends Controller
 
         $validated = $request->validate([
             'estado' => 'required|integer',
-            'archivo' => 'nullable|file|mimes:doc,docx|max:5120'
+            'archivo' => 'nullable|file|mimes:doc,docx|max:5120',
+            'carta_aceptacion' => 'nullable|file|mimes:pdf|max:5120'
         ]);
 
         // Actualizar el estado del artículo
@@ -577,6 +638,13 @@ class ArticuloController extends Controller
                 $evaluar_art->revista,
                 $evaluar_art->modalidad
             ));
+        }
+
+        if ($request->hasFile('carta_aceptacion')) {
+            $file = $request->file('carta_aceptacion')->store('archivos/cartas', 'public');
+            $evaluar_art->update([
+                'carta_aceptacion' => $file,
+            ]);
         }
 
         // Si el estado es 2, enviar un correo de rechazado
@@ -631,7 +699,7 @@ class ArticuloController extends Controller
             // Actualizar el artículo
             $articulo->update([
                 'archivo' => $file,
-
+                'fecha_reenvio' => now(),
             ]);
         }
 

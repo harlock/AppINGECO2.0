@@ -51,6 +51,7 @@
                     <button class="btn bg-green-100 btn-texto m-1"  data-texto="1">Aceptado</button>
                     <button class="btn bg-red-100 btn-texto m-1"  data-texto="2">Rechazado</button>
                     <button class="btn bg-blue-100 btn-texto m-1"  data-texto="5">Aceptado con cambios</button>
+                    <button class="btn bg-green-100 btn-texto m-1" data-texto="7">Pagos Aceptados</button>
                     <form class=" m-1 " action="{{ route('art.admin') }}" method="GET">
                         <button class="btn bg-gray-300 " type="submit">Quitar filtro </button>
                     </form>
@@ -86,7 +87,8 @@
                                     <th class="font-bold">Modalidad</th>
                                     <th class="font-bold">Estado</th>
                                     <th class="font-bold"></th>
-                                    <th class="font-bold">Consultar Pagos</th>
+                                    <th class="font-bold"></th>
+                                    <th class="font-bold"></th>
                                 </tr>
                             </thead>
                             <tbody id="tablaNombres">
@@ -140,8 +142,20 @@
 
 
 
-                                <td class="">
+                                <td class="text-center">
                                     <a class="btn btn-primary" href="{{route('art.download',$articu->titulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
+                                    <div class="mt-2">
+                                        <a class="btn btn-danger" href="{{ route('art.downloadPlagio', $articu->titulo) }}">Antiplagio
+                                            <i class="bi bi-arrow-down-square-fill"></i>
+                                        </a>
+                                    </div>
+                                    @if(!empty($articu->carta_aceptacion))
+                                        <div class="mt-2">
+                                            <a class="btn btn-success" href="{{ route('art.downloadCarta', $articu->titulo) }}">
+                                                Carta Aceptación <i class="bi bi-arrow-down-square-fill"></i>
+                                            </a>
+                                        </div>
+                                    @endif
                                 </td>
 
                                 <td>
@@ -151,11 +165,9 @@
                                         @endphp
 
                                         @if ($estadoPago == 0)
-                                            <button type="button" class="btn btn-secondary btn-sm consultar-pagos-btn" disabled>
-                                                Pago Regresado <i class="bi bi-x-circle"></i>
-                                            </button>
+
                                         @else
-                                            <!-- Button to trigger payment details modal -->
+
                                             <button type="button" class="btn btn-primary btn-sm consultar-pagos-btn"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#consultarPagosModal{{$articu->id_articulo}}">
@@ -163,9 +175,7 @@
                                             </button>
                                         @endif
                                     @else
-                                        <button type="button" class="btn btn-secondary btn-sm consultar-pagos-btn" disabled>
-                                            Sin pago para consultar <i class="bi bi-x-circle"></i>
-                                        </button>
+
                                     @endif
                                         <!-- Modal para consultar pagos -->
                                         <div class="modal fade" id="consultarPagosModal{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="consultarPagosModalLabel" aria-hidden="true">

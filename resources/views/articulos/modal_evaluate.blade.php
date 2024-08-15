@@ -35,6 +35,13 @@
                         <input type="file" class="form-control" id="archivo-{{$articu->id_articulo}}" name="archivo" accept=".doc,.docx">
                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                     </div>
+
+                    <div class="mb-3" id="carta-aceptacion-container-{{$articu->id_articulo}}" style="display: none;">
+                        <label for="carta-aceptacion-{{$articu->id_articulo}}" class="form-label">Subir carta de aceptación</label>
+                        <input type="file" class="form-control" id="carta-aceptacion-{{$articu->id_articulo}}" name="carta_aceptacion" accept=".pdf">
+                        <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
@@ -47,35 +54,43 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Función para actualizar el estado del campo de archivo
-        function updateArchivoVisibility(selectElementId, archivoContainerId, archivoInputId) {
+        function updateArchivoVisibility(selectElementId, cartaContainerId, archivoContainerId, cartaInputId, archivoInputId) {
             const selectElement = document.getElementById(selectElementId);
+            const cartaContainer = document.getElementById(cartaContainerId);
             const archivoContainer = document.getElementById(archivoContainerId);
+            const cartaInput = document.getElementById(cartaInputId);
             const archivoInput = document.getElementById(archivoInputId);
 
-            if (selectElement.value == '5') { // Estado "Aceptar con cambios"
-                archivoContainer.style.display = 'block';
-            } else {
+            if (selectElement.value == '1') { // Estado "Aceptar"
+                cartaContainer.style.display = 'block';
                 archivoContainer.style.display = 'none';
-                archivoInput.value = ''; // Limpiar el campo de archivo si el estado cambia
+                archivoInput.value = '';
+            } else if (selectElement.value == '5') { // Estado "Aceptar con cambios"
+                archivoContainer.style.display = 'block';
+                cartaContainer.style.display = 'none';
+                cartaInput.value = '';
+            } else {
+                cartaContainer.style.display = 'none';
+                archivoContainer.style.display = 'none';
+                cartaInput.value = '';
+                archivoInput.value = '';
             }
         }
 
-        // Obtener todos los selectores de estado
         document.querySelectorAll('[id^=estado-select-]').forEach(select => {
             const id = select.id.split('-').pop();
+            const cartaContainerId = `carta-aceptacion-container-${id}`;
             const archivoContainerId = `archivo-container-${id}`;
+            const cartaInputId = `carta-aceptacion-${id}`;
             const archivoInputId = `archivo-${id}`;
 
-            // Actualizar visibilidad del campo de archivo al cambiar el estado
             select.addEventListener('change', function () {
-                updateArchivoVisibility(select.id, archivoContainerId, archivoInputId);
+                updateArchivoVisibility(select.id, cartaContainerId, archivoContainerId, cartaInputId, archivoInputId);
             });
 
-            // Actualizar visibilidad del campo de archivo cuando se abra el modal
             const modalElement = document.getElementById(`modal${id}`);
             modalElement.addEventListener('show.bs.modal', function () {
-                updateArchivoVisibility(select.id, archivoContainerId, archivoInputId);
+                updateArchivoVisibility(select.id, cartaContainerId, archivoContainerId, cartaInputId, archivoInputId);
             });
         });
     });

@@ -74,6 +74,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //Descargar PDF
     Route::get('/articulos/download/{titulo}', [ArticuloController::class, 'download'])->name('art.download');
     Route::get('/articulos/downloadPlagio/{titulo}', [ArticuloController::class, 'downloadPlagio'])->name('art.downloadPlagio');
+    Route::get('/articulos/{titulo}/downloadPlagio', [ArticuloController::class, 'downloadCarta'])->name('art.downloadCarta');
 
     //RUTAS EVALUADOR
     Route::get('evaluar_art', [ArticuloController::class, 'index'])->name('list.art');

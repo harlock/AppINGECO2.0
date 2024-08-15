@@ -38,7 +38,7 @@
                         <th class="text-center">Nombre del artículo</th>
                         <th class="text-center">Modalidad</th>
                         <th class="text-center">Archivo Artículo</th>
-                        <th class="text-center">Archivo Antiplagio</th>
+                        <th class="text-center">Archivos</th>
                         <th class="text-center">Mesa asignada</th>
                         <th class="text-center">Comprobante de pago</th>
                         <th class="text-center">Observación de pagos</th>
@@ -72,6 +72,13 @@
                                 <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articulo->titulo) }}">Antiplagio
                                     <i class="bi bi-arrow-down-square-fill"></i>
                                 </a>
+                                @if(!empty($articulo->carta_aceptacion))
+                                    <div class="mt-2">
+                                        <a class="btn btn-primary" href="{{ route('art.downloadCarta', $articulo->titulo) }}">
+                                            Carta Aceptación <i class="bi bi-arrow-down-square-fill"></i>
+                                        </a>
+                                    </div>
+                                @endif
                             </td>
 
                             <td class="text-wrap text-break">{{ $articulo->descripcion }}</td>
@@ -84,12 +91,12 @@
                                     @if($comprobanteExistente && $comprobanteExistente->estado_pago == 0)
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
-                                            Agregar nuevo comprobante de pago
+                                            Agregar nuevo comprobante
                                         </button>
                                     @elseif(!$comprobanteExistente)
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                 data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
-                                            Agregar comprobante de pago
+                                            Agregar comprobante
                                         </button>
                                     @else
                                         <button type="button" class="btn btn-success" disabled>
@@ -189,9 +196,15 @@
                             </td>
                             <td class="text-center">
                                 @if($articulo->estado == 5)
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#archivoModal-{{ $articulo->id_articulo }}" title="Cargar Archivo">
-                                        Reenviar Artículo <i class="fa fa-file"></i>
-                                    </button>
+                                    @if($articulo->fecha_reenvio == $articulo->updated_at)
+                                        <button type="button" class="btn btn-secondary" disabled>
+                                            Artículo reenviado <i class="fa fa-check"></i>
+                                        </button>
+                                    @else
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#archivoModal-{{ $articulo->id_articulo }}" title="Cargar Archivo">
+                                            Reenviar Artículo <i class="fa fa-file"></i>
+                                        </button>
+                                    @endif
                                 @endif
                             </td>
                         </tr>
