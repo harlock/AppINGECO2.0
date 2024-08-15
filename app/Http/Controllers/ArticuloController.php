@@ -26,6 +26,8 @@ use ZipArchive;
 use Illuminate\Support\Facades\File;
 use App\Models\ComprobantePago;
 use Illuminate\Support\Facades\Session;
+use App\Exports\ConsultaExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ArticuloController extends Controller
 {
@@ -390,6 +392,13 @@ class ArticuloController extends Controller
             ->keyBy('id_articulo');
 
         return view('administrador.articulos_revisores', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos', 'autores'));
+    }
+
+    public function exportarArticulos(Request $request)
+    {
+        $Artic = $this->articAdministrador($request);
+
+        return Excel::download(new ConsultaExport($Artic), 'articulos.xlsx');
     }
 
     /**

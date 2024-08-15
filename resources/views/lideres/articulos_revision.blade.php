@@ -58,7 +58,7 @@
 
                 <div class="p-1">
                     <div class="">
-                        <form class="" action="{{ route('descargar.excel') }}" method="GET">
+                        <form class="" action="{{ route('descargar.excel') }}" method="POST">
                             @csrf
                             <input type="hidden" name="datos" value="{{ json_encode($Artic) }}">
                             <button class="btn bg-gray-200" type="submit">Descargar en Excel</button>
