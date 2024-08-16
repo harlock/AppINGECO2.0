@@ -141,7 +141,7 @@
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
                                 <label for="exampleInputEmail1" class="form-label">
-                                    <h4>Archivo*</h4>
+                                    <h4>Archivo Artículo*</h4>
                                 </label>
                                 <div class="col-10">
                                     @error('archivo') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror
