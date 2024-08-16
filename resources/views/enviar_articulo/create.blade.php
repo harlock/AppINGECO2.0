@@ -154,7 +154,7 @@
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
                                 <label for="archivo_plagio" class="form-label">
-                                    <h4>Archivo de Plagio*</h4>
+                                    <h4>Archivo de Antiplagio*</h4>
                                 </label>
                                 <div class="col-10">
                                     @error('archivo_plagio') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror
@@ -168,7 +168,7 @@
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
                                 <label for="exampleInputEmail1" class="form-label">
-                                    <h4>Área</h4>
+                                    <h4>Área*</h4>
                                 </label>
                                 <div class="col-10">
                                     @error('id_mesa') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror
