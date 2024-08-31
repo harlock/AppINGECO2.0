@@ -156,6 +156,30 @@
                                             </a>
                                         </div>
                                     @endif
+
+                                    <div class="mt-2">
+                                        @php
+                                            // Obtener el archivo de derechos desde la base de datos
+                                            $archivoDerecho = \App\Models\ArchivosDerechos::where('id_articulo', $articu->id_articulo)->first();
+                                        @endphp
+
+                                        @if($archivoDerecho)
+                                            <a class="btn btn-warning" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
+                                                Derechos Publicación <i class="bi bi-arrow-down-square-fill"></i>
+                                            </a>
+                                        @else
+                                            @if($articu->estado == 1)
+                                                <button type="button" class="btn btn-secondary btn-sm">
+                                                    No Disponible
+                                                </button>
+                                            @else
+                                                <button type="button" class="btn btn-secondary btn-sm">
+                                                    No Disponible
+                                                </button>
+                                            @endif
+                                        @endif
+                                    </div>
+
                                 </td>
 
                                 <td>

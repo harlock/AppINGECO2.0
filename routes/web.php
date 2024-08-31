@@ -15,7 +15,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ComprobantePagoController;
 use App\Http\Controllers\PeriodoArticuloController;
 use App\Http\Controllers\ContadoresController;
-
+use App\Http\Controllers\ArchivosDerechosController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -135,6 +135,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/validar-pago/{id_articulo}', [ContadoresController::class, 'validarPago'])->name('validar-pago');
     Route::get('contadores/index/{estado_pago?}', [ContadoresController::class, 'index'])->name('contadores.index');
 
-
+    Route::post('/archivos-derechos', [ArchivosDerechosController::class, 'store'])->name('archivos_derechos.store');
+    Route::get('/articulos/{id_articulo}/downloadArchivoDerecho', [ArticuloController::class, 'downloadArchivoDerecho'])->name('art.downloadArchivoDerecho');
+    Route::put('/archivo-derecho/{id}', [ArchivosDerechosController::class, 'update'])->name('art.updateArchivoDerecho');
 
 });

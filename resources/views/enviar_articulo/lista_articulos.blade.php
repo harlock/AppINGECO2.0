@@ -40,6 +40,7 @@
                         <th class="text-center">Archivo Artículo</th>
                         <th class="text-center">Archivos</th>
                         <th class="text-center">Mesa asignada</th>
+                        <th class="text-center">Ceder Derechos</th>
                         <th class="text-center">Comprobante de pago</th>
                         <th class="text-center">Observación de pagos</th>
                         <th class="text-center">Envio de Artículo</th>
@@ -82,6 +83,107 @@
                             </td>
 
                             <td class="text-wrap text-break">{{ $articulo->descripcion }}</td>
+                            <td class="text-center">
+                                @if($articulo->estado == 1)
+                                    @php
+                                        $archivoDerecho = App\Models\ArchivosDerechos::where('id_articulo', $articulo->id_articulo)->first();
+                                    @endphp
+
+                                    @if($archivoDerecho)
+                                        @if($archivoDerecho->estado == 1)
+                                            <!-- Si el archivo de derechos está aceptado -->
+                                            <button type="button" class="btn btn-success mb-2" disabled>
+                                                Archivo de Derechos Aceptado
+                                            </button>
+                                        @elseif($archivoDerecho->estado == 2)
+                                            <!-- Si el archivo de derechos fue rechazado -->
+                                            <button type="button" class="btn btn-warning mb-2" data-bs-toggle="modal" data-bs-target="#reenviarDerechoModal{{ $articulo->id_articulo }}">
+                                                Reenviar Archivo de Derechos
+                                            </button>
+                                        @else
+                                            <!-- Si el archivo de derechos está en revisión o pendiente -->
+                                            <button type="button" class="btn btn-secondary mb-2" disabled>
+                                                Archivo en Revisión
+                                            </button>
+                                        @endif
+                                    @else
+                                        <!-- Si no hay archivo de derechos -->
+                                        <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#uploadDerechoModal{{ $articulo->id_articulo }}">
+                                            Subir Archivo Derecho
+                                        </button>
+                                    @endif
+
+                                    <!-- Modal para "Subir Archivo Derecho" -->
+                                    <div class="modal fade" id="uploadDerechoModal{{ $articulo->id_articulo }}" tabindex="-1" aria-labelledby="uploadDerechoModalLabel{{ $articulo->id_articulo }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="uploadDerechoModalLabel{{ $articulo->id_articulo }}">Subir Archivo Derecho</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ route('archivos_derechos.store') }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="id_articulo" value="{{ $articulo->id_articulo }}">
+                                                        <div class="mb-3">
+                                                            <label for="archivo_derecho" class="form-label">Archivo Derecho (PDF)</label>
+                                                            <input type="file" class="form-control @error('archivo_derecho') is-invalid @enderror" id="archivo_derecho" name="archivo_derecho" accept="application/pdf">
+                                                            @error('archivo_derecho')
+                                                            <div class="invalid-feedback">
+                                                                {{ $message }}
+                                                            </div>
+                                                            @enderror
+                                                            <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal para "Reenviar Archivo Derecho" si fue rechazado -->
+                                    <div class="modal fade" id="reenviarDerechoModal{{ $articulo->id_articulo }}" tabindex="-1" aria-labelledby="reenviarDerechoModalLabel{{ $articulo->id_articulo }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="reenviarDerechoModalLabel{{ $articulo->id_articulo }}">Reenviar Archivo Derecho</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ route('archivos_derechos.store') }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="id_articulo" value="{{ $articulo->id_articulo }}">
+                                                        <div class="mb-3">
+                                                            <label for="archivo_derecho" class="form-label">Archivo Derecho (PDF)</label>
+                                                            <input type="file" class="form-control @error('archivo_derecho') is-invalid @enderror" id="archivo_derecho" name="archivo_derecho" accept="application/pdf">
+                                                            @error('archivo_derecho')
+                                                            <div class="invalid-feedback">
+                                                                {{ $message }}
+                                                            </div>
+                                                            @enderror
+                                                            <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Mensaje de Rechazo</label>
+                                                            <textarea class="form-control" readonly>{{ $archivoDerecho->mensaje ?? 'No hay mensaje.' }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary">Reenviar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </td>
+
+
                             <td class="text-center">
                                 @php
                                     $comprobanteExistente = App\Models\ComprobantePago::where('id_articulo', $articulo->id_articulo)->first();
@@ -183,29 +285,33 @@
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                         document.querySelectorAll('.modal').forEach((modal) => {
-                                            const articuloId = modal.id.split('-').pop();
-                                            const facturaValue = modal.querySelector('input[name="factura"]:checked')?.value;
+                                            const articuloId = modal.id.split('-').pop(); // Extrae el ID del artículo desde el ID del modal
+                                            const facturaRadioButtons = modal.querySelectorAll('input[name="factura"]'); // Selecciona todos los radio buttons del modal actual
                                             const constanciaFiscalGroup = document.getElementById(`constancia_fiscal_group_${articuloId}`);
 
-                                            if (facturaValue === '1') {
-                                                constanciaFiscalGroup.style.display = 'block';
-                                            } else {
-                                                constanciaFiscalGroup.style.display = 'none';
-                                            }
+                                            // Función para manejar el cambio en los radio buttons
+                                            const handleFacturaChange = function(event) {
+                                                if (event.target.value === '1') {
+                                                    constanciaFiscalGroup.style.display = 'block'; // Muestra el campo si selecciona 'Sí'
+                                                } else {
+                                                    constanciaFiscalGroup.style.display = 'none'; // Oculta el campo si selecciona 'No'
+                                                }
+                                            };
 
-                                            modal.querySelectorAll('input[name="factura"]').forEach((elem) => {
-                                                elem.addEventListener('change', function (event) {
-                                                    const constanciaFiscalGroup = document.getElementById(`constancia_fiscal_group_${articuloId}`);
-                                                    if (event.target.value == '1') {
-                                                        constanciaFiscalGroup.style.display = 'block';
-                                                    } else {
-                                                        constanciaFiscalGroup.style.display = 'none';
-                                                    }
-                                                });
+                                            // Asigna la función a cada radio button
+                                            facturaRadioButtons.forEach((elem) => {
+                                                elem.addEventListener('change', handleFacturaChange);
                                             });
+
+                                            // Inicializa la visibilidad del campo cuando se carga el modal
+                                            const initialCheckedRadio = modal.querySelector('input[name="factura"]:checked');
+                                            if (initialCheckedRadio) {
+                                                handleFacturaChange({ target: initialCheckedRadio });
+                                            }
                                         });
                                     });
                                 </script>
+
                             </td>
                             <td class="text-center">
                                 @if($articulo->observacion)
@@ -269,7 +375,7 @@
                                 </div>
                             </div>
                         </div>
-            </div>  
+            </div>
             </td>
             </tr>
             @endforeach

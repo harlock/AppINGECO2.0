@@ -21,6 +21,7 @@ use App\Mail\ArticulosRechazadosEmail;
 use App\Mail\ArticulosAceptadosCambiosEmail;
 use App\Mail\ReenvioArticulosEmail;
 use Illuminate\Support\Facades\Storage;
+use App\Models\ArchivosDerechos;
 
 use ZipArchive;
 use Illuminate\Support\Facades\File;
@@ -384,7 +385,9 @@ class ArticuloController extends Controller
 
         $articulosConPagos = $pagos->pluck('id_articulo')->toArray();
         //dd($articulosConPagos);
-
+        foreach ($Artic as $articulo) {
+            $articulo->archivoDerechoExistente = ArchivosDerechos::where('id_articulo', $articulo->id_articulo)->exists();
+        }
         $autores = DB::table('articulos')
             ->join('autores_correspondencias', 'autores_correspondencias.id_autor', '=', 'articulos.id_autor')
             ->select('articulos.id_articulo', 'autores_correspondencias.correo', 'autores_correspondencias.nom_autor', 'autores_correspondencias.ap_autor', 'autores_correspondencias.am_autor', 'autores_correspondencias.tel')
@@ -567,6 +570,20 @@ class ArticuloController extends Controller
         $pathToFile = storage_path('app/public/' . $articulo->carta_aceptacion);
 
         // Descargar el archivo
+        return response()->download($pathToFile);
+    }
+
+    public function downloadArchivoDerecho($id_articulo)
+    {
+        $articulo = Articulo::findOrFail($id_articulo);
+
+        $archivoDerecho = ArchivosDerechos::where('id_articulo', $articulo->id_articulo)->firstOrFail();
+        $pathToFile = storage_path('app/public/' . $archivoDerecho->archivo_derecho);
+
+        if (!file_exists($pathToFile)) {
+            return abort(404, 'Archivo no encontrado');
+        }
+
         return response()->download($pathToFile);
     }
 
