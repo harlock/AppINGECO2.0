@@ -153,6 +153,10 @@
                                                 <a class="btn btn-primary" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
                                                     Descargar Archivo de Derechos <i class="bi bi-arrow-down-square-fill"></i>
                                                 </a>
+                                            @elseif($archivoDerecho->estado == 2)
+                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
+                                                    Rechazado
+                                                </button>
                                             @else
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalRevisar{{$articu->id_articulo}}">
                                                     Revisar Archivo de Derechos
@@ -243,10 +247,11 @@
                                                     @method('PUT')
 
                                                     <div class="mt-3">
-                                                        <label for="estado{{$articu->id_articulo}}" class="form-label">Estado</label>
+                                                        <label for="estado{{$articu->id_articulo}}" class="form-label">Evaluar</label>
                                                         <select id="estado{{$articu->id_articulo}}" name="estado" class="form-select">
-                                                            <option value="1" {{ $archivoDerecho && $archivoDerecho->estado == 1 ? 'selected' : '' }}>Aceptar</option>
-                                                            <option value="2" {{ $archivoDerecho && $archivoDerecho->estado == 2 ? 'selected' : '' }}>Rechazar</option>
+                                                            <option value="0" selected="true" disabled="true">Seleccionar estado</option>
+                                                            <option class="" value="1">Aceptar</option>
+                                                            <option class="" value="2">Rechazar</option>
                                                         </select>
                                                     </div>
 

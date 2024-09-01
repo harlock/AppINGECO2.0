@@ -50,6 +50,7 @@ class ArchivosDerechosController extends Controller
         if ($archivoDerecho) {
             // Si el archivo ya existe, actualizarlo
             $archivoDerecho->archivo_derecho = $request->file('archivo_derecho')->store('archivos_derechos', 'public');
+            $archivoDerecho->estado = 3;
         } else {
             // Si el archivo no existe, crear uno nuevo
             $archivoDerecho = new ArchivosDerechos();
@@ -88,8 +89,9 @@ class ArchivosDerechosController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        //dd($request->all());
         $request->validate([
-            'estado' => 'required|in:1,2',
+            'estado' => 'required',
             'mensaje' => 'nullable|string',
         ]);
 
