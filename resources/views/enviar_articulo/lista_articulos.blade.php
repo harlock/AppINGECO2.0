@@ -187,22 +187,31 @@
                             <td class="text-center">
                                 @php
                                     $comprobanteExistente = App\Models\ComprobantePago::where('id_articulo', $articulo->id_articulo)->first();
+                                    $archivoDerechoAceptado = App\Models\ArchivosDerechos::where('id_articulo', $articulo->id_articulo)
+                                                                                        ->where('estado', 1)
+                                                                                        ->exists();
                                 @endphp
 
                                 @if($articulo->estado == 1)
-                                    @if($comprobanteExistente && $comprobanteExistente->estado_pago == 0)
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
-                                            Agregar nuevo comprobante
-                                        </button>
-                                    @elseif(!$comprobanteExistente)
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
-                                            Agregar comprobante
-                                        </button>
+                                    @if($archivoDerechoAceptado)
+                                        @if($comprobanteExistente && $comprobanteExistente->estado_pago == 0)
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
+                                                Agregar nuevo comprobante
+                                            </button>
+                                        @elseif(!$comprobanteExistente)
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
+                                                Agregar comprobante
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn-success" disabled>
+                                                Comprobante enviado
+                                            </button>
+                                        @endif
                                     @else
-                                        <button type="button" class="btn btn-success" disabled>
-                                            Comprobante enviado
+                                        <button type="button" class="btn btn-secondary" disabled>
+                                            Agregar comprobante
                                         </button>
                                     @endif
                                 @endif
