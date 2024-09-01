@@ -93,6 +93,7 @@
                                 <th class="">Estado</th>
                                 <th class="">Archivo Artículo</th>
                                 <th class="">Archivo Antiplagio</th>
+                                <th class="">Archivo Derechos</th>
                                 <th class="">Evaluación</th>
                                 <th></th>
                             </tr>
@@ -142,6 +143,33 @@
                                             <i class="bi bi-arrow-down-square-fill"></i>
                                         </a>
                                     </td>
+                                    <td class="text-center">
+                                        @php
+                                            $archivoDerecho = \App\Models\ArchivosDerechos::where('id_articulo', $articu->id_articulo)->first();
+                                        @endphp
+
+                                        @if($archivoDerecho)
+                                            @if($archivoDerecho->estado == 1)
+                                                <a class="btn btn-primary" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
+                                                    Descargar Archivo de Derechos <i class="bi bi-arrow-down-square-fill"></i>
+                                                </a>
+                                            @else
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalRevisar{{$articu->id_articulo}}">
+                                                    Revisar Archivo de Derechos
+                                                </button>
+                                            @endif
+                                        @else
+                                            @if($articu->estado == 1)
+                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
+                                                    No Disponible
+                                                </button>
+                                            @else
+                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
+                                                    No Disponible
+                                                </button>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="d-flex justify-content-center">
                                         @if($articu->estado != 1 && $articu->estado != 2)
                                             @if($articu->fecha_reenvio == $articu->updated_at)
@@ -178,6 +206,7 @@
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
+                                <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400 d-flex justify-content-center">
                                     {{--
                                     <a class="btn btn-danger" href="{{url('download_zip')}}">Descargar ZIP <i class="bi bi-arrow-down-square-fill"></i></a>
@@ -185,6 +214,74 @@
                                 </td>
                                 <td class="bg-gray-400"></td>
                             </tr>
+                            <!-- Modal de revisar archivo de derechos de publicación -->
+                            @foreach($Artic as $articu)
+                                <!-- Modal de revisar archivo de derechos de publicación-->
+                                <div class="modal fade" id="modalRevisar{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="modalRevisarLabel{{$articu->id_articulo}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg"> <!-- Hacemos el modal más largo hacia abajo -->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalRevisarLabel{{$articu->id_articulo}}">Revisar Archivo de Derechos</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @php
+                                                    $archivoDerecho = \App\Models\ArchivosDerechos::where('id_articulo', $articu->id_articulo)->first();
+                                                @endphp
+
+                                                @if($archivoDerecho)
+                                                    <a class="btn btn-primary mb-3" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
+                                                        Descargar Archivo de Derechos <i class="bi bi-arrow-down-square-fill"></i>
+                                                    </a>
+                                                @else
+                                                    <p>No hay archivo de derechos disponible.</p>
+                                                @endif
+
+                                                <!-- Formulario para actualizar el estado y mensaje -->
+                                                <form id="formRevisar{{$articu->id_articulo}}" action="{{ route('art.updateArchivoDerecho', $articu->id_articulo) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <div class="mt-3">
+                                                        <label for="estado{{$articu->id_articulo}}" class="form-label">Estado</label>
+                                                        <select id="estado{{$articu->id_articulo}}" name="estado" class="form-select">
+                                                            <option value="1" {{ $archivoDerecho && $archivoDerecho->estado == 1 ? 'selected' : '' }}>Aceptar</option>
+                                                            <option value="2" {{ $archivoDerecho && $archivoDerecho->estado == 2 ? 'selected' : '' }}>Rechazar</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- Área de texto para el mensaje, inicialmente oculta -->
+                                                    <div class="mt-3" id="mensajeContainer{{$articu->id_articulo}}" style="display: {{ $archivoDerecho && $archivoDerecho->estado == 2 ? 'block' : 'none' }};">
+                                                        <label for="mensaje{{$articu->id_articulo}}" class="form-label">Mensaje</label>
+                                                        <textarea id="mensaje{{$articu->id_articulo}}" name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aquí...">{{ $archivoDerecho->mensaje ?? '' }}</textarea>
+                                                    </div>
+
+                                                    <!-- Botón para guardar los cambios -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        document.getElementById('estado{{$articu->id_articulo}}').addEventListener('change', function () {
+                                            var estado = this.value;
+                                            var mensajeContainer = document.getElementById('mensajeContainer{{$articu->id_articulo}}');
+                                            if (estado === '2') {
+                                                mensajeContainer.style.display = 'block';
+                                            } else {
+                                                mensajeContainer.style.display = 'none';
+                                            }
+                                        });
+                                    });
+                                </script>
+
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
