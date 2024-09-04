@@ -81,7 +81,7 @@
                                 <th class="font-bold text-center">Estado</th>
                                 <th class="font-bold text-center">Archivo Artículo</th>
                                 <th class="font-bold text-center">Archivo Antiplagio</th>
-                                <th class="font-bold text-center">Archivo Derechos</th>
+                                <th class="font-bold text-center">Carta de Sesión de Derechos</th>
 
                             </tr>
                         </thead>
@@ -134,7 +134,7 @@
                                 @endphp
 
                                 @if($archivoDerecho)
-                                    <a class="btn btn-primary" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">Derechos Publicación
+                                    <a class="btn btn-primary" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">Carta de Cesión de Derechos
                                         <i class="bi bi-arrow-down-square-fill"></i>
                                     </a>
                                 @else
