@@ -108,7 +108,7 @@
                                         @endif
                                     @else
                                         <!-- Si no hay archivo de derechos -->
-                                        <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#uploadDerechoModal{{ $articulo->id_articulo }}">
+                                        <button type="button" class="btn btn-info mb-2" data-bs-toggle="modal" data-bs-target="#uploadDerechoModal{{ $articulo->id_articulo }}">
                                             Subir Archivo Derecho
                                         </button>
                                     @endif
