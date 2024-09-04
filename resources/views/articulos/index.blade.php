@@ -151,15 +151,15 @@
                                         @if($archivoDerecho)
                                             @if($archivoDerecho->estado == 1)
                                                 <a class="btn btn-primary" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
-                                                    Descargar Archivo de Derechos <i class="bi bi-arrow-down-square-fill"></i>
+                                                    Carta de Cesión de Derechos <i class="bi bi-arrow-down-square-fill"></i>
                                                 </a>
                                             @elseif($archivoDerecho->estado == 2)
-                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
+                                                <button type="button" class="btn btn-danger btn-sm" disabled>
                                                     Rechazado
                                                 </button>
                                             @else
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalRevisar{{$articu->id_articulo}}">
-                                                    Revisar Archivo de Derechos
+                                                    Revisar Carta de Cesión de Derechos
                                                 </button>
                                             @endif
                                         @else
@@ -225,7 +225,7 @@
                                     <div class="modal-dialog modal-lg"> <!-- Hacemos el modal más largo hacia abajo -->
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="modalRevisarLabel{{$articu->id_articulo}}">Revisar Archivo de Derechos</h5>
+                                                <h5 class="modal-title" id="modalRevisarLabel{{$articu->id_articulo}}">Revisar Carta de Cesión de Derechos</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -235,10 +235,13 @@
 
                                                 @if($archivoDerecho)
                                                     <a class="btn btn-primary mb-3" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
-                                                        Descargar Archivo de Derechos <i class="bi bi-arrow-down-square-fill"></i>
+                                                        Descargar Carta de Cesión de Derechos <i class="bi bi-arrow-down-square-fill"></i>
                                                     </a>
                                                 @else
-                                                    <p>No hay archivo de derechos disponible.</p>
+                                                    <p>No hay archivo de carta de
+                                                        cesión de derechos disponible.
+                                                    </p>
+
                                                 @endif
 
                                                 <!-- Formulario para actualizar el estado y mensaje -->

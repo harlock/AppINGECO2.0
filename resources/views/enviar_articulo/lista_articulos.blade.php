@@ -40,7 +40,7 @@
                         <th class="text-center">Archivo Artículo</th>
                         <th class="text-center">Archivos</th>
                         <th class="text-center">Mesa asignada</th>
-                        <th class="text-center">Ceder Derechos</th>
+                        <th class="text-center">Carta de  Derechos</th>
                         <th class="text-center">Comprobante de pago</th>
                         <th class="text-center">Observación de pagos</th>
                         <th class="text-center">Envio de Artículo</th>
@@ -93,23 +93,23 @@
                                         @if($archivoDerecho->estado == 1)
                                             <!-- Si el archivo de derechos está aceptado -->
                                             <button type="button" class="btn btn-success mb-2" disabled>
-                                                Archivo de Derechos Aceptado
+                                                Carta de Cesión Derechos Aceptada
                                             </button>
                                         @elseif($archivoDerecho->estado == 2)
                                             <!-- Si el archivo de derechos fue rechazado -->
                                             <button type="button" class="btn btn-warning mb-2" data-bs-toggle="modal" data-bs-target="#reenviarDerechoModal{{ $articulo->id_articulo }}">
-                                                Reenviar Archivo de Derechos
+                                                Reenviar Carta de Cesión Derechos
                                             </button>
                                         @else
                                             <!-- Si el archivo de derechos está en revisión o pendiente -->
                                             <button type="button" class="btn btn-secondary mb-2" disabled>
-                                                Archivo en Revisión
+                                                Carta en Revisión
                                             </button>
                                         @endif
                                     @else
                                         <!-- Si no hay archivo de derechos -->
                                         <button type="button" class="btn btn-info mb-2" data-bs-toggle="modal" data-bs-target="#uploadDerechoModal{{ $articulo->id_articulo }}">
-                                            Subir Archivo Derecho
+                                            Subir Carta de Cesión de Derechos
                                         </button>
                                     @endif
 
@@ -118,7 +118,7 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="uploadDerechoModalLabel{{ $articulo->id_articulo }}">Subir Archivo Derecho</h5>
+                                                    <h5 class="modal-title" id="uploadDerechoModalLabel{{ $articulo->id_articulo }}">Subir Carta de Cesión de Derecho</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <form action="{{ route('archivos_derechos.store') }}" method="POST" enctype="multipart/form-data">

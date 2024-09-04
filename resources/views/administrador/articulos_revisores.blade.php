@@ -165,7 +165,7 @@
 
                                         @if($archivoDerecho)
                                             <a class="btn btn-warning" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
-                                                Derechos Publicación <i class="bi bi-arrow-down-square-fill"></i>
+                                                Carta de Cesión de Derechos <i class="bi bi-arrow-down-square-fill"></i>
                                             </a>
                                         @else
                                             @if($articu->estado == 1)
