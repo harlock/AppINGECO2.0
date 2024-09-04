@@ -10,11 +10,11 @@
 {{--<h1>{{ $details ['title'] }}</h1>
 <p>{{ $details ['body']}}</p>
 <br>--}}
-<p> Articulo Evaluado: Aceptado con Cambios.</p>
+<p> Articulo Evaluado: Aceptado Condicionado.</p>
 <h1>{{ $titulo }}</h1>
 <p><strong>Revista:</strong> {{ $revista }}</p>
 <p><strong>Modalidad:</strong> {{ $modalidad }}</p>
-<p> Tu artículo ha sido aceptado con cambios, realiza los cambios correspondientes.</p>
+<p> Tu artículo ha sido aceptado con condiciones, realiza los cambios correspondientes.</p>
 <p> Recuerda descargar el archivo en la plataforma, ya que ahí el evaluador escribió los detalles de su artículo.</p>
 </body>
 </html>

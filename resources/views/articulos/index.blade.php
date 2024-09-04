@@ -72,7 +72,7 @@
                         <button class="btn bg-yellow-100 btn-texto m-1 " data-texto="4">En proceso de revisión </button>
                         <button class="btn bg-green-100 btn-texto m-1" data-texto="1">Aceptado</button>
                         <button class="btn bg-red-100 btn-texto m-1" data-texto="2">Rechazado</button>
-                        <button class="btn bg-blue-100 btn-texto m-1" data-texto="5">Aceptado con cambios</button>
+                        <button class="btn bg-blue-100 btn-texto m-1" data-texto="5">Aceptado condicionado</button>
                         <form class=" m-1 " action="{{ route('list.art') }}" method="GET">
                             <button class="btn bg-gray-300 " type="submit">Quitar filtro </button>
                         </form>
@@ -128,7 +128,7 @@
                                         @elseif($articu->estado == 2)
                                             <i class="bi bi-bookmark-x-fill"></i> Rechazado
                                         @elseif($articu->estado == 5)
-                                            <i class="bi bi-bookmark-star-fill"></i> Aceptado con cambios
+                                            <i class="bi bi-bookmark-star-fill"></i> Aceptado condicionado
                                         @else
                                             <i class="bi bi-bookmark-dash-fill"> </i> En proceso de revisión
                                         @endif
