@@ -55,15 +55,58 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('homeUsers', [HomeController::class, 'actualizaTabla'])->name('home.users');
     Route::post('descargar-excel', [ExcelController::class, 'descargarExcel'])->name('descargar.excel');
 
+
+    //RUTAS DE SUPER-ADMIN
     Route::middleware(['TypeAcces'])->group(function () {
 
         Route::resource("usuarios", UsuariosController::class);
         Route::get('revisores', [UsuariosController::class, 'indexRevisores'])->name('asign.revisores');
+        Route::get('revisores', [RevisoresController::class, 'index'])->name('list.revisores');
         Route::resource('mesas', MesaController::class);
         Route::get('artAdministrador', [ArticuloController::class, 'articAdministrador'])->name('art.admin');
+
+        Route::get('periodos/create', [PeriodoArticuloController::class, 'create'])->name('periodos.create');
+        Route::post('periodos', [PeriodoArticuloController::class, 'store'])->name('periodos.store');
+        Route::delete('periodos/{id}', [PeriodoArticuloController::class, 'destroy'])->name('periodos.destroy');
+        Route::get('periodos/{id}/edit', [PeriodoArticuloController::class, 'edit'])->name('periodos.edit');
+        Route::put('periodos/{id}', [PeriodoArticuloController::class, 'update'])->name('periodos.update');
     });
 
+    //RUTAS DE LIDER DE MESA
+    Route::middleware(['MesaAcces'])->group(function () {
+
+        Route::get('lideres', [lideresController::class, 'index'])->name('asignaArticulos');
+        Route::get('lideresArticulos', [lideresController::class, 'vistaArtRev'])->name('vista.artic.rev');
+        Route::resource("lideres", lideresController::class);
+        Route::get('lideres/{id}/delete', [lideresController::class, 'eliminarRevArtic', 'index'])->name('rev.artic.delete');
+    });
+
+    //RUTAS DE REVISOR
     Route::middleware(['UserAcces'])->group(function () {
+
+        Route::get('evaluar_art', [ArticuloController::class, 'index'])->name('list.art');
+        Route::resource('evaluar_art', ArticuloController::class)->except("index");
+    });
+
+    //RUTAS DE AUTOR
+    Route::middleware(['AutorAcces'])->group(function () {
+
+        Route::resource("enviar_articulo", ArticuloController::class)->except('index');
+        Route::get('articulosShow', [ArticuloController::class, 'showArticulos'])->name('show.art');
+
+        Route::middleware(['auth', 'check.periodo.activo'])->group(function () {
+            Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar_articulo.create');
+        });
+        Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar_articulo.create');
+
+    });
+
+    //RUTAS DE CONTADOR
+    Route::middleware(['ContaAcces'])->group(function () {
+
+        Route::get('contadores/index', [ContadoresController::class, 'index'])->name('contadores.index');
+        Route::post('/validar-pago/{id_articulo}', [ContadoresController::class, 'validarPago'])->name('validar-pago');
+        Route::get('contadores/index/{estado_pago?}', [ContadoresController::class, 'index'])->name('contadores.index');
     });
 
     //DESCARGA WORD
@@ -76,10 +119,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/articulos/downloadPlagio/{titulo}', [ArticuloController::class, 'downloadPlagio'])->name('art.downloadPlagio');
     Route::get('/articulos/{titulo}/downloadPlagio', [ArticuloController::class, 'downloadCarta'])->name('art.downloadCarta');
 
-    //RUTAS EVALUADOR
-    Route::get('evaluar_art', [ArticuloController::class, 'index'])->name('list.art');
-    Route::resource('evaluar_art', ArticuloController::class)->except("index");
-
     //RUTAS PERFIL
     Route::get('/profileShow', [UsuariosController::class, 'show'])->name('show.profile');
     Route::get('/profileEdit', [UsuariosController::class, 'edit']);
@@ -88,17 +127,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/revisor/{id}', [UsuariosController::class, 'deleteRevisor'])->name('registro.revisor');
     Route::put('/revisor/{id}', [UsuariosController::class, 'deleteRevisor'])->name('registro.revisor');
 
-    //Lideres
-    Route::get('revisores', [RevisoresController::class, 'index'])->name('list.revisores');
-    Route::get('lideres', [lideresController::class, 'index'])->name('asignaArticulos');
-    Route::get('lideresArticulos', [lideresController::class, 'vistaArtRev'])->name('vista.artic.rev');
-    Route::resource("lideres", lideresController::class);
-    Route::get('lideres/{id}/delete', [lideresController::class, 'eliminarRevArtic', 'index'])->name('rev.artic.delete');
 
     //RUTAS ARTICULOS
-    Route::resource("enviar_articulo", ArticuloController::class)->except('index');
-    Route::get('articulosShow', [ArticuloController::class, 'showArticulos'])->name('show.art');
-
     Route::get('articulos/{titulo}/download', [ArticuloController::class, 'download', 'index'])->name('art.download');
     Route::get('articulos/{id_articulo}/destroy', [ArticuloController::class, 'destroy', 'index'])->name('art.destroy');
     Route::get("enviar_articulo_email", [ArticuloController::class, 'sendEmail']);
@@ -109,20 +139,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/regresar-pago/{id_articulo}', [ContadoresController::class, 'regresarPago'])->name('regresar-pago');
     Route::put('/articulos/{articulo}/updateArchivo', [ArticuloController::class, 'updateArchivo'])->name('articulos.updateArchivo');
 
-    // Rutas para el recurso "periodos"
-    Route::get('periodos/create', [PeriodoArticuloController::class, 'create'])->name('periodos.create');
-    Route::post('periodos', [PeriodoArticuloController::class, 'store'])->name('periodos.store');
-    Route::delete('periodos/{id}', [PeriodoArticuloController::class, 'destroy'])->name('periodos.destroy');
-    Route::get('periodos/{id}/edit', [PeriodoArticuloController::class, 'edit'])->name('periodos.edit');
-    Route::put('periodos/{id}', [PeriodoArticuloController::class, 'update'])->name('periodos.update');
-
-    //Proteger enviar articulo
-    Route::middleware(['auth', 'check.periodo.activo'])->group(function () {
-        Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar_articulo.create');
-    });
-
     //CORREOS
-    Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar_articulo.create');
     Route::post('enviar_articulo', [ArticuloController::class, 'store'])->name('enviar_articulo.store');
     Route::post('evaluar_art', [ArticuloController::class, 'update'])->name('evaluar_art.update');
     Route::post('lideres', [lideresController::class, 'store'])->name('lideres.store');
@@ -130,10 +147,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('contadores', [ContadoresController::class, 'validarPago'])->name('contadores.validarPago');
     Route::post('articulosShow', [ArticuloController::class, 'updateArchivo'])->name('articulosShow.updateArchivo');
 
-    //Contadores
-    Route::get('contadores/index', [ContadoresController::class, 'index'])->name('contadores.index');
-    Route::post('/validar-pago/{id_articulo}', [ContadoresController::class, 'validarPago'])->name('validar-pago');
-    Route::get('contadores/index/{estado_pago?}', [ContadoresController::class, 'index'])->name('contadores.index');
 
     Route::post('/archivos-derechos', [ArchivosDerechosController::class, 'store'])->name('archivos_derechos.store');
     Route::get('/articulos/{id_articulo}/downloadArchivoDerecho', [ArticuloController::class, 'downloadArchivoDerecho'])->name('art.downloadArchivoDerecho');

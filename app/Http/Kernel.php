@@ -72,5 +72,10 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'TypeAcces'=> \App\Http\Middleware\ControlAccessMiddleware::class,
         'UserAcces'=> \App\Http\Middleware\UserAccessMiddleware::class,
+        'ContaAcces'=> \App\Http\Middleware\ContadorAccesMiddleware::class,
+        'AutorAcces'=> \App\Http\Middleware\AutorAccesMiddleware::class,
+        'MesaAcces'=> \App\Http\Middleware\MesaAccesMiddleware::class,
+        'AdminAcces'=> \App\Http\Middleware\AdminAccesMiddleware::class,
+
     ];
 }
