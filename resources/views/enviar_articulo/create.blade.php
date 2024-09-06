@@ -209,9 +209,12 @@
             </div>
 
             <!-- boton de enviar -->
-            <div class="d-flex  justify-content-center py-4">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="getDatos()" data-bs-target="#exampleModal">Guardar</button>
+            <div class="d-flex justify-content-center py-4">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="getDatos()" data-bs-target="#exampleModal" {{ !$periodoActivo ? 'disabled' : '' }}>
+                    Guardar
+                </button>
             </div>
+
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
