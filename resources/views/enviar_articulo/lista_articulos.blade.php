@@ -35,14 +35,12 @@
                     <tr>
                         <th class="text-center">Estado</th>
                         <th class="text-center">Revista</th>
-                        <th class="text-center">Nombre del Artículo</th>
+                        <th class="text-center">Título del Artículo</th>
                         <th class="text-center">Modalidad</th>
-                        <th class="text-center">Archivos Descargables</th>
+                        <th class="text-center">Archivos</th>
                         <th class="text-center">Mesa Asignada</th>
                         <th class="text-center">Carta de Cesión de Derechos</th>
                         <th class="text-center">Comprobante de Pago</th>
-                        <th class="text-center">Observación de Pagos</th>
-                        <th class="text-center">Envio de Artículo</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -78,6 +76,19 @@
                                         <i class="bi bi-file-earmark-check-fill"></i> Carta Aceptación
                                     </a>
                                 @endif
+
+                                @if($articulo->estado == 5)
+                                    @if($articulo->fecha_reenvio == $articulo->updated_at)
+                                        <button type="button" class="btn btn-warning mb-2" disabled>
+                                            Artículo reenviado <i class="fa fa-check"></i>
+                                        </button>
+                                    @else
+                                        <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#archivoModal-{{ $articulo->id_articulo }}" title="Cargar Archivo">
+                                            Reenviar Artículo <i class="fa fa-file"></i>
+                                        </button>
+                                    @endif
+                                @endif
+
                             </td>
                             <td class="text-wrap text-break">{{ $articulo->descripcion }}</td>
                             <td class="text-center">
@@ -90,7 +101,7 @@
                                         @if($archivoDerecho->estado == 1)
                                             <!-- Si el archivo de derechos está aceptado -->
                                             <button type="button" class="btn btn-success mb-2" disabled>
-                                                Carta de Derechos Aceptada
+                                                Carta Aceptada
                                             </button>
                                         @elseif($archivoDerecho->estado == 2)
                                             <!-- Si el archivo de derechos fue rechazado -->
@@ -192,7 +203,7 @@
                                         @if($comprobanteExistente && $comprobanteExistente->estado_pago == 0)
                                             <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                     data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
-                                                Agregar nuevo comprobante
+                                                Reenviar comprobante
                                             </button>
                                         @elseif(!$comprobanteExistente)
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -277,6 +288,12 @@
                                                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                                                     </div>
                                                 </div>
+                                                <div>
+                                                    <label class="form-label">Observaciones del Pago</label>
+                                                    @if($articulo->id_articulo)
+                                                        <textarea class="form-control" readonly>{{ $articulo->observacion ?? 'Sin observaciones por el momento.'}}</textarea>
+                                                    @endif
+                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                     <button type="submit" class="btn btn-primary">Guardar</button>
@@ -316,26 +333,6 @@
                                     });
                                 </script>
 
-                            </td>
-                            <td class="text-center">
-                                @if($articulo->observacion)
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#observacionesModal-{{ $articulo->id_articulo }}" title="Ver Observaciones">
-                                        Observación en pagos <i class="fa fa-comments"></i>
-                                    </button>
-                                @endif
-                            </td>
-                            <td class="text-center">
-                                @if($articulo->estado == 5)
-                                    @if($articulo->fecha_reenvio == $articulo->updated_at)
-                                        <button type="button" class="btn btn-secondary" disabled>
-                                            Artículo reenviado <i class="fa fa-check"></i>
-                                        </button>
-                                    @else
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#archivoModal-{{ $articulo->id_articulo }}" title="Cargar Archivo">
-                                            Reenviar Artículo <i class="fa fa-file"></i>
-                                        </button>
-                                    @endif
-                                @endif
                             </td>
                         </tr>
 
