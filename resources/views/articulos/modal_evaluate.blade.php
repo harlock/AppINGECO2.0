@@ -25,7 +25,7 @@
                                 <option value="0" selected="true" disabled="true">Seleccionar estado</option>
                                 <option class="" value="1">Aceptar</option>
                                 <option class="" value="2">Rechazar</option>
-                                <option class="" value="5">Aceptar con cambios</option>
+                                <option class="" value="5">Aceptar con condiciones</option>
                             </select>
                         </div>
                     </div>

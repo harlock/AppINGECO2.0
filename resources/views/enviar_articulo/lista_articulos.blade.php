@@ -57,7 +57,7 @@
                                 @elseif($articulo->estado == 2)
                                     <i class="bi bi-bookmark-x-fill"></i> Rechazado
                                 @elseif($articulo->estado == 5)
-                                    <i class="bi bi-bookmark-star-fill"></i> Aceptado con cambios
+                                    <i class="bi bi-bookmark-star-fill"></i> Aceptado condicionado
                                 @else
                                     <i class="bi bi-bookmark-dash-fill"></i> En proceso de revisión
                                 @endif

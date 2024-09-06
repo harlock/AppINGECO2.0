@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Estimado Revisor.</h1>
-<p>El artículo que había aceptado con cambios, ya ha sido reenviado.</p>
+<p>El artículo que había aceptado con condiciones, ya ha sido reenviado.</p>
 <p><strong>Título:</strong> {{ $titulo }}</p>
 <p><strong>Revista:</strong> {{ $revista }}</p>
 <p><strong>Modalidad:</strong> {{ $modalidad }}</p>
