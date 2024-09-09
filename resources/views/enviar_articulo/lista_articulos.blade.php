@@ -210,9 +210,13 @@
                                                     data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
                                                 Agregar comprobante
                                             </button>
+                                        @elseif($comprobanteExistente && ($comprobanteExistente->estado_pago != 0 && $comprobanteExistente->estado_pago != 1))
+                                            <button type="button" class="btn btn-secondary" disabled>
+                                                En Revisión
+                                            </button>
                                         @else
                                             <button type="button" class="btn btn-success" disabled>
-                                                Comprobante enviado
+                                                Comprobante Aceptado
                                             </button>
                                         @endif
                                     @else
