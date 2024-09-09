@@ -451,6 +451,7 @@
         <section class="features-icons bg-light text-center">
             <div class="container">
                 <div class="row">
+                    {{--
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                             <div class="features-icons-icon d-flex"><i class="bi bi-calendar m-auto text-primary"></i></div>
@@ -462,6 +463,7 @@
                             </p>
                         </div>
                     </div>
+                    --}}
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                             <div class="features-icons-icon d-flex"><i class="bi bi-person-circle m-auto text-primary"></i></div>
@@ -488,32 +490,7 @@
             </div>
         </section>
 
-        <!-- Image Showcases-->
-        <section class="showcase p-5">
-            <div class="container-fluid p-2">
-                <div class="row g-0 p-2 shadow-sm p-3 mb-5 bg-body rounded">
-                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{asset('imagenes/imagenes_enviar_articulo/trabajo_equipo.jpeg')}}')"></div>
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                        <h2>Actividad</h2>
-                        <p class="lead mb-0">¡Esta activa las 24 horas del día, para ocuparla en el momento que tu desees!</p>
-                    </div>
-                </div>
-                <div class="row g-0 p-2 bg-light shadow-sm p-3 mb-5 bg-body rounded">
-                    <div class="col-lg-6 text-white showcase-img" style="background-image: url('{{asset('imagenes/imagenes_enviar_articulo/bootstrap.jpg')}}')"></div>
-                    <div class="col-lg-6 my-auto showcase-text">
-                        <h2> Bootstrap 5</h2>
-                        <p class="lead mb-0">Framework de diseño utilizado para desarrollar aplicaciones web.</p>
-                    </div>
-                </div>
-                <div class="row g-0 p-2 shadow-sm p-3 mb-5 bg-body rounded">
-                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{asset('imagenes/imagenes_enviar_articulo/laravel.jpg')}}')"></div>
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                        <h2>Laravel</h2>
-                        <p class="lead mb-0"><Fieldset> </Fieldset>Framework de PHP para facilitar desarrollo sobre aplicaciones escritas en este lenguaje de programación.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+      
     </main>
 </body>
 
