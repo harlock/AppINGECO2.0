@@ -78,17 +78,16 @@
                             <thead class="rounded-lg">
                                 <tr class="bg-gray-100 text-black rounded-lg">
                                     <th>ID</th>
-                                    <th class="font-bold">Revista</th>
-                                    <th class="font-bold">Mesa</th>
-                                    <th class="font-bold">Nombre del artículo</th>
-                                    <th class="font-bold">Autor</th>
+                                    <th class="font-bold text-center">Revista</th>
+                                    <th class="font-bold text-center">Mesa</th>
+                                    <th class="font-bold text-center">Nombre del artículo</th>
+                                    <th class="font-bold text-center">Autor</th>
 
 
-                                    <th class="font-bold">Modalidad</th>
-                                    <th class="font-bold">Estado</th>
-                                    <th class="font-bold"></th>
-                                    <th class="font-bold"></th>
-                                    <th class="font-bold"></th>
+                                    <th class="font-bold text-center">Modalidad</th>
+                                    <th class="font-bold text-center">Estado</th>
+                                    <th class="font-bold text-center">Archivos Descargable</th>
+                                    <th class="font-bold text-center"></th>
                                 </tr>
                             </thead>
                             <tbody id="tablaNombres">
@@ -143,7 +142,7 @@
 
 
                                 <td class="text-center">
-                                    <a class="btn btn-primary" href="{{route('art.download',$articu->titulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
+                                    <a class="btn btn-primary" href="{{route('art.download',$articu->titulo)}}">Artículo <i class="bi bi-arrow-down-square-fill"></i></a>
                                     <div class="mt-2">
                                         <a class="btn btn-danger" href="{{ route('art.downloadPlagio', $articu->titulo) }}">Antiplagio
                                             <i class="bi bi-arrow-down-square-fill"></i>

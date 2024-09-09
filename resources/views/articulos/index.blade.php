@@ -86,15 +86,13 @@
                             <thead>
                             <tr class="bg-gray-100 text-black">
                                 <th>ID</th>
-                                <th class="">Revista</th>
-                                <th class="">Modalidad</th>
-                                <th class="">Correo</th>
-                                <th class="">Nombre del artículo</th>
-                                <th class="">Estado</th>
-                                <th class="">Archivo Artículo</th>
-                                <th class="">Archivo Antiplagio</th>
-                                <th class="">Archivo Derechos</th>
-                                <th class="">Evaluación</th>
+                                <th class="text-center">Revista</th>
+                                <th class="text-center">Modalidad</th>
+                                <th class="text-center">Correo</th>
+                                <th class="text-center">Nombre del artículo</th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center">Archivos Descargables</th>
+                                <th class="text-center">Evaluación</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -134,44 +132,43 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        <a class="btn btn-primary btn-sm"
-                                           href="{{route('art.download',$articu->titulo)}}">Descargar <i
-                                                    class="bi bi-arrow-down-square-fill"></i></a>
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articu->titulo) }}">Antiplagio
-                                            <i class="bi bi-arrow-down-square-fill"></i>
+                                        <!-- Botón para descargar el artículo -->
+                                        <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articu->titulo) }}">
+                                            <i class="bi bi-file-earmark-text-fill"></i> Descargar Artículo
                                         </a>
-                                    </td>
-                                    <td class="text-center">
+
+                                        <!-- Botón para descargar el archivo antiplagio -->
+                                        <a class="btn btn-primary  d-block mb-2" href="{{ route('art.downloadPlagio', $articu->titulo) }}">
+                                            <i class="bi bi-shield-lock-fill"></i> Antiplagio
+                                        </a>
+
+                                        <!-- Verificar si existe el archivo de cesión de derechos -->
                                         @php
                                             $archivoDerecho = \App\Models\ArchivosDerechos::where('id_articulo', $articu->id_articulo)->first();
                                         @endphp
 
                                         @if($archivoDerecho)
                                             @if($archivoDerecho->estado == 1)
-                                                <a class="btn btn-primary" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
-                                                    Carta de Cesión de Derechos <i class="bi bi-arrow-down-square-fill"></i>
+                                                <!-- Botón para descargar la carta de cesión de derechos si está aceptada -->
+                                                <a class="btn btn-primary  d-block mb-2" href="{{ route('art.downloadArchivoDerecho', $articu->id_articulo) }}">
+                                                    <i class="bi bi-file-earmark-check-fill"></i> Cesión de Derechos
                                                 </a>
                                             @elseif($archivoDerecho->estado == 2)
-                                                <button type="button" class="btn btn-danger btn-sm" disabled>
-                                                    Rechazado
+                                                <!-- Botón para mostrar que la carta de derechos fue rechazada -->
+                                                <button type="button" class="btn btn-danger d-block mb-2" disabled>
+                                                    <i class="bi bi-x-circle-fill"></i> Carta Rechazada
                                                 </button>
                                             @else
-                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalRevisar{{$articu->id_articulo}}">
-                                                    Revisar Carta de Cesión de Derechos
+                                                <!-- Botón para revisar la carta de cesión de derechos (en modal) -->
+                                                <button type="button" class="btn btn-warning  d-block mb-2" data-bs-toggle="modal" data-bs-target="#modalRevisar{{$articu->id_articulo}}">
+                                                    <i class="bi bi-file-earmark-text-fill"></i> Revisar Carta
                                                 </button>
                                             @endif
                                         @else
-                                            @if($articu->estado == 1)
-                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
-                                                    No Disponible
-                                                </button>
-                                            @else
-                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
-                                                    No Disponible
-                                                </button>
-                                            @endif
+                                            <!-- Mostrar el botón "No Disponible" si no hay archivo de derechos -->
+                                            <button type="button" class="btn btn-secondary  d-block mb-2" disabled>
+                                                <i class="bi bi-slash-circle-fill"></i> No Disponible
+                                            </button>
                                         @endif
                                     </td>
                                     <td class="d-flex justify-content-center">
@@ -209,8 +206,7 @@
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
-                                <td class="bg-gray-400"></td>
-                                <td class="bg-gray-400"></td>
+
                                 <td class="bg-gray-400 d-flex justify-content-center">
                                     {{--
                                     <a class="btn btn-danger" href="{{url('download_zip')}}">Descargar ZIP <i class="bi bi-arrow-down-square-fill"></i></a>
@@ -239,7 +235,7 @@
                                                     </a>
                                                 @else
                                                     <p>No hay archivo de carta de
-                                                        cesión de derechos disponible.
+                                                        Cesión de Derechos Disponible.
                                                     </p>
 
                                                 @endif

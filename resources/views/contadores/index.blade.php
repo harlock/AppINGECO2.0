@@ -215,7 +215,7 @@
                                                         @else
                                                             <form id="validarPagoForm{{$articu->id_articulo}}" action="{{ route('validar-pago', $articu->id_articulo) }}" method="POST">
                                                                 @csrf
-                                                                <button type="button" class="btn btn-warning validar-pago-btn" data-articulo-id="{{$articu->id_articulo}}">Validar Pago</button>
+                                                                <button type="button" class="btn btn-success validar-pago-btn" data-articulo-id="{{$articu->id_articulo}}">Validar Pago</button>
                                                             </form>
                                                         @endif
 
@@ -280,7 +280,6 @@
                                 </tr>
                             @endforeach
                             <tr>
-                                <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>

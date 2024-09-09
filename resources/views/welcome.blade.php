@@ -451,57 +451,46 @@
         <section class="features-icons bg-light text-center">
             <div class="container">
                 <div class="row">
+                    {{--
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
-                            <h3>Actividad</h3>
-                            <p class="lead mb-0">¡Activo diariamente!</p>
+                            <div class="features-icons-icon d-flex"><i class="bi bi-calendar m-auto text-primary"></i></div>
+                            <h3>Convocatoria</h3>
+                            <p class="lead mb-0">
+                                <a href="{{ url('storage/manuales/Convocatoria.pdf') }}" target="_blank">
+                                    Descargar PDF
+                                </a>
+                            </p>
                         </div>
                     </div>
+                    --}}
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
-                            <h3>Diseño </h3>
-                            <p class="lead mb-0">Elaborado con framework</p>
-                            <p class="lead mb-0"> "Bootstrap 5"</p>
+                            <div class="features-icons-icon d-flex"><i class="bi bi-person-circle m-auto text-primary"></i></div>
+                            <h3>Guía de Usuario</h3>
+                            <p class="lead mb-0">
+                                <a href="{{ url('storage/manuales/GUIA DE USUARIO TURNITING.pdf') }}" target="_blank">
+                                    Descargar PDF
+                                </a>
+                            </p>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
-                            <h3>Programación</h3>
-                            <p class="lead mb-0">Framework Laravel!</p>
+                            <div class="features-icons-icon d-flex"><i class="bi bi-book m-auto text-primary"></i></div>
+                            <h3>Manual de Autor</h3>
+                            <p class="lead mb-0">
+                                <a href="{{ url('storage/manuales/Manual_para_Autor.pdf') }}" target="_blank">
+                                    Descargar PDF
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Image Showcases-->
-        <section class="showcase p-5">
-            <div class="container-fluid p-2">
-                <div class="row g-0 p-2 shadow-sm p-3 mb-5 bg-body rounded">
-                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{asset('imagenes/imagenes_enviar_articulo/trabajo_equipo.jpeg')}}')"></div>
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                        <h2>Actividad</h2>
-                        <p class="lead mb-0">¡Esta activa las 24 horas del día, para ocuparla en el momento que tu desees!</p>
-                    </div>
-                </div>
-                <div class="row g-0 p-2 bg-light shadow-sm p-3 mb-5 bg-body rounded">
-                    <div class="col-lg-6 text-white showcase-img" style="background-image: url('{{asset('imagenes/imagenes_enviar_articulo/bootstrap.jpg')}}')"></div>
-                    <div class="col-lg-6 my-auto showcase-text">
-                        <h2> Bootstrap 5</h2>
-                        <p class="lead mb-0">Framework de diseño utilizado para desarrollar aplicaciones web.</p>
-                    </div>
-                </div>
-                <div class="row g-0 p-2 shadow-sm p-3 mb-5 bg-body rounded">
-                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{asset('imagenes/imagenes_enviar_articulo/laravel.jpg')}}')"></div>
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                        <h2>Laravel</h2>
-                        <p class="lead mb-0"><Fieldset> </Fieldset>Framework de PHP para facilitar desarrollo sobre aplicaciones escritas en este lenguaje de programación.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+
+      
     </main>
 </body>
 
