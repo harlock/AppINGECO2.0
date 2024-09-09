@@ -453,29 +453,41 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
-                            <h3>Actividad</h3>
-                            <p class="lead mb-0">¡Activo diariamente!</p>
+                            <div class="features-icons-icon d-flex"><i class="bi bi-calendar m-auto text-primary"></i></div>
+                            <h3>Convocatoria</h3>
+                            <p class="lead mb-0">
+                                <a href="{{ url('storage/manuales/Convocatoria.pdf') }}" target="_blank">
+                                    Descargar PDF
+                                </a>
+                            </p>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
-                            <h3>Diseño </h3>
-                            <p class="lead mb-0">Elaborado con framework</p>
-                            <p class="lead mb-0"> "Bootstrap 5"</p>
+                            <div class="features-icons-icon d-flex"><i class="bi bi-person-circle m-auto text-primary"></i></div>
+                            <h3>Guía de Usuario</h3>
+                            <p class="lead mb-0">
+                                <a href="{{ url('storage/manuales/GUIA DE USUARIO TURNITING.pdf') }}" target="_blank">
+                                    Descargar PDF
+                                </a>
+                            </p>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
-                            <h3>Programación</h3>
-                            <p class="lead mb-0">Framework Laravel!</p>
+                            <div class="features-icons-icon d-flex"><i class="bi bi-book m-auto text-primary"></i></div>
+                            <h3>Manual de Autor</h3>
+                            <p class="lead mb-0">
+                                <a href="{{ url('storage/manuales/Manual_para_Autor.pdf') }}" target="_blank">
+                                    Descargar PDF
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
         <!-- Image Showcases-->
         <section class="showcase p-5">
             <div class="container-fluid p-2">
