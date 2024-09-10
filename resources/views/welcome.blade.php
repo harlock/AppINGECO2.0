@@ -450,23 +450,12 @@
         <!-- Icons Grid-->
         <section class="features-icons bg-light text-center">
             <div class="container">
-                <div class="row">
-                    {{--
+                <div class="row justify-content-center">
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi bi-calendar m-auto text-primary"></i></div>
-                            <h3>Convocatoria</h3>
-                            <p class="lead mb-0">
-                                <a href="{{ url('storage/manuales/Convocatoria.pdf') }}" target="_blank">
-                                    Descargar PDF
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                    --}}
-                    <div class="col-lg-4">
-                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi bi-person-circle m-auto text-primary"></i></div>
+                            <div class="features-icons-icon d-flex">
+                                <i class="bi bi-person-circle m-auto text-primary"></i>
+                            </div>
                             <h3>Guía de Usuario</h3>
                             <p class="lead mb-0">
                                 <a href="{{ url('storage/manuales/GUIA DE USUARIO TURNITING.pdf') }}" target="_blank">
@@ -477,7 +466,9 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi bi-book m-auto text-primary"></i></div>
+                            <div class="features-icons-icon d-flex">
+                                <i class="bi bi-book m-auto text-primary"></i> <!-- Icono para Manual de Autor -->
+                            </div>
                             <h3>Manual de Autor</h3>
                             <p class="lead mb-0">
                                 <a href="{{ url('storage/manuales/Manual_para_Autor.pdf') }}" target="_blank">
