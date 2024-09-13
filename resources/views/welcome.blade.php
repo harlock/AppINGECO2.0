@@ -456,7 +456,7 @@
                             <div class="features-icons-icon d-flex">
                                 <i class="bi bi-person-circle m-auto text-primary"></i>
                             </div>
-                            <h3>Guía de Usuario</h3>
+                            <h3>Guía de reporte de similitud Turnitin</h3>
                             <p class="lead mb-0">
                                 <a href="{{ url('storage/manuales/GUIA DE USUARIO TURNITING.pdf') }}" target="_blank">
                                     Descargar PDF
@@ -469,7 +469,7 @@
                             <div class="features-icons-icon d-flex">
                                 <i class="bi bi-book m-auto text-primary"></i> <!-- Icono para Manual de Autor -->
                             </div>
-                            <h3>Manual de Autor</h3>
+                            <h3>Guía de Usuario</h3>
                             <p class="lead mb-0">
                                 <a href="{{ url('storage/manuales/Manual_para_Autor.pdf') }}" target="_blank">
                                     Descargar PDF
