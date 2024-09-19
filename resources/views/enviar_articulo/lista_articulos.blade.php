@@ -63,9 +63,15 @@
                             <td class="text-wrap text-break">{{ $articulo->titulo }}</td>
                             <td class="text-center">{{ $articulo->modalidad }}</td>
                             <td class="text-center">
-                                <a class="btn btn-primary  d-block mb-2" href="{{ route('art.download', $articulo->titulo) }}">
-                                    <i class="bi bi-file-earmark-text-fill"></i> Artículo
-                                </a>
+                                @if($articulo->estado == 5)
+                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articulo->titulo) }}">
+                                        <i class="bi bi-file-earmark-text-fill"></i> Artículo Reenviado
+                                    </a>
+                                @else
+                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articulo->titulo) }}">
+                                        <i class="bi bi-file-earmark-text-fill"></i> Artículo
+                                    </a>
+                                @endif
 
                                 <a class="btn btn-primary  d-block mb-2" href="{{ route('art.downloadPlagio', $articulo->titulo) }}">
                                     <i class="bi bi-shield-lock-fill"></i> Antiplagio
