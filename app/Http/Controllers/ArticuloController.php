@@ -374,10 +374,10 @@ class ArticuloController extends Controller
         $comprobanteUrls = [];
         foreach ($pagos as $pago) {
             $comprobanteUrls[$pago->id_articulo] = [
-                'comprobante' => Storage::url($pago->comprobante),
+                'comprobante' => $pago->comprobante,
                 'referencia' => $pago->referencia,
                 'factura' => $pago->factura,
-                'constancia_fiscal' => $pago->constancia_fiscal ? Storage::url($pago->constancia_fiscal) : null,
+                'constancia_fiscal' => $pago->constancia_fiscal ? $pago->constancia_fiscal : null,
                 'deleted_at' => $pago->deleted_at,
                 'estado_pago' => $pago->estado_pago
             ];

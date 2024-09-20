@@ -171,7 +171,9 @@
                                                                     <tr>
                                                                         <td>
                                                                             @if ($comprobanteUrls[$articu->id_articulo]['comprobante'])
-                                                                                <a href="{{ $comprobanteUrls[$articu->id_articulo]['comprobante'] }}" target="_blank">Ver Comprobante</a>
+                                                                                <a class="" href="{{ route('contadores.downloadComprobante', $articu->id_articulo) }}">
+                                                                                    <i class="bi bi-shield-lock-fill"></i> Ver comprobante
+                                                                                </a>
                                                                             @else
                                                                                 No hay comprobante de pago
                                                                             @endif
@@ -192,7 +194,9 @@
                                                                         </td>
                                                                         <td>
                                                                             @if ($comprobanteUrls[$articu->id_articulo]['constancia_fiscal'])
-                                                                                <a href="{{ $comprobanteUrls[$articu->id_articulo]['constancia_fiscal'] }}" target="_blank">Ver Constancia</a>
+                                                                                <a class="" href="{{ route('contadores.downloadConstancia', $articu->id_articulo) }}">
+                                                                                    <i class="bi bi-shield-lock-fill"></i> Ver constancia
+                                                                                </a>
                                                                             @else
                                                                                 Sin Constancia fiscal
                                                                             @endif

@@ -78,10 +78,10 @@ class ContadoresController extends Controller
         $comprobanteUrls = [];
         foreach ($pagos as $pago) {
             $comprobanteUrls[$pago->id_articulo] = [
-                'comprobante' => Storage::url($pago->comprobante),
+                'comprobante' => $pago->comprobante,
                 'referencia' => $pago->referencia,
                 'factura' => $pago->factura,
-                'constancia_fiscal' => $pago->constancia_fiscal ? Storage::url($pago->constancia_fiscal) : null,
+                'constancia_fiscal' => $pago->constancia_fiscal ? $pago->constancia_fiscal : null,
                 'deleted_at' => $pago->deleted_at,
                 'estado_pago' => $pago->estado_pago
             ];
@@ -90,6 +90,24 @@ class ContadoresController extends Controller
         $articulosConPagos = $pagos->pluck('id_articulo')->toArray();
 
         return view('contadores.index', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos', 'autores'));
+    }
+
+    public function downloadComprobante($id_articulo)
+    {
+        $comprobante = ComprobantePago::findOrFail($id_articulo);
+
+        $pathToFile = storage_path('app/public/' . $comprobante->comprobante);
+
+        return response()->download($pathToFile);
+    }
+
+    public function downloadConstancia($id_articulo)
+    {
+        $constancia = ComprobantePago::findOrFail($id_articulo);
+
+        $pathToFile = storage_path('app/public/' . $constancia->constancia_fiscal);
+
+        return response()->download($pathToFile);
     }
 
     /**
