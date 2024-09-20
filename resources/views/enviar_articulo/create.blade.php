@@ -344,7 +344,11 @@
                                     <td class="text-wrap text-break">{{$articulo->descripcion }}</td>
                                     <td>
                                         @if ($articulo->estado == 0)
-                                            <a href="{{route('art.destroy',$articulo->id_articulo)}}" class="btn btn-danger btn-sm delete-btn" data-id="{{ $articulo->id_articulo }}">Eliminar</a>
+                                            <a href="{{route('art.destroy',$articulo->id_articulo)}}"
+                                               class="btn btn-danger btn-sm delete-btn"
+                                               onclick="return confirm('¿Estás seguro de que deseas eliminar este artículo?');">
+                                                Eliminar
+                                            </a>
                                         @else
                                             <button class="btn btn-secondary btn-sm" disabled>Eliminar</button>
                                         @endif
