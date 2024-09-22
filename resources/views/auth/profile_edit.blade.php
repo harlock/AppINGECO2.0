@@ -60,6 +60,21 @@
                             </span>
                             @enderror
                         </div>
+
+                        <div class="mb-5 col">
+                            <label class="form-label" for="password">{{ __('Nueva Contraseña') }}</label>
+                            <input id="password" placeholder="Escriba su nueva contraseña" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+
+                            @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="mb-5 col">
+                            <label class="form-label" for="password_confirmation">{{ __('Confirmar Nueva Contraseña') }}</label>
+                            <input id="password_confirmation" placeholder="Confirme su nueva contraseña" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                        </div>
                     </div>
                     <div class="d-flex  justify-content-center py-4 row">
                         <button type="submit" role="button" class="btn btn-primary col-4"> Actualizar datos</button>

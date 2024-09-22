@@ -101,17 +101,30 @@ class UsuariosController extends Controller
     }
     public function profileEditSave(Request $request)
     {
-        //dd($request->name);
         $usuario = Auth::user();
+
+        // Validaciones
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'ap_paterno' => ['required', 'string', 'max:255'],
+            'ap_materno' => ['required', 'string', 'max:255'],
             'telefono' => ['required', 'numeric', 'digits:10'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ], [
             'name.required' => 'Necesitas agregar un nombre.',
+            'ap_paterno.required' => 'Necesitas agregar el apellido paterno.',
+            'ap_materno.required' => 'Necesitas agregar el apellido materno.',
+            'password.confirmed' => 'Las contraseñas deben coincidir.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
         ]);
+
         $registro = User::find($usuario->id);
-        //dd($request);
-        $registro->update($request->all());
+        $registro->update($request->only(['name', 'ap_paterno', 'ap_materno', 'telefono']));
+
+        if ($request->password) {
+            $registro->password = bcrypt($request->password);
+            $registro->save();
+        }
 
         return redirect()->route('show.profile')->with('success', 'Perfil correctamente actualizado.');
     }
