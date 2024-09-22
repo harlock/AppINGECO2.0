@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <div class="px-5 py-5 p-lg-0 bg-surface-secondary">
         <div class="d-flex justify-content-center">
             <div class=" col-xl-4 p-12  position-fixed start-0 top-0 h-screen overflow-y-hidden bg-primary d-none d-lg-flex flex-column align-items-center">
@@ -93,7 +95,12 @@
 
                                 <div class="mb-5 col">
                                     <label class="form-label" for="password">{{ __('Contraseña') }}</label>
-                                    <input id="password" placeholder="Escriba su contraseña" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <div class="input-group">
+                                        <input id="password" placeholder="Escriba su contraseña" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                            <i class="fa fa-eye" id="passwordIcon"></i>
+                                        </button>
+                                    </div>
 
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -103,10 +110,41 @@
                                 </div>
                                 <div class="mb-5 col">
                                     <label class="form-label" for="password-confirm">{{ __('Confirmar contraseña') }}</label>
-                                    <input id="password-confirm" placeholder="Confirmar contraseña" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                    <div class="input-group">
+                                        <input id="password-confirm" placeholder="Confirmar contraseña" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                        <button type="button" class="btn btn-outline-secondary" id="toggleConfirmPassword">
+                                            <i class="fa fa-eye" id="confirmPasswordIcon"></i>
+                                        </button>
+                                    </div>
                                 </div>
-
                             </div>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const togglePassword = document.getElementById('togglePassword');
+                                    const passwordInput = document.getElementById('password');
+                                    const passwordIcon = document.getElementById('passwordIcon');
+
+                                    togglePassword.addEventListener('click', function () {
+                                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                        passwordInput.setAttribute('type', type);
+                                        passwordIcon.classList.toggle('fa-eye');
+                                        passwordIcon.classList.toggle('fa-eye-slash');
+                                    });
+
+                                    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+                                    const confirmPasswordInput = document.getElementById('password-confirm');
+                                    const confirmPasswordIcon = document.getElementById('confirmPasswordIcon');
+
+                                    toggleConfirmPassword.addEventListener('click', function () {
+                                        const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                        confirmPasswordInput.setAttribute('type', type);
+                                        confirmPasswordIcon.classList.toggle('fa-eye');
+                                        confirmPasswordIcon.classList.toggle('fa-eye-slash');
+                                    });
+                                });
+                            </script>
+
                             <div class="d-flex  justify-content-center py-4 row">
                                 <button type="submit" class="btn btn-primary col-4">
                                     {{ __('Registrarme') }}

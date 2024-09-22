@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <div class="px-5 py-5 p-lg-0 bg-surface-secondary ">
         <div class="d-flex justify-content-center">
             <div class="d-flex justify-content-center">
@@ -32,23 +34,37 @@
                                 <div class="mb-5">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div>
-                                            <label class="form-label"  for="password">{{ __('Contraseña') }}</label>
+                                            <label class="form-label" for="password">{{ __('Contraseña') }}</label>
                                         </div>
-                                        {{--
-                                        <div class="mb-2">
-                                            @if (Route::has('password.request'))
-                                            <a href="{{ route('password.request') }}" class="small text-muted">¿Olvidaste tu contraseña?</a>
-                                            @endif
-                                        </div>
-                                        --}}
                                     </div>
-                                    <input id="password" type="password" placeholder="Contraseña" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <div class="input-group">
+                                        <input id="password" type="password" placeholder="Contraseña" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                            <i class="fa fa-eye" id="passwordIcon"></i>
+                                        </button>
+                                    </div>
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const togglePassword = document.getElementById('togglePassword');
+                                        const passwordInput = document.getElementById('password');
+                                        const passwordIcon = document.getElementById('passwordIcon');
+
+                                        togglePassword.addEventListener('click', function () {
+                                            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                            passwordInput.setAttribute('type', type);
+                                            passwordIcon.classList.toggle('fa-eye');
+                                            passwordIcon.classList.toggle('fa-eye-slash');
+                                        });
+                                    });
+                                </script>
+
                                 <div class="mb-5">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>

@@ -62,6 +62,9 @@ class RegisterController extends Controller
             'password.required' => 'Necesitas agregar una contraseña.',
             'password.min' => 'La contraseña debe llevar minimo 8 digitos.',
             'password.confirmed' => 'No coincide la contraseña de confirmación.',
+            'telefono.digits' => 'El número de teléfono debe tener 10 dígitos.',
+            'telefono.numeric' => 'Solo se aceptan datos numericos.',
+
         ]);
     }
 
