@@ -36,6 +36,16 @@
                                         <div>
                                             <label class="form-label" for="password">{{ __('Contraseña') }}</label>
                                         </div>
+
+                                        {{--
+                                        <div class="mb-2">
+                                            @if (Route::has('password.request'))
+                                            <a href="{{ route('password.request') }}" class="small text-muted">¿Olvidaste tu contraseña?</a>
+                                            @endif
+                                            <label class="form-label" for="password">{{ __('Contraseña') }}</label>
+                                        </div>
+                                        --}}
+
                                     </div>
                                     <div class="input-group">
                                         <input id="password" type="password" placeholder="Contraseña" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
