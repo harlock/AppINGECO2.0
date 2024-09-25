@@ -37,14 +37,6 @@
                                             <label class="form-label" for="password">{{ __('Contraseña') }}</label>
                                         </div>
 
-                                        {{--
-                                        <div class="mb-2">
-                                            @if (Route::has('password.request'))
-                                            <a href="{{ route('password.request') }}" class="small text-muted">¿Olvidaste tu contraseña?</a>
-                                            @endif
-                                            <label class="form-label" for="password">{{ __('Contraseña') }}</label>
-                                        </div>
-                                        --}}
 
                                     </div>
                                     <div class="input-group">
@@ -58,6 +50,14 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+
+
+                                    <div class="mb-2">
+                                        @if (Route::has('password.request'))
+                                            <a href="{{ route('password.request') }}" class="small text-muted">¿Olvidaste tu contraseña?</a>
+                                        @endif
+                                        <label class="form-label" for="password">{{ __('Contraseña') }}</label>
+                                    </div>
                                 </div>
 
                                 <script>
