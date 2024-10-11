@@ -150,7 +150,31 @@ class lideresController extends Controller
                 )
                 ->orderBy('users.created_at', 'desc')
                 ->get();
-        } elseif ($texto == "/4") {
+        }
+        elseif ($texto == "/0") {
+            $Artic = DB::table('articulos')
+                ->join('mesas', 'mesas.id_mesa', '=', 'articulos.id_mesa')
+                ->join('users', 'users.id', '=', 'articulos.id_user')
+                ->where('articulos.estado', 0)
+                ->where("articulos.id_mesa", $usuario->id_mesa)
+                ->select(
+                    'articulos.id_articulo',
+                    'articulos.revista',
+                    'articulos.titulo',
+                    'articulos.estado',
+                    'articulos.modalidad',
+                    'articulos.archivo',
+                    'mesas.descripcion',
+                    'users.id',
+                    'users.telefono',
+                    'users.email',
+                    DB::raw("CONCAT(users.name, ' ', users.ap_paterno, ' ', users.ap_materno) as nombreCompleto")
+                )
+                ->orderBy('users.created_at', 'desc')
+                ->get();
+        }
+
+        elseif ($texto == "/4") {
             $Artic = DB::table('asigna_revisores')
                 ->join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
                 ->join('mesas', 'mesas.id_mesa', 'articulos.id_mesa')
