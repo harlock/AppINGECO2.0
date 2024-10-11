@@ -47,7 +47,7 @@
                     });
                 </script>
                 <div class="d-flex  ">
-                    <button class="btn bg-gray-500 text-white m-1" data-texto="0">Sin asignar</button>
+                    <button class="btn bg-gray-400 btn-texto m-1" style="color: white;" data-texto="0">Sin asignar</button>
                     <button class="btn bg-yellow-100 btn-texto m-1 " data-texto="4">En proceso de revisión </button>
                     <button class="btn bg-green-100 btn-texto m-1" data-texto="1">Aceptado</button>
                     <button class="btn bg-red-100 btn-texto m-1" data-texto="2">Rechazado</button>
