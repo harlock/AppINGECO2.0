@@ -165,22 +165,38 @@
                         </div>
 
                         <script>
-                            document.getElementById('archivoNombre').addEventListener('change', function(event) {
+                            document.getElementById('archivoNombre').addEventListener('change', function(event)
+                            {
                                 const file = event.target.files[0];
-                                if (file && file.size > 5 * 1024 * 1024) { // 5 MB en bytes
-                                    alert('El tamaño del archivo no puede superar los 5 MB.');
+                                if (file && file.size > 5 * 1024 * 1024) // 5 MB en bytes
+                                {
+                                    Swal.fire({
+                                        title: 'ERROR AL INTENTAR SUBIR ARCHIVO',
+                                        text: 'El tamaño del archivo no puede superar los 5 MB.',
+                                        icon: 'error',
+                                        confirmButtonText: 'Aceptar'
+                                    });
                                     event.target.value = '';
                                 }
                             });
 
-                            document.getElementById('archivo_plagio').addEventListener('change', function(event) {
+                            document.getElementById('archivo_plagio').addEventListener('change', function(event)
+                            {
                                 const file = event.target.files[0];
-                                if (file && file.size > 5 * 1024 * 1024) { // 5 MB en bytes
-                                    alert('El tamaño del archivo de antiplagio no puede superar los 5 MB.');
+                                if (file && file.size > 5 * 1024 * 1024)
+                                {
+                                    Swal.fire({
+                                        title: 'ERROR AL INTENTAR SUBIR ARCHIVO',
+                                        text: 'El tamaño del archivo de antiplagio no puede superar los 5 MB.',
+                                        icon: 'error',
+                                        confirmButtonText: 'Aceptar'
+                                    });
                                     event.target.value = '';
                                 }
                             });
                         </script>
+
+
 
                         <!-- SELECCIONAR MESA DE TRABAJO  -->
                         <div class="mb-3 col">
