@@ -450,14 +450,14 @@ class ArticuloController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+        public function store(Request $request)
     {
         // Validación de los datos del formulario
         $request->validate([
             'revista' => 'required',
             'titulo' => 'required|unique:articulos',
-            'archivo' => 'required|file|size:5241880|mimes:docx',
-            'archivo_plagio' => 'required|file|size:5241880|mimes:pdf',
+            'archivo' => 'required|file|max:5120|mimes:docx',
+            'archivo_plagio' => 'required|file|max:5120|mimes:pdf',
             'id_mesa' => 'nullable|exists:mesas,id_mesa',
             'modalidad' => 'required',
             'nom_autor' => 'required|string',
@@ -472,10 +472,12 @@ class ArticuloController extends Controller
             'archivo.required' => 'Debe adjuntar un archivo para el artículo.',
             'archivo.file' => 'El archivo debe ser un documento.',
             'archivo.max' => 'El tamaño del archivo no puede superar los 5 MB.',
+            'archivo.size' => 'El tamaño del archivo no puede superar los 5 MB.',
             'archivo.mimes' => 'El archivo debe estar en formato DOCX.',
             'archivo_plagio.required' => 'Debe adjuntar el archivo de plagio.',
             'archivo_plagio.file' => 'El archivo de plagio debe ser un documento.',
             'archivo_plagio.max' => 'El tamaño del archivo de plagio no puede superar los 5 MB.',
+            'archivo_plagio.size' => 'El tamaño del archivo de plagio no puede superar los 5 MB.',
             'archivo_plagio.mimes' => 'El archivo de plagio debe estar en formato PDF.',
             'id_mesa.exists' => 'La mesa seleccionada no es válida.',
             'modalidad.required' => 'La modalidad del artículo es necesaria.',
@@ -491,6 +493,22 @@ class ArticuloController extends Controller
             'tel.numeric' => 'El teléfono debe contener únicamente números.',
             'tel.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
         ]);
+
+
+
+        /*$request->validate([
+            'archivo' => 'required|file|size:5242880|mimes:docx',
+            'archivo_plagio' => 'required|file|size:5242880|mimes:pdf',
+        ], [
+            'archivo.required' => 'Debe adjuntar un archivo para el artículo.',
+            'archivo.file' => 'El archivo debe ser un documento.',
+            'archivo.size' => 'El tamaño del archivo no puede superar los 5 MB.',
+            'archivo.mimes' => 'El archivo debe estar en formato DOCX.',
+            'archivo_plagio.required' => 'Debe adjuntar el archivo de plagio.',
+            'archivo_plagio.file' => 'El archivo de plagio debe ser un documento.',
+            'archivo_plagio.size' => 'El tamaño del archivo de plagio no puede superar los 5 MB.',
+            'archivo_plagio.mimes' => 'El archivo de plagio debe estar en formato PDF.',
+        ]);*/
 
         // Manejo del archivo principal
         $archivo = $request->file('archivo')->store('archivos/articulos', 'public');
