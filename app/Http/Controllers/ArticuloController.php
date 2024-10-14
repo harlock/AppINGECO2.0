@@ -456,8 +456,8 @@ class ArticuloController extends Controller
         $request->validate([
             'revista' => 'required',
             'titulo' => 'required|unique:articulos',
-            'archivo' => 'required|file|max:5120|mimes:docx',
-            'archivo_plagio' => 'required|file|max:5120|mimes:pdf',
+            'archivo' => 'required|file|mimes:docx',
+            'archivo_plagio' => 'required|file|mimes:pdf',
             'id_mesa' => 'nullable|exists:mesas,id_mesa',
             'modalidad' => 'required',
             'nom_autor' => 'required|string',

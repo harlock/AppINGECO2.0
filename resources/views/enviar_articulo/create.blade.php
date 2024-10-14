@@ -164,6 +164,24 @@
                             <div id="emailHelp" class="form-text">Selecciona un archivo en formato PDF.</div>
                         </div>
 
+                        <script>
+                            document.getElementById('archivoNombre').addEventListener('change', function(event) {
+                                const file = event.target.files[0];
+                                if (file && file.size > 5 * 1024 * 1024) { // 5 MB en bytes
+                                    alert('El tamaño del archivo no puede superar los 5 MB.');
+                                    event.target.value = '';
+                                }
+                            });
+
+                            document.getElementById('archivo_plagio').addEventListener('change', function(event) {
+                                const file = event.target.files[0];
+                                if (file && file.size > 5 * 1024 * 1024) { // 5 MB en bytes
+                                    alert('El tamaño del archivo de antiplagio no puede superar los 5 MB.');
+                                    event.target.value = '';
+                                }
+                            });
+                        </script>
+
                         <!-- SELECCIONAR MESA DE TRABAJO  -->
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
