@@ -23,6 +23,7 @@ class Articulo extends Model
         'id_autor',
         'carta_aceptacion',
         'fecha_reenvio',
+        'archivo_evaluacion',
     ];
 
     public function mesas()

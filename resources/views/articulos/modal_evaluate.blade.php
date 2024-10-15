@@ -1,7 +1,6 @@
 <div class="modal fade" id="modal{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
     <div class="modal-dialog">
-        <form action="{{url("evaluar_art",$articu->id_articulo)}}" method="POST" enctype="multipart/form-data">
+        <form action="{{url('evaluar_art', $articu->id_articulo)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method("PUT")
             <div class="modal-content">
@@ -12,8 +11,8 @@
 
                 <div class="modal-body">
                     <div class="text-center text-green-400">
-                        <H4 class="text-wrap text-break">{{$articu->titulo}}</H4>
-                        <input class="" type="hidden" name="artid" value="{{$articu->id_articulo}}">
+                        <h4 class="text-wrap text-break">{{$articu->titulo}}</h4>
+                        <input type="hidden" name="artid" value="{{$articu->id_articulo}}">
                         <p>-----------------------</p>
                     </div>
                     <div class="mb-3 row">
@@ -23,16 +22,16 @@
                         <div class="col-5">
                             <select name="estado" class="form-control" id="estado-select-{{$articu->id_articulo}}">
                                 <option value="0" selected="true" disabled="true">Seleccionar estado</option>
-                                <option class="" value="1">Aceptar</option>
-                                <option class="" value="2">Rechazar</option>
-                                <option class="" value="5">Aceptar con condiciones</option>
+                                <option value="1">Aceptar</option>
+                                <option value="2">Rechazar</option>
+                                <option value="5">Aceptar con condiciones</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="mb-3" id="archivo-container-{{$articu->id_articulo}}" style="display: none;">
-                        <label for="archivo-{{$articu->id_articulo}}" class="form-label">Subir archivo</label>
-                        <input type="file" class="form-control" id="archivo-{{$articu->id_articulo}}" name="archivo" accept=".doc,.docx">
+                        <label for="archivo-{{$articu->id_articulo}}" class="form-label">Subir archivo de evaluación</label>
+                        <input type="file" class="form-control" id="archivo-{{$articu->id_articulo}}" name="archivo_evaluacion" accept=".pdf">
                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                     </div>
 
@@ -47,7 +46,6 @@
                     <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
                     <button type="submit" class="btn btn-primary">Aceptar</button>
                 </div>
-
             </div>
         </form>
     </div>
@@ -65,7 +63,11 @@
                 cartaContainer.style.display = 'block';
                 archivoContainer.style.display = 'none';
                 archivoInput.value = '';
-            } else if (selectElement.value == '5') { // Estado "Aceptar con cambios"
+            } else if (selectElement.value == '5') { // Estado "Aceptar con condiciones"
+                archivoContainer.style.display = 'block';
+                cartaContainer.style.display = 'none';
+                cartaInput.value = '';
+            } else if (selectElement.value == '2') { // Estado "Rechazar"
                 archivoContainer.style.display = 'block';
                 cartaContainer.style.display = 'none';
                 cartaInput.value = '';

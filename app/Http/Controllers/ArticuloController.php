@@ -591,6 +591,15 @@ class ArticuloController extends Controller
         return response()->download($pathToFile);
     }
 
+    public function downloadEvaluacion($titulo)
+    {
+        $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
+        $pathToFile = storage_path('app/public/' . $articulo->archivo_evaluacion);
+
+        // Descargar el archivo
+        return response()->download($pathToFile);
+    }
+
     public function downloadArchivoDerecho($id_articulo)
     {
         $articulo = Articulo::findOrFail($id_articulo);
@@ -659,12 +668,12 @@ class ArticuloController extends Controller
      */
     public function update(Request $request, Articulo $evaluar_art)
     {
-        //        dd($evaluar_art);
-
+        // Validar los datos recibidos
         $validated = $request->validate([
             'estado' => 'required|integer',
             'archivo' => 'nullable|file|mimes:doc,docx|max:5120',
-            'carta_aceptacion' => 'nullable|file|mimes:pdf|max:5120'
+            'carta_aceptacion' => 'nullable|file|mimes:pdf|max:5120',
+            'archivo_evaluacion' => 'nullable|file|mimes:pdf|max:5120', // Añadido para validar archivo de evaluación
         ]);
 
         // Actualizar el estado del artículo
@@ -684,6 +693,7 @@ class ArticuloController extends Controller
             ));
         }
 
+        // Manejar la carta de aceptación
         if ($request->hasFile('carta_aceptacion')) {
             $file = $request->file('carta_aceptacion')->store('archivos/cartas', 'public');
             $evaluar_art->update([
@@ -715,17 +725,25 @@ class ArticuloController extends Controller
             ));
         }
 
+        // Manejar el archivo del artículo si el estado es 5
         if ($validated['estado'] == 5 && $request->hasFile('archivo')) {
-
             $file = $request->file('archivo')->store('archivos/articulos', 'public');
-
             $evaluar_art->update([
                 'archivo' => $file,
             ]);
         }
 
+        // Manejar el archivo de evaluación
+        if ($request->hasFile('archivo_evaluacion')) {
+            $file = $request->file('archivo_evaluacion')->store('archivos/evaluaciones', 'public');
+            $evaluar_art->update([
+                'archivo_evaluacion' => $file, // Guardar la ruta del archivo de evaluación
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Artículo evaluado con éxito.');
     }
+
 
     public function updateArchivo(Request $request, Articulo $articulo)
     {

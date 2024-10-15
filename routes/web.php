@@ -118,6 +118,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/articulos/download/{titulo}', [ArticuloController::class, 'download'])->name('art.download');
     Route::get('/articulos/downloadPlagio/{titulo}', [ArticuloController::class, 'downloadPlagio'])->name('art.downloadPlagio');
     Route::get('/articulos/{titulo}/downloadPlagio', [ArticuloController::class, 'downloadCarta'])->name('art.downloadCarta');
+    Route::get('/articulos/{titulo}/downloadEvaluacion', [ArticuloController::class, 'downloadEvaluacion'])->name('art.downloadEvaluacion');
     Route::get('/contadores/downloadComprobante/{id_articulo}', [ContadoresController::class, 'downloadComprobante'])->name('contadores.downloadComprobante');
     Route::get('/contadores/downloadConstancia/{id_articulo}', [ContadoresController::class, 'downloadConstancia'])->name('contadores.downloadConstancia');
 

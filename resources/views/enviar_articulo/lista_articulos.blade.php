@@ -83,6 +83,12 @@
                                     </a>
                                 @endif
 
+                                    @if($articulo->estado == 2)
+                                        <a class="btn btn-primary d-block mb-2" href="{{ route('art.downloadEvaluacion', $articulo->titulo) }}">
+                                            <i class="bi bi-file-earmark-pdf-fill"></i> Carta Rechazo
+                                        </a>
+                                    @endif
+
                                 @if($articulo->estado == 5)
                                     @if($articulo->fecha_reenvio == $articulo->updated_at)
                                         <button type="button" class="btn btn-warning mb-2" disabled>
