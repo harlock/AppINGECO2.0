@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="{{url('evaluar_art', $articu->id_articulo)}}" method="POST" enctype="multipart/form-data">
+        <form action="{{ url('evaluar_art', $articu->id_articulo) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method("PUT")
             <div class="modal-content">
@@ -41,7 +41,13 @@
                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                     </div>
 
+                    <div class="mb-3" id="doc-container-{{$articu->id_articulo}}" style="display: none;">
+                        <label for="archivo-doc-{{$articu->id_articulo}}" class="form-label">Subir archivo del artículo</label>
+                        <input type="file" class="form-control" id="archivo-doc-{{$articu->id_articulo}}" name="archivo" accept=".doc,.docx">
+                        <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
                     <button type="submit" class="btn btn-primary">Aceptar</button>
@@ -50,49 +56,49 @@
         </form>
     </div>
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        function updateArchivoVisibility(selectElementId, cartaContainerId, archivoContainerId, cartaInputId, archivoInputId) {
+        function updateArchivoVisibility(selectElementId, cartaContainerId, archivoContainerId, docContainerId)
+        {
             const selectElement = document.getElementById(selectElementId);
             const cartaContainer = document.getElementById(cartaContainerId);
             const archivoContainer = document.getElementById(archivoContainerId);
-            const cartaInput = document.getElementById(cartaInputId);
-            const archivoInput = document.getElementById(archivoInputId);
+            const docContainer = document.getElementById(docContainerId);
 
-            if (selectElement.value == '1') { // Estado "Aceptar"
+            // Ocultar todos los contenedores inicialmente
+            cartaContainer.style.display = 'none';
+            archivoContainer.style.display = 'none';
+            docContainer.style.display = 'none';
+
+            if (selectElement.value == '1')
+            {
                 cartaContainer.style.display = 'block';
-                archivoContainer.style.display = 'none';
-                archivoInput.value = '';
-            } else if (selectElement.value == '5') { // Estado "Aceptar con condiciones"
+            }
+            else if (selectElement.value == '5')
+            {
+                docContainer.style.display = 'block';
+            }
+            else if (selectElement.value == '2')
+            {
                 archivoContainer.style.display = 'block';
-                cartaContainer.style.display = 'none';
-                cartaInput.value = '';
-            } else if (selectElement.value == '2') { // Estado "Rechazar"
-                archivoContainer.style.display = 'block';
-                cartaContainer.style.display = 'none';
-                cartaInput.value = '';
-            } else {
-                cartaContainer.style.display = 'none';
-                archivoContainer.style.display = 'none';
-                cartaInput.value = '';
-                archivoInput.value = '';
             }
         }
 
-        document.querySelectorAll('[id^=estado-select-]').forEach(select => {
+        document.querySelectorAll('[id^=estado-select-]').forEach(select =>
+        {
             const id = select.id.split('-').pop();
             const cartaContainerId = `carta-aceptacion-container-${id}`;
             const archivoContainerId = `archivo-container-${id}`;
-            const cartaInputId = `carta-aceptacion-${id}`;
-            const archivoInputId = `archivo-${id}`;
+            const docContainerId = `doc-container-${id}`;
 
             select.addEventListener('change', function () {
-                updateArchivoVisibility(select.id, cartaContainerId, archivoContainerId, cartaInputId, archivoInputId);
+                updateArchivoVisibility(select.id, cartaContainerId, archivoContainerId, docContainerId);
             });
 
             const modalElement = document.getElementById(`modal${id}`);
             modalElement.addEventListener('show.bs.modal', function () {
-                updateArchivoVisibility(select.id, cartaContainerId, archivoContainerId, cartaInputId, archivoInputId);
+                updateArchivoVisibility(select.id, cartaContainerId, archivoContainerId, docContainerId);
             });
         });
     });

@@ -668,24 +668,43 @@ class ArticuloController extends Controller
      */
     public function update(Request $request, Articulo $evaluar_art)
     {
-        // Validar los datos recibidos
+        // Validar el estado
         $validated = $request->validate([
             'estado' => 'required|integer',
-            'archivo' => 'nullable|file|mimes:doc,docx|max:5120',
-            'carta_aceptacion' => 'nullable|file|mimes:pdf|max:5120',
-            'archivo_evaluacion' => 'nullable|file|mimes:pdf|max:5120', // Añadido para validar archivo de evaluación
         ]);
+
+        // Validar archivos según el estado
+        $rules = [];
+
+        if ($validated['estado'] == 5) {
+            // Si el estado es 5 (Aceptar con condiciones), validar archivo .doc o .docx
+            $rules['archivo'] = 'nullable|file|mimes:doc,docx|max:5120';
+        } elseif (in_array($validated['estado'], [1, 2])) {
+            // Si el estado es 1 (Aceptado) o 2 (Rechazado), validar archivo en formato PDF
+            $rules['archivo'] = 'nullable|file|mimes:pdf|max:5120';
+        }
+
+        // Validar archivo de evaluación en PDF (independientemente del estado)
+        $rules['archivo_evaluacion'] = 'nullable|file|mimes:pdf|max:5120';
+
+        // Validar carta de aceptación solo para estado 1 (Aceptado)
+        if ($validated['estado'] == 1) {
+            $rules['carta_aceptacion'] = 'nullable|file|mimes:pdf|max:5120';
+        }
+
+        // Validar los archivos usando las reglas dinámicas
+        $validatedFiles = $request->validate($rules);
 
         // Actualizar el estado del artículo
         $evaluar_art->update([
             'estado' => $validated['estado'],
         ]);
 
-        // Si el estado es 1, enviar un correo de aceptado
-        if ($validated['estado'] == 1) {
-            $autor = $evaluar_art->autorCorrespondencia;
+        // Manejar los correos según el estado
+        $autor = $evaluar_art->autorCorrespondencia;
 
-            // Enviar el correo
+        if ($validated['estado'] == 1) {
+            // Enviar correo de artículo aceptado
             Mail::to($autor->correo)->send(new ArticulosAceptadosEmail(
                 $evaluar_art->titulo,
                 $evaluar_art->revista,
@@ -693,19 +712,8 @@ class ArticuloController extends Controller
             ));
         }
 
-        // Manejar la carta de aceptación
-        if ($request->hasFile('carta_aceptacion')) {
-            $file = $request->file('carta_aceptacion')->store('archivos/cartas', 'public');
-            $evaluar_art->update([
-                'carta_aceptacion' => $file,
-            ]);
-        }
-
-        // Si el estado es 2, enviar un correo de rechazado
         if ($validated['estado'] == 2) {
-            $autor = $evaluar_art->autorCorrespondencia;
-
-            // Enviar el correo
+            // Enviar correo de artículo rechazado
             Mail::to($autor->correo)->send(new ArticulosRechazadosEmail(
                 $evaluar_art->titulo,
                 $evaluar_art->revista,
@@ -713,31 +721,36 @@ class ArticuloController extends Controller
             ));
         }
 
-        // Si el estado es 5, enviar un correo de aceptado con cambios
         if ($validated['estado'] == 5) {
-            $autor = $evaluar_art->autorCorrespondencia;
-
-            // Enviar el correo
+            // Enviar correo de artículo aceptado con cambios
             Mail::to($autor->correo)->send(new ArticulosAceptadosCambiosEmail(
                 $evaluar_art->titulo,
                 $evaluar_art->revista,
                 $evaluar_art->modalidad
             ));
+
+            // Manejar el archivo del artículo (.doc o .docx) solo si el estado es 5
+            if ($request->hasFile('archivo')) {
+                $file = $request->file('archivo')->store('archivos/articulos', 'public');
+                $evaluar_art->update([
+                    'archivo' => $file,
+                ]);
+            }
         }
 
-        // Manejar el archivo del artículo si el estado es 5
-        if ($validated['estado'] == 5 && $request->hasFile('archivo')) {
-            $file = $request->file('archivo')->store('archivos/articulos', 'public');
-            $evaluar_art->update([
-                'archivo' => $file,
-            ]);
-        }
-
-        // Manejar el archivo de evaluación
+        // Manejar el archivo de evaluación (PDF)
         if ($request->hasFile('archivo_evaluacion')) {
             $file = $request->file('archivo_evaluacion')->store('archivos/evaluaciones', 'public');
             $evaluar_art->update([
-                'archivo_evaluacion' => $file, // Guardar la ruta del archivo de evaluación
+                'archivo_evaluacion' => $file,
+            ]);
+        }
+
+        // Manejar la carta de aceptación (solo para estado 1)
+        if ($validated['estado'] == 1 && $request->hasFile('carta_aceptacion')) {
+            $file = $request->file('carta_aceptacion')->store('archivos/cartas', 'public');
+            $evaluar_art->update([
+                'carta_aceptacion' => $file,
             ]);
         }
 
