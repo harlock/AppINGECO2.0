@@ -71,6 +71,43 @@
 
             </div>
             @endif
+
+                <section class="features-icons bg-light text-center py-5 shadow-sm" style="border-radius: 15px;">
+                    <div class="container">
+                        <div class="row justify-content-center">
+
+                            <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+                                <div class="features-icons-item mx-auto">
+                                    <div class="features-icons-icon d-flex">
+                                        <i class="bi bi-person-circle m-auto text-primary" style="font-size: 3rem;"></i>
+                                    </div>
+                                    <h3 class="mt-3">3a. Carta Derechos-FEGLININ</h3>
+                                    <p class="lead mb-0">
+                                        <a href="https://docs.google.com/document/d/1cj80rv-mUOe35Z1uo3DkdS-Ol7To1bqa/edit" target="_blank" class="btn btn-primary">
+                                            Link para Descargar
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+                                <div class="features-icons-item mx-auto">
+                                    <div class="features-icons-icon d-flex">
+                                        <i class="bi bi-book m-auto text-primary" style="font-size: 3rem;"></i>
+                                    </div>
+                                    <h3 class="mt-3">3b. Carta Derechos-RECIE</h3>
+                                    <p class="lead mb-0">
+                                        <a href="https://docs.google.com/document/d/1iEjBm4tDOTmAT4LpHvk1CTGMVCoJkZ6q/edit" target="_blank" class="btn btn-primary">
+                                            Link para Descargar
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
         </div>
     </div>
 </div>    

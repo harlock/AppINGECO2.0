@@ -254,10 +254,9 @@
                                                         </select>
                                                     </div>
 
-                                                    <!-- Área de texto para el mensaje, inicialmente oculta -->
                                                     <div class="mt-3" id="mensajeContainer{{$articu->id_articulo}}" style="display: {{ $archivoDerecho && $archivoDerecho->estado == 2 ? 'block' : 'none' }};">
                                                         <label for="mensaje{{$articu->id_articulo}}" class="form-label">Mensaje</label>
-                                                        <textarea id="mensaje{{$articu->id_articulo}}" name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aquí...">{{ $archivoDerecho->mensaje ?? '' }}</textarea>
+                                                        <textarea id="mensaje{{$articu->id_articulo}}" name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aquí..." maxlength="250">{{ $archivoDerecho->mensaje ?? '' }}</textarea>
                                                     </div>
 
                                                     <!-- Botón para guardar los cambios -->
