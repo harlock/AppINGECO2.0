@@ -79,7 +79,7 @@
                             <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
                                 <div class="features-icons-item mx-auto">
                                     <div class="features-icons-icon d-flex">
-                                        <i class="bi bi-person-circle m-auto text-primary" style="font-size: 3rem;"></i>
+                                        <i class="bi bi-file-word m-auto text-primary" style="font-size: 3rem;"></i>
                                     </div>
                                     <h3 class="mt-3">3a. Carta Derechos-FEGLININ</h3>
                                     <p class="lead mb-0">
@@ -93,7 +93,7 @@
                             <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
                                 <div class="features-icons-item mx-auto">
                                     <div class="features-icons-icon d-flex">
-                                        <i class="bi bi-book m-auto text-primary" style="font-size: 3rem;"></i>
+                                        <i class="bi bi-file-word m-auto text-primary" style="font-size: 3rem;"></i>
                                     </div>
                                     <h3 class="mt-3">3b. Carta Derechos-RECIE</h3>
                                     <p class="lead mb-0">
