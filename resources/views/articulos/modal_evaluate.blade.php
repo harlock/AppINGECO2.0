@@ -47,6 +47,43 @@
                         <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
                     </div>
                 </div>
+                <script>
+                    const estadoSelect = document.getElementById('estado-select-{{$articu->id_articulo}}');
+                    const archivoContainer = document.getElementById('archivo-container-{{$articu->id_articulo}}');
+                    const cartaAceptacionContainer = document.getElementById('carta-aceptacion-container-{{$articu->id_articulo}}');
+                    const docContainer = document.getElementById('doc-container-{{$articu->id_articulo}}');
+
+                    const archivoInput = document.getElementById('archivo-{{$articu->id_articulo}}');
+                    const cartaAceptacionInput = document.getElementById('carta-aceptacion-{{$articu->id_articulo}}');
+                    const docInput = document.getElementById('archivo-doc-{{$articu->id_articulo}}');
+
+                    // Evento para mostrar los campos según la selección
+                    estadoSelect.addEventListener('change', function() {
+                        archivoContainer.style.display = 'none';
+                        cartaAceptacionContainer.style.display = 'none';
+                        docContainer.style.display = 'none';
+
+                        archivoInput.required = false;
+                        cartaAceptacionInput.required = false;
+                        docInput.required = false;
+
+                        if (estadoSelect.value == '1')
+                        {  // Aceptar
+                            cartaAceptacionContainer.style.display = 'block';
+                            cartaAceptacionInput.required = true;
+                        }
+                        else if (estadoSelect.value == '2')
+                        {  // Rechazar
+                            archivoContainer.style.display = 'block';
+                            archivoInput.required = true;
+                        }
+                        else if (estadoSelect.value == '5')
+                        {  // Aceptar con condiciones
+                            docContainer.style.display = 'block';
+                            docInput.required = true;
+                        }
+                    });
+                </script>
 
                 <div class="modal-footer">
                     <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>

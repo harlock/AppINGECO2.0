@@ -234,10 +234,7 @@
                                                         Descargar Carta de Cesión de Derechos <i class="bi bi-arrow-down-square-fill"></i>
                                                     </a>
                                                 @else
-                                                    <p>No hay archivo de carta de
-                                                        Cesión de Derechos Disponible.
-                                                    </p>
-
+                                                    <p>No hay archivo de carta de Cesión de Derechos Disponible.</p>
                                                 @endif
 
                                                 <!-- Formulario para actualizar el estado y mensaje -->
@@ -247,7 +244,7 @@
 
                                                     <div class="mt-3">
                                                         <label for="estado{{$articu->id_articulo}}" class="form-label">Evaluar</label>
-                                                        <select id="estado{{$articu->id_articulo}}" name="estado" class="form-select">
+                                                        <select id="estado{{$articu->id_articulo}}" name="estado" class="form-select" required>
                                                             <option value="0" selected="true" disabled="true">Seleccionar estado</option>
                                                             <option class="" value="1">Aceptar</option>
                                                             <option class="" value="2">Rechazar</option>
@@ -256,7 +253,7 @@
 
                                                     <div class="mt-3" id="mensajeContainer{{$articu->id_articulo}}" style="display: {{ $archivoDerecho && $archivoDerecho->estado == 2 ? 'block' : 'none' }};">
                                                         <label for="mensaje{{$articu->id_articulo}}" class="form-label">Mensaje</label>
-                                                        <textarea id="mensaje{{$articu->id_articulo}}" name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aquí..." maxlength="250">{{ $archivoDerecho->mensaje ?? '' }}</textarea>
+                                                        <textarea id="mensaje{{$articu->id_articulo}}" name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aquí..." maxlength="250" required>{{ $archivoDerecho->mensaje ?? '' }}</textarea>
                                                     </div>
 
                                                     <!-- Botón para guardar los cambios -->
@@ -269,6 +266,25 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <script>
+                                    const estadoSelect = document.getElementById('estado{{$articu->id_articulo}}');
+                                    const mensajeContainer = document.getElementById('mensajeContainer{{$articu->id_articulo}}');
+                                    const mensajeInput = document.getElementById('mensaje{{$articu->id_articulo}}');
+
+                                    estadoSelect.addEventListener('change', function()
+                                    {
+                                        if (estadoSelect.value == '2') {
+                                            mensajeContainer.style.display = 'block';
+                                            mensajeInput.required = true; // Hacer el campo de mensaje obligatorio
+                                        }
+                                        else
+                                        {
+                                            mensajeContainer.style.display = 'none';
+                                            mensajeInput.required = false;
+                                        }
+                                    });
+                                </script>
 
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
