@@ -168,11 +168,11 @@
                             document.getElementById('archivoNombre').addEventListener('change', function(event)
                             {
                                 const file = event.target.files[0];
-                                if (file && file.size > 5 * 1024 * 1024) // 5 MB en bytes
+                                if (file && file.size > 10 * 1024 * 1024) // 10 MB en bytes
                                 {
                                     Swal.fire({
                                         title: 'ERROR AL INTENTAR SUBIR ARCHIVO',
-                                        text: 'El tamaño del archivo no puede superar los 5 MB.',
+                                        text: 'El tamaño del archivo no puede superar los 10 MB.',
                                         icon: 'error',
                                         confirmButtonText: 'Aceptar'
                                     });
@@ -352,7 +352,7 @@
                             </thead>
                             <tbody class="">
                             @foreach ($articulos as $articulo)
-                                <tr class=" {{ $articulo->estado == 0 ? "bg-gray-100" : ($articulo->estado == 1 ? "bg-green-100" : ($articulo->estado == 2 ? "bg-red-100" : "bg-yellow-100")) }}">
+                                <tr class="{{ $articulo->estado == 0 ? 'bg-gray-100' : ($articulo->estado == 1 ? 'bg-green-100' : ($articulo->estado == 2 ? 'bg-red-100' : ($articulo->estado == 5 ? 'bg-blue-100' : 'bg-yellow-100'))) }}">
                                     <td class="">
                                         @if($articulo->estado == 0)
                                             <i class="bi bi-bookmark-dash-fill"></i> Sin revisar
@@ -360,6 +360,8 @@
                                             <i class="bi bi-bookmark-check-fill"></i> Aceptado
                                         @elseif($articulo->estado == 2)
                                             <i class="bi bi-bookmark-x-fill"></i> Rechazado
+                                        @elseif($articulo->estado == 5)
+                                            <i class="bi bi-bookmark-x-fill"></i> Aceptado Condicionado
                                         @else
                                             <i class="bi bi-bookmark-dash-fill"> </i> En proceso de revisión
                                         @endif

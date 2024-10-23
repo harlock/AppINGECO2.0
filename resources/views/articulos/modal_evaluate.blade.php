@@ -44,7 +44,7 @@
                     <div class="mb-3" id="doc-container-{{$articu->id_articulo}}" style="display: none;">
                         <label for="archivo-doc-{{$articu->id_articulo}}" class="form-label">Subir archivo del artículo</label>
                         <input type="file" class="form-control" id="archivo-doc-{{$articu->id_articulo}}" name="archivo" accept=".doc,.docx">
-                        <p class="mb-3">El tamaño máximo del archivo debe ser de 5MB</p>
+                        <p class="mb-3">El tamaño máximo del archivo debe ser de 10MB</p>
                     </div>
                 </div>
                 <script>

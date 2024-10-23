@@ -471,8 +471,8 @@ class ArticuloController extends Controller
             'titulo.unique' => 'Ya existe un artículo con este título. Elija otro.',
             'archivo.required' => 'Debe adjuntar un archivo para el artículo.',
             'archivo.file' => 'El archivo debe ser un documento.',
-            'archivo.max' => 'El tamaño del archivo no puede superar los 5 MB.',
-            'archivo.size' => 'El tamaño del archivo no puede superar los 5 MB.',
+            'archivo.max' => 'El tamaño del archivo no puede superar los 10 MB.',
+            'archivo.size' => 'El tamaño del archivo no puede superar los 10 MB.',
             'archivo.mimes' => 'El archivo debe estar en formato DOCX.',
             'archivo_plagio.required' => 'Debe adjuntar el archivo de plagio.',
             'archivo_plagio.file' => 'El archivo de plagio debe ser un documento.',
@@ -678,18 +678,18 @@ class ArticuloController extends Controller
 
         if ($validated['estado'] == 5) {
             // Si el estado es 5 (Aceptar con condiciones), validar archivo .doc o .docx
-            $rules['archivo'] = 'nullable|file|mimes:doc,docx|max:5120';
+            $rules['archivo'] = 'nullable|file|mimes:doc,docx|max:10240';
         } elseif (in_array($validated['estado'], [1, 2])) {
             // Si el estado es 1 (Aceptado) o 2 (Rechazado), validar archivo en formato PDF
-            $rules['archivo'] = 'nullable|file|mimes:pdf|max:5120';
+            $rules['archivo'] = 'nullable|file|mimes:pdf|max:10240';
         }
 
         // Validar archivo de evaluación en PDF (independientemente del estado)
-        $rules['archivo_evaluacion'] = 'nullable|file|mimes:pdf|max:5120';
+        $rules['archivo_evaluacion'] = 'nullable|file|mimes:pdf|max:10240';
 
         // Validar carta de aceptación solo para estado 1 (Aceptado)
         if ($validated['estado'] == 1) {
-            $rules['carta_aceptacion'] = 'nullable|file|mimes:pdf|max:5120';
+            $rules['carta_aceptacion'] = 'nullable|file|mimes:pdf|max:10240';
         }
 
         // Validar los archivos usando las reglas dinámicas
@@ -761,10 +761,10 @@ class ArticuloController extends Controller
     public function updateArchivo(Request $request, Articulo $articulo)
     {
         $validated = $request->validate([
-            'archivo' => 'required|file|mimes:doc,docx|max:5120',
+            'archivo' => 'required|file|mimes:doc,docx|max:10240',
         ],[
             'archivo.required' => 'Debes seleccionar un archivo',
-            'archivo.max' => 'El tamaño máximo es de 5MB.'
+            'archivo.max' => 'El tamaño máximo es de 10MB.'
         ]);
 
         if ($request->hasFile('archivo')) {
