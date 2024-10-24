@@ -253,7 +253,7 @@
 
                                                     <div class="mt-3" id="mensajeContainer{{$articu->id_articulo}}" style="display: {{ $archivoDerecho && $archivoDerecho->estado == 2 ? 'block' : 'none' }};">
                                                         <label for="mensaje{{$articu->id_articulo}}" class="form-label">Mensaje</label>
-                                                        <textarea id="mensaje{{$articu->id_articulo}}" name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aquí..." maxlength="250" required>{{ $archivoDerecho->mensaje ?? '' }}</textarea>
+                                                        <textarea id="mensaje{{$articu->id_articulo}}" name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aquí..." maxlength="250">{{ $archivoDerecho->mensaje ?? '' }}</textarea>
                                                     </div>
 
                                                     <div class="modal-footer">
@@ -261,6 +261,29 @@
                                                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                                                     </div>
                                                 </form>
+
+                                                <script>
+                                                    const estadoSelect = document.getElementById('estado{{$articu->id_articulo}}');
+                                                    const mensajeTextarea = document.getElementById('mensaje{{$articu->id_articulo}}');
+                                                    const mensajeContainer = document.getElementById('mensajeContainer{{$articu->id_articulo}}');
+
+                                                    estadoSelect.addEventListener('change', function() {
+                                                        if (this.value == 2) { // Si el estado es "Rechazar"
+                                                            mensajeContainer.style.display = 'block';
+                                                            mensajeTextarea.setAttribute('required', 'required'); // Agregar required
+                                                        } else {
+                                                            mensajeContainer.style.display = 'none';
+                                                            mensajeTextarea.removeAttribute('required'); // Quitar required
+                                                        }
+                                                    });
+
+                                                    // Opcional: Si ya hay un estado seleccionado al cargar el formulario, verificar y ajustar el mensaje
+                                                    if (estadoSelect.value == 2) {
+                                                        mensajeContainer.style.display = 'block';
+                                                        mensajeTextarea.setAttribute('required', 'required');
+                                                    }
+                                                </script>
+
                                             </div>
                                         </div>
                                     </div>
