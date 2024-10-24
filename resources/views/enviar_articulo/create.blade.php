@@ -139,10 +139,19 @@
                         </div>
 
                         <script>
-                            document.getElementById('titulo').addEventListener('input', function(event)
-                            {
-                                // Reemplazar '/' por '-'
-                                this.value = this.value.replace(/\//g, '-');
+                            document.getElementById('titulo').addEventListener('input', function(event) {
+                                // Verificar si hay un carácter '/'
+                                if (this.value.includes('/')) {
+                                    // Mostrar un SweetAlert
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'El sistema no acepta el carácter "/".',
+                                        icon: 'error',
+                                        confirmButtonText: 'Aceptar'
+                                    });
+                                    // Limpiar el campo o no hacer nada
+                                    this.value = this.value.replace(/\//g, ''); // Limpia el carácter '/' si se encuentra
+                                }
                             });
                         </script>
 
