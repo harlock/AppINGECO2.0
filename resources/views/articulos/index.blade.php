@@ -214,11 +214,11 @@
                                 </td>
                                 <td class="bg-gray-400"></td>
                             </tr>
+
                             <!-- Modal de revisar archivo de derechos de publicación -->
                             @foreach($Artic as $articu)
-                                <!-- Modal de revisar archivo de derechos de publicación-->
                                 <div class="modal fade" id="modalRevisar{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="modalRevisarLabel{{$articu->id_articulo}}" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg"> <!-- Hacemos el modal más largo hacia abajo -->
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalRevisarLabel{{$articu->id_articulo}}">Revisar Carta de Cesión de Derechos</h5>
@@ -256,7 +256,6 @@
                                                         <textarea id="mensaje{{$articu->id_articulo}}" name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aquí..." maxlength="250" required>{{ $archivoDerecho->mensaje ?? '' }}</textarea>
                                                     </div>
 
-                                                    <!-- Botón para guardar los cambios -->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
@@ -274,7 +273,8 @@
 
                                     estadoSelect.addEventListener('change', function()
                                     {
-                                        if (estadoSelect.value == '2') {
+                                        if (estadoSelect.value == '2')
+                                        {
                                             mensajeContainer.style.display = 'block';
                                             mensajeInput.required = true; // Hacer el campo de mensaje obligatorio
                                         }
@@ -287,13 +287,17 @@
                                 </script>
 
                                 <script>
-                                    document.addEventListener('DOMContentLoaded', function () {
-                                        document.getElementById('estado{{$articu->id_articulo}}').addEventListener('change', function () {
+                                    document.addEventListener('DOMContentLoaded', function ()
+                                    {
+                                        document.getElementById('estado{{$articu->id_articulo}}').addEventListener('change', function ()
+                                        {
                                             var estado = this.value;
                                             var mensajeContainer = document.getElementById('mensajeContainer{{$articu->id_articulo}}');
-                                            if (estado === '2') {
+                                            if (estado === '2')
+                                            {
                                                 mensajeContainer.style.display = 'block';
-                                            } else {
+                                            } else
+                                            {
                                                 mensajeContainer.style.display = 'none';
                                             }
                                         });
