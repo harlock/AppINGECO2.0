@@ -134,9 +134,18 @@
                                     @error('titulo') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror
                                 </div>
                             </div>
-                            <textarea type="text" name="titulo" class="form-control" placeholder="Escriba el título del artículo" id="titulo">{{old("titulo")}}</textarea>
+                            <textarea type="text" name="titulo" class="form-control" placeholder="Escriba el título del artículo" id="titulo">{{ old("titulo") }}</textarea>
                             <div id="emailHelp" class="form-text">Inserte título del artículo.</div>
                         </div>
+
+                        <script>
+                            document.getElementById('titulo').addEventListener('input', function(event)
+                            {
+                                // Reemplazar '/' por '-'
+                                this.value = this.value.replace(/\//g, '-');
+                            });
+                        </script>
+
                         <!-- INSERTAR ARCHIVO  -->
                         <div class="mb-3 col">
                             <div class="d-flex flex-column bd-highlight mb-3">
