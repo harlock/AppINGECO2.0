@@ -115,11 +115,11 @@
                                         {{$articu->titulo}}
                                     </td>
                                     <td class="text-wrap text-break">
-                                        {{ $nomAutor }}
+                                        <p>{{ $nomAutor }}
                                         {{ $apAutor }}
-                                        {{ $amAutor }}
-                                        {{ $correoAutor }}
-                                        {{ $telAutor }}
+                                        {{ $amAutor }}</p>
+                                       <p> {{ $correoAutor }}</p>
+                                        <p>{{ $telAutor }}</p>
                                     </td>
 
                                     <td class=" text-wrap text-break">
@@ -142,7 +142,7 @@
 
 
                                     <td class="text-center">
-                                        <a class="btn btn-primary" href="{{route('art.download',$articu->titulo)}}">Artículo <i class="bi bi-arrow-down-square-fill"></i></a>
+                                        <a class="btn btn-primary" href="{{ route('art.download', $articu->titulo) }}">Artículo <i class="bi bi-arrow-down-square-fill"></i></a>
                                         <div class="mt-2">
                                             <a class="btn btn-danger" href="{{ route('art.downloadPlagio', $articu->titulo) }}">Antiplagio
                                                 <i class="bi bi-arrow-down-square-fill"></i>
@@ -179,6 +179,13 @@
                                             @endif
                                         </div>
 
+                                        @if($articu->estado == 2)
+                                            <div class="mt-2">
+                                                <a class="btn btn-danger" href="{{ route('art.downloadEvaluacion', $articu->titulo) }}">
+                                                     Carta Rechazo <i class="bi bi-arrow-down-square-fill"></i>
+                                                </a>
+                                            </div>
+                                        @endif
                                     </td>
 
                                     <td>
