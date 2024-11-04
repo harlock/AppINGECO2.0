@@ -68,25 +68,44 @@
                             });
                         });
                     </script>
-                    <div class="d-flex  ">
+                    <div class="d-flex">
                         <form class="m-1" action="{{ route('contadores.index') }}" method="GET">
-                            <a href="{{ route('contadores.index', ['estado_pago' => 1]) }}"
-                               class="btn btn-success m-1">
+                            <a href="{{ route('contadores.index', ['estado_pago' => 1]) }}" class="btn btn-success m-1">
                                 Pagos Validados
                             </a>
 
-                            <a href="{{ route('contadores.index', ['estado_pago' => 0]) }}"
-                               class="btn btn-danger m-1">
+                            <a href="{{ route('contadores.index', ['estado_pago' => 0]) }}" class="btn btn-danger m-1">
                                 Pagos Regresados
                             </a>
 
-                            <a href="{{ route('contadores.index', ['estado_pago' => 2]) }}"
-                               class="btn btn-warning m-1">
+                            <a href="{{ route('contadores.index', ['estado_pago' => 2]) }}" class="btn btn-warning m-1">
                                 Pagos sin revisar
                             </a>
-                            <button class="btn bg-gray-300 " type="submit">Quitar filtro </button>
+
+                            <button class="btn bg-gray-300" type="submit">Quitar filtro</button>
                         </form>
                     </div>
+
+                    <!-- Mostrar la cantidad de pagos en un div de alerta -->
+                    @if(isset($cantidadPagos))
+                        @if($estado_pago === '1') <!-- Filtro para pagos validados -->
+                        <div class="alert alert-success mt-3">
+                            Cantidad de Comprobantes Pago Validados: {{ $cantidadPagos }}
+                        </div>
+                        @elseif($estado_pago === '0') <!-- Filtro para pagos regresados -->
+                        <div class="alert alert-danger mt-3">
+                            Cantidad de Comprobantes Pago Regresados: {{ $cantidadPagos }}
+                        </div>
+                        @elseif($estado_pago === '2') <!-- Filtro para pagos sin revisar -->
+                        <div class="alert alert-warning mt-3">
+                            Cantidad de Comprobantes Pago sin Revisar: {{ $cantidadPagos }}
+                        </div>
+                        @else <!-- Sin filtro aplicado, conteo total -->
+                        <div class="alert alert-info mt-3">
+                            Cantidad total de Comprobantes Pago: {{ $cantidadPagos }}
+                        </div>
+                        @endif
+                    @endif
                 </div>
                 <div class="tab-content rounded-lg" id="tabContent">
 
@@ -95,6 +114,7 @@
                         <table class="table ">
                             <thead>
                             <tr class="bg-gray-100 text-black">
+                                <th class="">ID</th>
                                 <th class="">Revista</th>
                                 <th class="">Modalidad</th>
                                 <th class="">Correo</th>
@@ -111,6 +131,7 @@
                                 @endphp
 
                                 <tr class="{{ $estadoPago == 0 ? 'bg-red-100' : ($estadoPago == 1 ? 'bg-green-100' : 'bg-yellow-100') }}">
+                                    <td>{{ $articu->id_articulo }}</td>
                                     <td class=" ">
                                         {{$articu->revista}}
                                     </td>
@@ -288,6 +309,8 @@
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
+                                <td class="bg-gray-400"></td>
+
                                 <td class="bg-gray-400 d-flex justify-content-center">
                                     {{--
                                     <a class="btn btn-danger" href="{{url('download_zip')}}">Descargar ZIP <i class="bi bi-arrow-down-square-fill"></i></a>

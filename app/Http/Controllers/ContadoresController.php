@@ -35,14 +35,18 @@ class ContadoresController extends Controller
      */
     public function index(Request $request, $estado_pago = null)
     {
-
         $texto = trim($request->get('texto'));
 
+        // Inicializar la consulta
         $query = DB::table('articulos')
             ->join('comprobante_pagos', 'comprobante_pagos.id_articulo', '=', 'articulos.id_articulo')
             ->where('articulos.estado', 1);
 
+        // Contar todos los pagos si no hay filtro
+        $cantidadPagos = DB::table('comprobante_pagos')->count();
+
         if ($estado_pago !== null) {
+            // Aplicar el filtro según el estado de pago
             if ($estado_pago == 2) {
                 $query->where(function ($subQuery) {
                     $subQuery->where('comprobante_pagos.estado_pago', 2)
@@ -51,14 +55,9 @@ class ContadoresController extends Controller
             } else {
                 $query->where('comprobante_pagos.estado_pago', $estado_pago);
             }
-        }
 
-        if (!empty($texto)) {
-            $query->where(function ($subQuery) use ($texto) {
-                $subQuery->where('articulos.titulo', 'LIKE', '%' . $texto . '%')
-                    ->orWhere('articulos.modalidad', 'LIKE', '%' . $texto . '%')
-                    ->orWhere('articulos.revista', 'LIKE', '%' . $texto . '%');
-            });
+            // Contar pagos según el estado filtrado
+            $cantidadPagos = $query->count();
         }
 
         $Artic = $query->select('articulos.*')->get();
@@ -89,7 +88,7 @@ class ContadoresController extends Controller
 
         $articulosConPagos = $pagos->pluck('id_articulo')->toArray();
 
-        return view('contadores.index', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos', 'autores'));
+        return view('contadores.index', compact('Artic', 'pagos', 'comprobanteUrls', 'articulosConPagos', 'autores', 'cantidadPagos', 'estado_pago'));
     }
 
     public function downloadComprobante($id_articulo)
