@@ -254,7 +254,7 @@
                                                     <input type="hidden" name="id_user" value="{{ auth()->user()->id }}">
 
                                                     <div class="mb-3">
-                                                        <label for="comprobante" class="form-label">Comprobante de pago (PDF)</label>
+                                                        <label for="comprobante" class="form-label"><strong>Comprobante de pago (PDF)</strong></label>
                                                         <input type="file" class="form-control @error('comprobante') is-invalid @enderror" id="comprobante" name="comprobante" accept="application/pdf">
                                                         @error('comprobante')
                                                         <div class="invalid-feedback">
@@ -265,8 +265,9 @@
                                                     </div>
 
                                                     <div class="mb-3">
-                                                        <label for="referencia" class="form-label">Referencia</label>
-                                                        <input type="text" class="form-control @error('referencia') is-invalid @enderror" id="referencia" name="referencia" value="{{ old('referencia') }}">
+                                                        <label for="referencia" class="form-label"><strong>Referencia y Notas de Pago</strong></label>
+                                                        <textarea class="form-control @error('referencia') is-invalid @enderror" id="referencia" name="referencia" rows="3" maxlength="250">{{ old('referencia') }}</textarea>
+                                                        <small id="charCount" class="form-text text-muted">0/250 caracteres</small>
                                                         @error('referencia')
                                                         <div class="invalid-feedback">
                                                             {{ $message }}
@@ -274,8 +275,21 @@
                                                         @enderror
                                                     </div>
 
+                                                    <script>
+                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                            const textarea = document.getElementById('referencia');
+                                                            const charCount = document.getElementById('charCount');
+
+                                                            textarea.addEventListener('input', function () {
+                                                                const currentLength = textarea.value.length;
+                                                                charCount.textContent = `${currentLength}/250 caracteres`;
+                                                            });
+                                                        });
+                                                    </script>
+
+
                                                     <div class="mb-3">
-                                                        <label class="form-label">¿Requiere factura?</label>
+                                                        <label class="form-label"><strong>¿Requiere factura?</strong></label>
                                                         <div>
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input @error('factura') is-invalid @enderror" type="radio" name="factura" id="factura_si_{{ $articulo->id_articulo }}" value="1" {{ old('factura') == '1' ? 'checked' : '' }}>
@@ -294,7 +308,7 @@
                                                     </div>
 
                                                     <div class="mb-3" id="constancia_fiscal_group_{{ $articulo->id_articulo }}" style="{{ old('factura') == '1' ? 'display: block;' : 'display: none;' }}">
-                                                        <label for="constancia_fiscal_{{ $articulo->id_articulo }}" class="form-label">Constancia de situación fiscal (PDF)</label>
+                                                        <label for="constancia_fiscal_{{ $articulo->id_articulo }}" class="form-label"><strong>Constancia de situación fiscal (PDF)</strong></label>
                                                         <input type="file" class="form-control @error('constancia_fiscal') is-invalid @enderror" id="constancia_fiscal_{{ $articulo->id_articulo }}" name="constancia_fiscal" accept="application/pdf">
                                                         @error('constancia_fiscal')
                                                         <div class="invalid-feedback">
@@ -305,7 +319,7 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <label class="form-label">Observaciones del Pago</label>
+                                                    <label class="form-label" style="color: #e30019"><strong>Observaciones del pago por parte del contador</strong></label>
                                                     @if($articulo->id_articulo)
                                                         <textarea class="form-control" readonly>{{ $articulo->observacion ?? 'Sin observaciones por el momento.'}}</textarea>
                                                     @endif

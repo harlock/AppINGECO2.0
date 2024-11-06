@@ -208,66 +208,68 @@
 
                                         @endif
                                         <!-- Modal para consultar pagos -->
-                                        <div class="modal fade" id="consultarPagosModal{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="consultarPagosModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="consultarPagosModalLabel">Consultar Pagos</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <div class="modal fade" id="consultarPagosModal{{$articu->id_articulo}}" tabindex="-1" aria-labelledby="consultarPagosModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"> <!-- Cambiado a modal-xl -->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="consultarPagosModalLabel">Consultar Pagos</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Comprobante</th>
+                                                                    <th>Referencia</th>
+                                                                    <th>Factura</th>
+                                                                    <th>Constancia Fiscal</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach ($pagos as $pago)
+                                                                    @if ($pago->id_articulo == $articu->id_articulo)
+                                                                        <tr>
+                                                                            <td>
+                                                                                @if ($comprobanteUrls[$articu->id_articulo]['comprobante'])
+                                                                                    <a class="" href="{{ route('contadores.downloadComprobante', $articu->id_articulo) }}">
+                                                                                        <i class="bi bi-shield-lock-fill"></i> Ver comprobante
+                                                                                    </a>
+                                                                                @else
+                                                                                    No hay comprobante de pago
+                                                                                @endif
+                                                                            </td>
+                                                                            <td>
+                                                                                @if (isset($comprobanteUrls[$articu->id_articulo]['referencia']))
+                                                                                    <textarea class="form-control" rows="3" readonly>{{ $comprobanteUrls[$articu->id_articulo]['referencia'] }}</textarea>
+                                                                                @else
+                                                                                    No hay referencia de pago
+                                                                                @endif
+                                                                            </td>
+                                                                            <td>
+                                                                                @if (isset($comprobanteUrls[$articu->id_articulo]['factura']))
+                                                                                    {{ $comprobanteUrls[$articu->id_articulo]['factura'] == 1 ? 'Si' : 'No' }}
+                                                                                @else
+                                                                                    Sin factura
+                                                                                @endif
+                                                                            </td>
+                                                                            <td>
+                                                                                @if ($comprobanteUrls[$articu->id_articulo]['constancia_fiscal'])
+                                                                                    <a class="" href="{{ route('contadores.downloadConstancia', $articu->id_articulo) }}">
+                                                                                        <i class="bi bi-shield-lock-fill"></i> Ver constancia
+                                                                                    </a>
+                                                                                @else
+                                                                                    Sin Constancia fiscal
+                                                                                @endif
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                            <tr>
-                                                                <th>Comprobante</th>
-                                                                <th>Referencia</th>
-                                                                <th>Factura</th>
-                                                                <th>Constancia Fiscal</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            @foreach ($pagos as $pago)
-                                                                @if ($pago->id_articulo == $articu->id_articulo)
-                                                                    <tr>
-                                                                        <td>
-                                                                            @if ($comprobanteUrls[$articu->id_articulo]['comprobante'])
-                                                                                <a class="" href="{{ route('contadores.downloadComprobante', $articu->id_articulo) }}">
-                                                                                    <i class="bi bi-shield-lock-fill"></i> Ver comprobante
-                                                                                </a>
-                                                                            @else
-                                                                                No hay comprobante de pago
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if (isset($comprobanteUrls[$articu->id_articulo]['referencia']))
-                                                                                {{ $comprobanteUrls[$articu->id_articulo]['referencia'] }}
-                                                                            @else
-                                                                                No hay referencia de pago
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if (isset($comprobanteUrls[$articu->id_articulo]['factura']))
-                                                                                {{ $comprobanteUrls[$articu->id_articulo]['factura'] == 1 ? 'Si' : 'No' }}
-                                                                            @else
-                                                                                Sin factura
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if ($comprobanteUrls[$articu->id_articulo]['constancia_fiscal'])
-                                                                                <a class="" href="{{ route('contadores.downloadConstancia', $articu->id_articulo) }}">
-                                                                                    <i class="bi bi-shield-lock-fill"></i> Ver constancia
-                                                                                </a>
-                                                                            @else
-                                                                                Sin Constancia fiscal
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                @endif
-                                                            @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                    </td>
+                                                </div>
+                                            </div>
 
                                 </tr>
                             @endforeach
