@@ -284,9 +284,23 @@
                                                                 <div class="modal-body">
                                                                     <div class="mb-3">
                                                                         <label for="observacion{{$articu->id_articulo}}" class="form-label">Observación</label>
-                                                                        <textarea id="observacion{{$articu->id_articulo}}" name="observacion" class="form-control" rows="3" required></textarea>
+                                                                        <textarea id="observacion{{$articu->id_articulo}}" name="observacion" class="form-control" rows="3" maxlength="250" required></textarea>
+                                                                        <small id="charCount{{$articu->id_articulo}}" class="form-text text-muted">0/250 caracteres</small>
                                                                     </div>
                                                                 </div>
+
+                                                                <script>
+                                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                                        const textarea = document.getElementById('observacion{{$articu->id_articulo}}');
+                                                                        const charCount = document.getElementById('charCount{{$articu->id_articulo}}');
+
+                                                                        textarea.addEventListener('input', function () {
+                                                                            const currentLength = textarea.value.length;
+                                                                            charCount.textContent = `${currentLength}/250 caracteres`;
+                                                                        });
+                                                                    });
+                                                                </script>
+
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                                     <button type="button" class="btn btn-danger regresar-pago-btn">Regresar Pago</button>
