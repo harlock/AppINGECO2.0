@@ -73,7 +73,7 @@ class ArticuloController extends Controller
                     'users.email',
                     'users.ap_materno'
                 )
-                ->orderBy('users.created_at', 'desc')
+                ->orderBy('articulos.id_articulo', 'asc')
                 ->get();
         } elseif ($texto == "/6") {
             $Artic = DB::table('asigna_revisores')
@@ -106,7 +106,7 @@ class ArticuloController extends Controller
                     'users.email',
                     'users.ap_materno'
                 )
-                ->orderBy('users.created_at', 'desc')
+                ->orderBy('articulos.id_articulo', 'asc')
                 ->get();
         } else {
             $Artic = AsignaRevisores::join('articulos', 'articulos.id_articulo', '=', 'asigna_revisores.id_articulo')
@@ -138,7 +138,7 @@ class ArticuloController extends Controller
                     'users.ap_paterno',
                     'users.ap_materno'
                 )
-                ->orderBy('users.created_at', 'desc')
+                ->orderBy('articulos.id_articulo', 'asc')
                 ->get();
         }
 
