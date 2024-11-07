@@ -120,6 +120,7 @@
                                 <th class="">Correo</th>
                                 <th class="">Nombre del artículo</th>
                                 <th class="">Consultar Pagos</th>
+                                <th class="">Facturas</th>
                                 <th class="">Regresar Pago</th>
                             </tr>
                             </thead>
@@ -252,6 +253,47 @@
 
                                     </td>
                                     <td>
+                                        <!-- Botón para abrir el modal -->
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#facturasModal">
+                                            Adjuntar Facturas
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="facturasModal" tabindex="-1" aria-labelledby="facturasModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="facturasModalLabel">Adjuntar Facturas PDF</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <!-- Formulario que enviará los archivos -->
+                                                    <form action="{{ route('facturas.store') }}" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <input type="hidden" name="id_user" value="{{ auth()->user()->id }}">
+                                                        <div class="modal-body">
+                                                            <!-- Primera Factura -->
+                                                            <div class="form-group mb-5">
+                                                                <h5 for="primera_factura">Primera Factura</h5>
+                                                                <input type="file" name="primera_factura" id="primera_factura" class="form-control" accept="application/pdf" required>
+                                                            </div>
+
+                                                            <!-- Segunda Factura -->
+                                                            <div class="form-group mb-5">
+                                                                <h5 for="segunda_factura">Segunda Factura</h5>
+                                                                <input type="file" name="segunda_factura" id="segunda_factura" class="form-control" accept="application/pdf" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                            <button type="submit" class="btn btn-primary">Subir Archivos</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
                                         @if (in_array($articu->id_articulo, $articulosConPagos))
                                             @php
                                                 $estadoPago = $comprobanteUrls[$articu->id_articulo]['estado_pago'] ?? 2;
@@ -319,6 +361,7 @@
                                 </tr>
                             @endforeach
                             <tr>
+                                <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>
                                 <td class="bg-gray-400"></td>

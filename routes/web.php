@@ -141,6 +141,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/comprobantes/store', [ComprobantePagoController::class, 'store'])->name('comprobantes.store');
     Route::post('/regresar-pago/{id_articulo}', [ContadoresController::class, 'regresarPago'])->name('regresar-pago');
     Route::put('/articulos/{articulo}/updateArchivo', [ArticuloController::class, 'updateArchivo'])->name('articulos.updateArchivo');
+    Route::post('/facturas/store', [ComprobantePagoController::class, 'storeFacturas'])->name('facturas.store');
 
     //CORREOS
     Route::post('enviar_articulo', [ArticuloController::class, 'store'])->name('enviar_articulo.store');

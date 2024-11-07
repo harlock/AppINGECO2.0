@@ -96,6 +96,36 @@ class ComprobantePagoController extends Controller
         return redirect()->back();
     }
 
+    public function storeFacturas(Request $request)
+    {
+        // Validar los archivos
+        $request->validate([
+            'primera_factura' => 'required|mimes:pdf|max:2048',
+            'segunda_factura' => 'required|mimes:pdf|max:2048',
+        ]);
+
+        // Procesar y guardar los archivos
+        if ($request->hasFile('primera_factura') && $request->hasFile('segunda_factura')) {
+            // Guardar la primera factura
+            $primerInformePath = $request->file('primera_factura')->store('facturas', 'public');
+
+            // Guardar la segunda factura
+            $segundoInformePath = $request->file('segunda_factura')->store('facturas', 'public');
+
+            // Crear un nuevo registro en la base de datos con el modelo correcto (ComprobantePago)
+            $comprobante = new ComprobantePago();
+            $comprobante->primera_factura = $primerInformePath;  // Cambiar el nombre del campo
+            $comprobante->segunda_factura = $segundoInformePath;  // Cambiar el nombre del campo
+            $comprobante->save();
+
+            // Redireccionar con mensaje de éxito
+            return redirect()->back()->with('success', 'Las facturas se han subido correctamente.');
+        }
+
+        // Manejar el caso de error
+        return redirect()->back()->with('error', 'Hubo un problema al subir las facturas.');
+    }
+
     /**
      * Display the specified resource.
      */
