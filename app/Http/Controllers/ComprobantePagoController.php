@@ -96,13 +96,17 @@ class ComprobantePagoController extends Controller
         return redirect()->back();
     }
 
-    public function storeFacturas(Request $request)
+    public function updateFacturas(Request $request, $id_comprobante)
     {
+        //dd($request->all());
         // Validar los archivos
         $request->validate([
-            'primera_factura' => 'required|mimes:pdf|max:2048',
+            'primera_factura' => 'required|mimes:xml|max:2048',
             'segunda_factura' => 'required|mimes:pdf|max:2048',
         ]);
+
+        // Buscar el registro existente en la tabla comprobante_pagos
+        $comprobante = ComprobantePago::findOrFail($id_comprobante);
 
         // Procesar y guardar los archivos
         if ($request->hasFile('primera_factura') && $request->hasFile('segunda_factura')) {
@@ -112,18 +116,17 @@ class ComprobantePagoController extends Controller
             // Guardar la segunda factura
             $segundoInformePath = $request->file('segunda_factura')->store('facturas', 'public');
 
-            // Crear un nuevo registro en la base de datos con el modelo correcto (ComprobantePago)
-            $comprobante = new ComprobantePago();
-            $comprobante->primera_factura = $primerInformePath;  // Cambiar el nombre del campo
-            $comprobante->segunda_factura = $segundoInformePath;  // Cambiar el nombre del campo
+            // Actualizar los campos primera_factura y segunda_factura en el registro existente
+            $comprobante->primera_factura = $primerInformePath;
+            $comprobante->segunda_factura = $segundoInformePath;
             $comprobante->save();
 
             // Redireccionar con mensaje de éxito
-            return redirect()->back()->with('success', 'Las facturas se han subido correctamente.');
+            return redirect()->back()->with('success', 'Las facturas se han actualizado correctamente.');
         }
 
         // Manejar el caso de error
-        return redirect()->back()->with('error', 'Hubo un problema al subir las facturas.');
+        return redirect()->back()->with('error', 'Hubo un problema al actualizar las facturas.');
     }
 
     /**

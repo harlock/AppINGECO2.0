@@ -121,6 +121,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/articulos/{titulo}/downloadEvaluacion', [ArticuloController::class, 'downloadEvaluacion'])->name('art.downloadEvaluacion');
     Route::get('/contadores/downloadComprobante/{id_articulo}', [ContadoresController::class, 'downloadComprobante'])->name('contadores.downloadComprobante');
     Route::get('/contadores/downloadConstancia/{id_articulo}', [ContadoresController::class, 'downloadConstancia'])->name('contadores.downloadConstancia');
+    Route::get('/contadores/downloadFactura1/{id_articulo}', [ContadoresController::class, 'downloadFactura1'])->name('contadores.downloadFactura1');
+    Route::get('/contadores/downloadFactura2/{id_articulo}', [ContadoresController::class, 'downloadFactura2'])->name('contadores.downloadFactura2');
 
     //RUTAS PERFIL
     Route::get('/profileShow', [UsuariosController::class, 'show'])->name('show.profile');
@@ -141,7 +143,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/comprobantes/store', [ComprobantePagoController::class, 'store'])->name('comprobantes.store');
     Route::post('/regresar-pago/{id_articulo}', [ContadoresController::class, 'regresarPago'])->name('regresar-pago');
     Route::put('/articulos/{articulo}/updateArchivo', [ArticuloController::class, 'updateArchivo'])->name('articulos.updateArchivo');
-    Route::post('/facturas/store', [ComprobantePagoController::class, 'storeFacturas'])->name('facturas.store');
+    Route::put('/facturas/{id_comprobante}', [ComprobantePagoController::class, 'updateFacturas'])->name('facturas.update');
 
     //CORREOS
     Route::post('enviar_articulo', [ArticuloController::class, 'store'])->name('enviar_articulo.store');

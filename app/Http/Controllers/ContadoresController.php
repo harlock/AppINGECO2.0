@@ -71,7 +71,7 @@ class ContadoresController extends Controller
 
         // Obtener pagos y sus URLs
         $pagos = DB::table('comprobante_pagos')
-            ->select('id_articulo', 'comprobante', 'referencia', 'factura', 'constancia_fiscal', 'deleted_at', 'estado_pago')
+            ->select('id_articulo', 'comprobante', 'referencia', 'factura', 'constancia_fiscal', 'deleted_at', 'estado_pago', 'primera_factura', 'segunda_factura')
             ->get();
 
         $comprobanteUrls = [];
@@ -82,7 +82,9 @@ class ContadoresController extends Controller
                 'factura' => $pago->factura,
                 'constancia_fiscal' => $pago->constancia_fiscal ? $pago->constancia_fiscal : null,
                 'deleted_at' => $pago->deleted_at,
-                'estado_pago' => $pago->estado_pago
+                'estado_pago' => $pago->estado_pago,
+                'primera_factura' => $pago->primera_factura,
+                'segunda_factura' => $pago->segunda_factura
             ];
         }
 
@@ -105,6 +107,24 @@ class ContadoresController extends Controller
         $constancia = ComprobantePago::findOrFail($id_articulo);
 
         $pathToFile = storage_path('app/public/' . $constancia->constancia_fiscal);
+
+        return response()->download($pathToFile);
+    }
+
+    public function downloadFactura1($id_articulo)
+    {
+        $factura1 = ComprobantePago::findOrFail($id_articulo);
+
+        $pathToFile = storage_path('app/public/' . $factura1->primera_factura);
+
+        return response()->download($pathToFile);
+    }
+
+    public function downloadFactura2($id_articulo)
+    {
+        $factura1 = ComprobantePago::findOrFail($id_articulo);
+
+        $pathToFile = storage_path('app/public/' . $factura1->segunda_factura);
 
         return response()->download($pathToFile);
     }

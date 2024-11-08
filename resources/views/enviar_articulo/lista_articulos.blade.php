@@ -83,11 +83,11 @@
                                     </a>
                                 @endif
 
-                                    @if($articulo->estado == 2)
-                                        <a class="btn btn-primary d-block mb-2" href="{{ route('art.downloadEvaluacion', $articulo->titulo) }}">
-                                            <i class="bi bi-file-earmark-pdf-fill"></i> Carta Rechazo
-                                        </a>
-                                    @endif
+                                @if($articulo->estado == 2)
+                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.downloadEvaluacion', $articulo->titulo) }}">
+                                        <i class="bi bi-file-earmark-pdf-fill"></i> Carta Rechazo
+                                    </a>
+                                @endif
 
                                 @if($articulo->estado == 5)
                                     @if($articulo->fecha_reenvio == $articulo->updated_at)
@@ -213,28 +213,42 @@
                                 @if($articulo->estado == 1)
                                     @if($archivoDerechoAceptado)
                                         @if($comprobanteExistente && $comprobanteExistente->estado_pago == 0)
-                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                            <button type="button" class="btn btn-warning mb-2" data-bs-toggle="modal"
                                                     data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
                                                 Reenviar comprobante
                                             </button>
                                         @elseif(!$comprobanteExistente)
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal"
                                                     data-bs-target="#comprobanteModal-{{ $articulo->id_articulo }}">
                                                 Agregar comprobante
                                             </button>
                                         @elseif($comprobanteExistente && ($comprobanteExistente->estado_pago != 0 && $comprobanteExistente->estado_pago != 1))
-                                            <button type="button" class="btn btn-secondary" disabled>
+                                            <button type="button" class="btn btn-secondary mb-2" disabled>
                                                 En Revisión
                                             </button>
                                         @else
-                                            <button type="button" class="btn btn-success" disabled>
+                                            <button type="button" class="btn btn-success mb-2" disabled>
                                                 Comprobante Aceptado
                                             </button>
                                         @endif
                                     @else
-                                        <button type="button" class="btn btn-secondary" disabled>
+                                        <button type="button" class="btn btn-secondary mb-2" disabled>
                                             Agregar comprobante
                                         </button>
+                                    @endif
+
+                                    @if($comprobanteExistente)
+                                        @if($comprobanteExistente->primera_factura)
+                                            <a class="btn btn-primary d-block mb-2" href="{{ route('contadores.downloadFactura1', $articulo->id_articulo) }}">
+                                                <i class="bi bi-file-earmark-xml-fill"></i> Factura XML
+                                            </a>
+                                        @endif
+
+                                        @if($comprobanteExistente->segunda_factura)
+                                            <a class="btn btn-primary d-block mb-2" href="{{ route('contadores.downloadFactura2', $articulo->id_articulo) }}">
+                                                <i class="bi bi-file-earmark-xml-fill"></i> Factura PDF
+                                            </a>
+                                        @endif
                                     @endif
                                 @endif
 
