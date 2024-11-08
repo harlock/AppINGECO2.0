@@ -297,13 +297,13 @@
                                         </div>
                                         @if(isset($comprobante['primera_factura']) && $comprobante['primera_factura'])
                                             <a class="btn btn-primary d-block mb-2" href="{{ route('contadores.downloadFactura1', $articu->id_articulo) }}">
-                                                <i class="bi bi-file-earmark-xml-fill"></i> Primera Factura XML
+                                                <i class="bi bi-file-earmark-xml-fill"></i> Factura XML
                                             </a>
                                         @endif
 
                                         @if(isset($comprobante['segunda_factura']) && $comprobante['segunda_factura'])
                                             <a class="btn btn-primary d-block mb-2" href="{{ route('contadores.downloadFactura2', $articu->id_articulo) }}">
-                                                <i class="bi bi-file-earmark-xml-fill"></i> Segunda Factura PDF
+                                                <i class="bi bi-file-earmark-xml-fill"></i> Factura PDF
                                             </a>
                                         @endif
                                     </td>
