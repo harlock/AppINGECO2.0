@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revisor Asignado</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -27,7 +29,7 @@
 
         h1 {
             color: #ffffff;
-            background-color: #0066cc; /* Azul para representar un nuevo artículo asignado */
+            background-color: #0066cc;
             padding: 15px;
             margin: 0;
             border-radius: 8px 8px 0 0;
@@ -61,6 +63,7 @@
             background-color: #f8f8f8;
             border-radius: 0 0 8px 8px;
             border-top: 1px solid #e0e0e0;
+            margin-top: 15px;
         }
 
         footer {
@@ -74,6 +77,11 @@
             font-size: 12px;
             color: #555;
         }
+
+        .icon {
+            color: #0066cc;
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
@@ -81,15 +89,15 @@
     <h1>Revisor Asignado</h1>
     <table class="table">
         <tr>
-            <td>Título del artículo:</td>
+            <td><i class="fas fa-file-alt icon"></i>Título del artículo:</td>
             <td><strong>{{ $titulo }}</strong></td>
         </tr>
         <tr>
-            <td>Revista:</td>
+            <td><i class="fas fa-newspaper icon"></i>Revista:</td>
             <td><strong>{{ $revista }}</strong></td>
         </tr>
         <tr>
-            <td>Modalidad:</td>
+            <td><i class="fas fa-cogs icon"></i>Modalidad:</td>
             <td><strong>{{ $modalidad }}</strong></td>
         </tr>
     </table>

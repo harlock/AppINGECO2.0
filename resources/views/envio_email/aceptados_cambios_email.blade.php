@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -27,7 +29,7 @@
 
         h1 {
             color: #ffffff;
-            background-color: #2196F3; /* Azul para aceptación condicionada */
+            background-color: #2196F3;
             padding: 15px;
             margin: 0;
             border-radius: 8px 8px 0 0;
@@ -57,8 +59,8 @@
         .message {
             padding: 15px;
             font-size: 16px;
-            color: #1976D2; /* Azul para el mensaje */
-            background-color: #e3f2fd; /* Fondo azul claro */
+            color: #1976D2;
+            background-color: #e3f2fd;
             border-radius: 0 0 8px 8px;
             border-top: 1px solid #e0e0e0;
         }
@@ -74,22 +76,28 @@
             font-size: 12px;
             color: #555;
         }
+
+        /* Icon styling */
+        .icon {
+            color: #004386;
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>{{ $titulo }}</h1>
+    <h1><i class="fas fa-clipboard-check icon"></i> {{ $titulo }}</h1>
     <table class="table">
         <tr>
-            <td>Estado del artículo:</td>
+            <td><i class="fas fa-check-circle icon"></i> Estado del artículo:</td>
             <td><strong>Aceptado con condiciones</strong></td>
         </tr>
         <tr>
-            <td>Revista:</td>
+            <td><i class="fas fa-newspaper icon"></i> Revista:</td>
             <td><strong>{{ $revista }}</strong></td>
         </tr>
         <tr>
-            <td>Modalidad:</td>
+            <td><i class="fas fa-cogs icon"></i> Modalidad:</td>
             <td><strong>{{ $modalidad }}</strong></td>
         </tr>
     </table>
@@ -98,7 +106,7 @@
         <p>Por favor, realice las correcciones necesarias y vuelva a cargar el artículo corregido en el sistema para su revisión final.</p>
     </div>
     <footer>
-        <p class="footer-small">Soporte Técnico: sistemaingeco@gmail.com</p>
+        <p class="footer-small"><i class="fas fa-envelope icon"></i> Soporte Técnico: sistemaingeco@gmail.com</p>
     </footer>
 </div>
 </body>

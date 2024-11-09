@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articulo Rechazado</title>
+    <title>Artículo Rechazado</title>
+    <!-- FontAwesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -74,22 +76,28 @@
             font-size: 12px;
             color: #555;
         }
+
+        .icon {
+            color: #b01717;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>{{ $titulo }}</h1>
+    <h1><i class="fas fa-times-circle icon"></i>{{ $titulo }}</h1>
     <table class="table">
         <tr>
-            <td>Estado del artículo:</td>
+            <td><i class="fas fa-times icon"></i>Estado del artículo:</td>
             <td><strong>Rechazado</strong></td>
         </tr>
         <tr>
-            <td>Revista:</td>
+            <td><i class="fas fa-newspaper icon"></i>Revista:</td>
             <td><strong>{{ $revista }}</strong></td>
         </tr>
         <tr>
-            <td>Modalidad:</td>
+            <td><i class="fas fa-cogs icon"></i>Modalidad:</td>
             <td><strong>{{ $modalidad }}</strong></td>
         </tr>
     </table>
@@ -98,7 +106,7 @@
         <p>Si tiene alguna duda sobre el proceso o desea recibir comentarios adicionales, no dude en ponerse en contacto con nosotros.</p>
     </div>
     <footer>
-        <p class="footer-small">Soporte Técnico: sistemaingeco@gmail.com</p>
+        <p class="footer-small"><i class="fas fa-envelope icon"></i>Soporte Técnico: sistemaingeco@gmail.com</p>
     </footer>
 </div>
 </body>

@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -27,7 +29,7 @@
 
         h1 {
             color: #ffffff;
-            background-color: #2cbe24; /* Color verde para notificar validación */
+            background-color: #2cbe24;
             padding: 15px;
             margin: 0;
             border-radius: 8px 8px 0 0;
@@ -57,8 +59,8 @@
         .message {
             padding: 15px;
             font-size: 16px;
-            color: #2cbe24; /* Verde para resaltar la validación */
-            background-color: #e8f5e9; /* Fondo verde claro */
+            color: #2cbe24;
+            background-color: #e8f5e9;
             border-radius: 0 0 8px 8px;
             border-top: 1px solid #e0e0e0;
         }
@@ -68,32 +70,39 @@
             margin-top: 25px;
             font-size: 13px;
             color: #777;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
         }
 
         .footer-small {
             font-size: 12px;
             color: #555;
         }
+
+        .icon {
+            color: #198a00;
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Comprobante de Pago Validado</h1>
+    <h1><i class="fas fa-check-circle icon"></i> Comprobante de Pago Validado</h1>
     <table class="table">
         <tr>
-            <td>Artículo:</td>
+            <td><i class="fas fa-file-alt icon"></i> Artículo:</td>
             <td><strong>{{ $titulo }}</strong></td>
         </tr>
         <tr>
-            <td>Estado del Pago:</td>
+            <td><i class="fas fa-check icon"></i> Estado del Pago:</td>
             <td><strong>Validado</strong></td>
         </tr>
         <tr>
-            <td>Revista:</td>
+            <td><i class="fas fa-newspaper icon"></i> Revista:</td>
             <td><strong>{{ $revista }}</strong></td>
         </tr>
         <tr>
-            <td>Modalidad:</td>
+            <td><i class="fas fa-cogs icon"></i> Modalidad:</td>
             <td><strong>{{ $modalidad }}</strong></td>
         </tr>
     </table>
@@ -102,7 +111,7 @@
         <p>Gracias por su puntualidad y colaboración.</p>
     </div>
     <footer>
-        <p class="footer-small">Soporte Técnico: sistemaingeco@gmail.com</p>
+        <p class="footer-small"><i class="fas fa-envelope icon"></i> Soporte Técnico: sistemaingeco@gmail.com</p>
     </footer>
 </div>
 </body>

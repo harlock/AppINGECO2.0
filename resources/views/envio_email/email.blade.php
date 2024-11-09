@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -27,7 +28,7 @@
 
         h1 {
             color: #ffffff;
-            background-color: #2cbe24; /* Verde para resaltar el agradecimiento */
+            background-color: #2cbe24;
             padding: 15px;
             margin: 0;
             border-radius: 8px 8px 0 0;
@@ -52,6 +53,13 @@
         .table td:first-child {
             font-weight: bold;
             background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            margin-right: 8px;
+            color: #25810a;
         }
 
         .message {
@@ -78,26 +86,27 @@
 </head>
 <body>
 <div class="container">
-    <h1>Gracias por enviar su artículo</h1>
+    <h1><i class="fas fa-check-circle icon"></i>Gracias por enviar su artículo</h1>
     <table class="table">
         <tr>
-            <td>Artículo:</td>
+            <td><i class="fas fa-file-alt icon"></i>Título del Artículo:</td>
             <td><strong>{{ $titulo }}</strong></td>
         </tr>
         <tr>
-            <td>Revista:</td>
+            <td><i class="fas fa-book icon"></i>Revista:</td>
             <td><strong>{{ $revista }}</strong></td>
         </tr>
         <tr>
-            <td>Modalidad:</td>
+            <td><i class="fas fa-graduation-cap icon"></i>Modalidad:</td>
             <td><strong>{{ $modalidad }}</strong></td>
         </tr>
     </table>
     <div class="message">
-        <p>Gracias por enviar su artículo. Estaremos revisando su trabajo y le enviaremos los resultados por correo.</p>
+        <p>Gracias por enviar su artículo. Estaremos revisando su trabajo y le enviaremos los resultados por correo en un plazo de [tiempo estimado].</p>
+        <p>Si tiene alguna pregunta, no dude en ponerse en contacto con nuestro equipo de soporte.</p>
     </div>
     <footer>
-        <p class="footer-small">Soporte Técnico: sistemaingeco@gmail.com</p>
+        <p class="footer-small"><i class="fas fa-envelope icon"></i>Soporte Técnico: sistemaingeco@gmail.com</p>
     </footer>
 </div>
 </body>
