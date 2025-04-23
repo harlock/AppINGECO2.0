@@ -99,6 +99,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         });
         Route::get('enviar_articulo/create', [ArticuloController::class, 'create'])->name('enviar_articulo.create');
 
+        Route::get('/actualizar_archivos', [ArticuloController::class, 'showUpdateFiles'])
+            ->name('actualizar_archivos')
+            ->middleware(['auth', 'AutorAcces']);
+        Route::put('/enviar_articulo/{id_articulo}/update-files', [ArticuloController::class, 'updateFiles'])
+            ->name('enviar_articulo.updateFiles')
+            ->middleware(['auth', 'AutorAcces']);
     });
 
     //RUTAS DE CONTADOR

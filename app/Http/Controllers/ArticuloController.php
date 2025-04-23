@@ -183,6 +183,58 @@ class ArticuloController extends Controller
         return view('enviar_articulo.lista_articulos', compact('articulos'));
     }
 
+    public function showUpdateFiles()
+    {
+        // Obtener los artículos del usuario autenticado en estado 0
+        $Artic = DB::table('articulos')
+            ->where('id_user', auth()->user()->id)
+            ->where('estado', 0)
+            ->get();
+
+        return view('articulos.update_files', compact('Artic'));
+    }
+
+    public function updateFiles(Request $request, $id_articulo)
+    {
+        $articulo = Articulo::findOrFail($id_articulo);
+
+        if ($articulo->estado != 0) {
+            return redirect()->back()->with('error', 'No puedes actualizar los archivos porque el artículo no está en estado "Sin revisar".');
+        }
+
+        if (auth()->user()->id != $articulo->id_user) {
+            return redirect()->back()->with('error', 'No tienes permiso para actualizar este artículo.');
+        }
+
+        $request->validate([
+            'articulo' => 'nullable|mimes:doc,docx|max:5120',
+            'antiplagio' => 'nullable|mimes:pdf|max:5120',
+        ], [
+            'articulo.mimes' => 'El archivo artículo debe ser un documento Word (.doc o .docx).',
+            'articulo.max' => 'El archivo artículo no debe exceder 5MB.',
+            'antiplagio.mimes' => 'El archivo antiplagio debe ser un PDF.',
+            'antiplagio.max' => 'El archivo antiplagio no debe exceder 5MB.',
+        ]);
+
+        if ($request->hasFile('articulo')) {
+            if ($articulo->archivo) {
+                Storage::disk('public')->delete($articulo->archivo);
+            }
+            $articulo->archivo = $request->file('articulo')->store('articulos', 'public');
+        }
+
+        if ($request->hasFile('antiplagio')) {
+            if ($articulo->archivo_plagio) {
+                Storage::disk('public')->delete($articulo->archivo_plagio);
+            }
+            $articulo->archivo_plagio = $request->file('antiplagio')->store('antiplagios', 'public');
+        }
+
+        $articulo->save();
+
+        return redirect()->back()->with('success', 'Los archivos han sido actualizados exitosamente.');
+    }
+
     public function articAdministrador(Request $request)
     {
         //dd($request);
