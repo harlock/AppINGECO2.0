@@ -456,11 +456,11 @@
                             <div class="features-icons-icon d-flex">
                                 <i class="bi bi-person-circle m-auto text-primary"></i>
                             </div>
-                            <h3>Guía de reporte de similitud Turnitin</h3>
+                            <h3>El manual se encuentra en desarrollo...</h3>
                             <p class="lead mb-0">
-                                <a href="{{ url('storage/manuales/GUIA DE USUARIO TURNITING.pdf') }}" target="_blank">
+                                <!-- <a href="{{ url('storage/manuales/GUIA DE USUARIO TURNITING.pdf') }}" target="_blank">
                                     Descargar PDF
-                                </a>
+                                </a> -->
                             </p>
                         </div>
                     </div>
