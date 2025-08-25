@@ -83,13 +83,15 @@
                                     </div>
                                     <h3 class="mt-3">3a. Carta Derechos-FEGLININ</h3>
                                     <p class="lead mb-0">
+En desarrollo
+{{--
                                         <a href="https://docs.google.com/document/d/1cj80rv-mUOe35Z1uo3DkdS-Ol7To1bqa/edit" target="_blank" class="btn btn-primary">
                                             Link para Descargar
-                                        </a>
+                                        </a>--}}
                                     </p>
                                 </div>
                             </div>
-
+{{--
                             <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
                                 <div class="features-icons-item mx-auto">
                                     <div class="features-icons-icon d-flex">
@@ -103,6 +105,7 @@
                                     </p>
                                 </div>
                             </div>
+--}}
                         </div>
                     </div>
                 </section>

@@ -119,8 +119,8 @@
                             </div>
                             <select name="revista" class="form-select" id="revista">
                                 <option value="" selected="true" disabled="true">Selecciona una revista</option>
-                                <option value="FEGLININ" {{ old('revista') == 'FEGLININ' ? 'selected' : '' }}>FEGLININ</option>
-                                <option value="RECIE" {{ old('revista') == 'RECIE' ? 'selected' : '' }}>RECIE</option>
+                                <option value="CAPÍTULO" {{ old('revista') == 'CAPÍTULO' ? 'selected' : '' }}>CAPÍTULO</option>
+                              {{--  <option value="RECIE" {{ old('revista') == 'RECIE' ? 'selected' : '' }}>RECIE</option>--}}
                             </select>
                             <div id="emailHelp" class="form-text">Seleccionar la revista de publicación. </div>
                         </div>
