@@ -218,9 +218,9 @@ class ArticuloController extends Controller
             $rules['articulo'] = 'required|mimes:doc,docx|max:5120';
         }
 
-        // Estado 5: artículo no permitido
-        if ($articulo->estado == 5) {
-            $rules['articulo'] = 'nullable'; // Ignorar artículo
+        // Estado 4 o 5: solo antiplagio obligatorio
+        if (in_array($articulo->estado, [4, 5])) {
+            $rules['articulo'] = 'nullable';
             $rules['antiplagio'] = 'required|mimes:pdf|max:5120';
         }
 
@@ -234,7 +234,7 @@ class ArticuloController extends Controller
         ]);
 
         // Subir archivo artículo
-        if ($request->hasFile('articulo') && in_array($articulo->estado, [0, 4])) {
+        if ($request->hasFile('articulo') && in_array($articulo->estado, [0])) {
             if ($articulo->archivo) {
                 Storage::disk('public')->delete($articulo->archivo);
             }
@@ -242,7 +242,7 @@ class ArticuloController extends Controller
         }
 
         // Subir archivo antiplagio
-        if ($request->hasFile('antiplagio') && in_array($articulo->estado, [0, 5])) {
+        if ($request->hasFile('antiplagio')) {
             if ($articulo->archivo_plagio) {
                 Storage::disk('public')->delete($articulo->archivo_plagio);
             }
