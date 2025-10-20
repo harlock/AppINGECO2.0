@@ -90,7 +90,7 @@
                                 @endif
 
                                 @if($articulo->estado == 5)
-                                    @if($articulo->fecha_reenvio == $articulo->updated_at)
+                                   {{-- @if($articulo->fecha_reenvio == $articulo->updated_at)
                                         <button type="button" class="btn btn-warning mb-2" disabled>
                                             Artículo reenviado <i class="fa fa-check"></i>
                                         </button>
@@ -99,6 +99,10 @@
                                             Reenviar Artículo <i class="fa fa-file"></i>
                                         </button>
                                     @endif
+                                    --}}
+                                        <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#archivoModal-{{ $articulo->id_articulo }}" title="Cargar Archivo">
+                                            Reenviar Artículo <i class="fa fa-file"></i>
+                                        </button>
                                 @endif
 
                             </td>

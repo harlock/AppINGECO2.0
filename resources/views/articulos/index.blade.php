@@ -173,12 +173,12 @@
                                     </td>
                                     <td class="d-flex justify-content-center">
                                         @if($articu->estado != 1 && $articu->estado != 2)
-                                            @if($articu->fecha_reenvio == $articu->updated_at)
+                                            @if($articu->estado == 3)
                                                 <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{$articu->id_articulo}}">
                                                     Evaluar <i class="bi bi-arrow-right-square-fill"></i>
                                                 </button>
                                                 @include("articulos.modal_evaluate")
-                                            @elseif($articu->updated_at > $articu->created_at)
+                                            @elseif($articu->estado==5)
                                                 <button type="button" class="btn btn-dark btn-sm" disabled>
                                                     En espera <i class="bi bi-arrow-right-square-fill"></i>
                                                 </button>
