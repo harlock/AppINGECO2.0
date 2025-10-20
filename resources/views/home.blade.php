@@ -81,13 +81,11 @@
                                     <div class="features-icons-icon d-flex">
                                         <i class="bi bi-file-word m-auto text-primary" style="font-size: 3rem;"></i>
                                     </div>
-                                    <h3 class="mt-3">3a. Carta Derechos-FEGLININ</h3>
+                                    <h3 class="mt-3">3a. Carta Derechos</h3>
                                     <p class="lead mb-0">
-En desarrollo
-{{--
-                                        <a href="https://docs.google.com/document/d/1cj80rv-mUOe35Z1uo3DkdS-Ol7To1bqa/edit" target="_blank" class="btn btn-primary">
+                                        <a href="https://docs.google.com/document/d/1w9_Z0rAzV8MC4t6RcwUlPclLpVvhMef0/edit?tab=t.0" target="_blank" class="btn btn-primary">
                                             Link para Descargar
-                                        </a>--}}
+                                        </a>
                                     </p>
                                 </div>
                             </div>
