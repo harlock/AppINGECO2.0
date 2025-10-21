@@ -92,7 +92,7 @@
                                         @csrf
                                         @method('PUT')
 
-                                        @if($articulo->estado == 0)
+
                                             <!-- Solo estado 0 puede actualizar el artículo -->
                                             <div class="mb-3">
                                                 <label for="articulo_{{ $articulo->id_articulo }}" class="form-label">
@@ -103,7 +103,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                        @endif
+                                 
 
                                         <!-- Todos los estados permiten actualizar antiplagio -->
                                         <div class="mb-3">
