@@ -185,10 +185,13 @@ class ArticuloController extends Controller
 
     public function showUpdateFiles()
     {
-        // Obtener los artículos del usuario autenticado en estado 0
         $Artic = DB::table('articulos')
             ->where('id_user', auth()->user()->id)
+<<<<<<< HEAD
             ->where('estado', 5)
+=======
+            ->whereIn('estado', [0, 4, 5])
+>>>>>>> 764ee536e3e8acaccec7f86afda4f7faf1f7c47e
             ->get();
 
         return view('articulos.update_files', compact('Artic'));
@@ -198,31 +201,56 @@ class ArticuloController extends Controller
     {
         $articulo = Articulo::findOrFail($id_articulo);
 
+<<<<<<< HEAD
         if ($articulo->estado != 0 && $articulo->estado != 5) {
             return redirect()->back()->with('error', 'No puedes actualizar los archivos porque el artículo no está en estado "Sin revisar".');
+=======
+        // Solo permitir estados 0, 4 o 5
+        if (!in_array($articulo->estado, [0, 4, 5])) {
+            return redirect()->back()->with('error', 'No puedes actualizar los archivos porque el artículo no está en un estado permitido.');
+>>>>>>> 764ee536e3e8acaccec7f86afda4f7faf1f7c47e
         }
 
+        // Verificar que el usuario sea el dueño del artículo
         if (auth()->user()->id != $articulo->id_user) {
             return redirect()->back()->with('error', 'No tienes permiso para actualizar este artículo.');
         }
 
-        $request->validate([
+        // Validaciones según estado
+        $rules = [
             'articulo' => 'nullable|mimes:doc,docx|max:5120',
             'antiplagio' => 'nullable|mimes:pdf|max:5120',
-        ], [
+        ];
+
+        // Estado 0: artículo obligatorio
+        if ($articulo->estado == 0) {
+            $rules['articulo'] = 'required|mimes:doc,docx|max:5120';
+        }
+
+        // Estado 4 o 5: solo antiplagio obligatorio
+        if (in_array($articulo->estado, [4, 5])) {
+            $rules['articulo'] = 'nullable';
+            $rules['antiplagio'] = 'required|mimes:pdf|max:5120';
+        }
+
+        $request->validate($rules, [
+            'articulo.required' => 'Debes subir el archivo artículo.',
             'articulo.mimes' => 'El archivo artículo debe ser un documento Word (.doc o .docx).',
             'articulo.max' => 'El archivo artículo no debe exceder 5MB.',
+            'antiplagio.required' => 'Debes subir el archivo antiplagio.',
             'antiplagio.mimes' => 'El archivo antiplagio debe ser un PDF.',
             'antiplagio.max' => 'El archivo antiplagio no debe exceder 5MB.',
         ]);
 
-        if ($request->hasFile('articulo')) {
+        // Subir archivo artículo
+        if ($request->hasFile('articulo') && in_array($articulo->estado, [0])) {
             if ($articulo->archivo) {
                 Storage::disk('public')->delete($articulo->archivo);
             }
             $articulo->archivo = $request->file('articulo')->store('articulos', 'public');
         }
 
+        // Subir archivo antiplagio
         if ($request->hasFile('antiplagio')) {
             if ($articulo->archivo_plagio) {
                 Storage::disk('public')->delete($articulo->archivo_plagio);
