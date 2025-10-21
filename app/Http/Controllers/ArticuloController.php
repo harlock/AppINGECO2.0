@@ -188,7 +188,7 @@ class ArticuloController extends Controller
         // Obtener los artículos del usuario autenticado en estado 0
         $Artic = DB::table('articulos')
             ->where('id_user', auth()->user()->id)
-            ->where('estado', 0)
+            ->where('estado', 5)
             ->get();
 
         return view('articulos.update_files', compact('Artic'));
@@ -198,7 +198,7 @@ class ArticuloController extends Controller
     {
         $articulo = Articulo::findOrFail($id_articulo);
 
-        if ($articulo->estado != 0) {
+        if ($articulo->estado != 0 && $articulo->estado != 5) {
             return redirect()->back()->with('error', 'No puedes actualizar los archivos porque el artículo no está en estado "Sin revisar".');
         }
 
