@@ -187,11 +187,9 @@ class ArticuloController extends Controller
     {
         $Artic = DB::table('articulos')
             ->where('id_user', auth()->user()->id)
-<<<<<<< HEAD
-            ->where('estado', 5)
-=======
+
             ->whereIn('estado', [0, 4, 5])
->>>>>>> 764ee536e3e8acaccec7f86afda4f7faf1f7c47e
+
             ->get();
 
         return view('articulos.update_files', compact('Artic'));
@@ -201,14 +199,11 @@ class ArticuloController extends Controller
     {
         $articulo = Articulo::findOrFail($id_articulo);
 
-<<<<<<< HEAD
-        if ($articulo->estado != 0 && $articulo->estado != 5) {
-            return redirect()->back()->with('error', 'No puedes actualizar los archivos porque el artículo no está en estado "Sin revisar".');
-=======
+
         // Solo permitir estados 0, 4 o 5
         if (!in_array($articulo->estado, [0, 4, 5])) {
             return redirect()->back()->with('error', 'No puedes actualizar los archivos porque el artículo no está en un estado permitido.');
->>>>>>> 764ee536e3e8acaccec7f86afda4f7faf1f7c47e
+
         }
 
         // Verificar que el usuario sea el dueño del artículo
