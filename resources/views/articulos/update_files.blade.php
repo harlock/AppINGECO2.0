@@ -103,7 +103,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                 
+
 
                                         <!-- Todos los estados permiten actualizar antiplagio -->
                                         <div class="mb-3">

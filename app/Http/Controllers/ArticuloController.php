@@ -622,14 +622,16 @@ class ArticuloController extends Controller
 
     public function download($titulo)
     {
-        //dd("descargando");
 
         // Obtener el artículo
         $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
+        $userType = Auth::user()->user_type ?? null;
+
+        dd( $articulo->estado);
+
         $pathToFile = storage_path('app/public/' . $articulo->archivo);
 
         // Obtener el tipo de usuario autenticado
-        $userType = Auth::user()->user_type ?? null;
 
         // Actualizar el estado del artículo solo si el tipo de usuario es 2
         if ($userType == 2 && $articulo->estado == 4) {
