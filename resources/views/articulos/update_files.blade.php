@@ -66,7 +66,7 @@
                                 <div class="mb-3">
                                     <strong>Archivo Artículo Actual:</strong>
                                     @if($articulo->archivo)
-                                        <a href="{{ route('art.download', $articulo->titulo) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        <a href="{{ route('art.download', $articulo->id_articulo) }}" class="btn btn-sm btn-outline-primary" target="_blank">
                                             <i class="bi bi-download"></i> Descargar (.doc/.docx)
                                         </a>
                                     @else
@@ -78,7 +78,7 @@
                                 <div class="mb-3">
                                     <strong>Archivo Antiplagio Actual:</strong>
                                     @if($articulo->archivo_plagio)
-                                        <a href="{{ route('art.downloadPlagio', $articulo->titulo) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        <a href="{{ route('art.downloadPlagio', $articulo->id_articulo) }}" class="btn btn-sm btn-outline-primary" target="_blank">
                                             <i class="bi bi-download"></i> Descargar (PDF)
                                         </a>
                                     @else

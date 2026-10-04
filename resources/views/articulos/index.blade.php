@@ -133,12 +133,12 @@
                                     </td>
                                     <td class="text-center">
                                         <!-- Botón para descargar el artículo -->
-                                        <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articu->titulo) }}">
+                                        <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articu->id_articulo) }}">
                                             <i class="bi bi-file-earmark-text-fill"></i> Descargar Artículo
                                         </a>
 
                                         <!-- Botón para descargar el archivo antiplagio -->
-                                        <a class="btn btn-primary  d-block mb-2" href="{{ route('art.downloadPlagio', $articu->titulo) }}">
+                                        <a class="btn btn-primary  d-block mb-2" href="{{ route('art.downloadPlagio', $articu->id_articulo) }}">
                                             <i class="bi bi-shield-lock-fill"></i> Antiplagio
                                         </a>
 

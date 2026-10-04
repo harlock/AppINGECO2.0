@@ -406,10 +406,10 @@
                                     <td class="text-wrap text-break">{{$articulo->titulo }}</td>
                                     <td>{{$articulo->modalidad }}</td>
                                     <td class="font-semibold ">
-                                        <a class="btn btn-primary" href="{{route('art.download',$articulo->titulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
+                                        <a class="btn btn-primary" href="{{route('art.download', $articulo->id_articulo)}}">Descargar <i class="bi bi-arrow-down-square-fill"></i></a>
                                     </td>
                                     <td class="text-center">
-                                        <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articulo->titulo) }}">Antiplagio
+                                        <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articulo->id_articulo) }}">Antiplagio
                                             <i class="bi bi-arrow-down-square-fill"></i>
                                         </a>
                                     </td>

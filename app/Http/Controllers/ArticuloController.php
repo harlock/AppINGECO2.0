@@ -620,62 +620,58 @@ class ArticuloController extends Controller
 
 
 
-    public function download($titulo)
+    public function download($id_articulo)
     {
-
-        // Obtener el artículo
-        $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
+        $articulo = Articulo::findOrFail($id_articulo);
         $userType = Auth::user()->user_type ?? null;
-
-        dd( $articulo->estado);
 
         $pathToFile = storage_path('app/public/' . $articulo->archivo);
 
-        // Obtener el tipo de usuario autenticado
+        if (!file_exists($pathToFile)) {
+            return redirect()->back()->with('error', 'El archivo del artículo no se encuentra disponible.');
+        }
 
-        // Actualizar el estado del artículo solo si el tipo de usuario es 2
+        // Actualizar el estado del artículo solo si el tipo de usuario es 2.
         if ($userType == 2 && $articulo->estado == 4) {
             $articulo->update(['estado' => '3']);
         }
 
-        // Descargar el archivo
         return response()->download($pathToFile);
     }
 
-    public function downloadPlagio($titulo)
+    public function downloadPlagio($id_articulo)
     {
-        // Buscar el artículo por título
-        $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
-
-        // Obtener la ruta del archivo
+        $articulo = Articulo::findOrFail($id_articulo);
         $pathToFile = storage_path('app/public/' . $articulo->archivo_plagio);
 
-        // Verificar si el archivo existe
         if (!file_exists($pathToFile)) {
-            return redirect()->back()->with('error', 'El archivo no se encuentra disponible.');
+            return redirect()->back()->with('error', 'El archivo de antiplagio no se encuentra disponible.');
         }
 
-
-        // Descargar el archivo
         return response()->download($pathToFile);
     }
 
-    public function downloadCarta($titulo)
+    public function downloadCarta($id_articulo)
     {
-        // Obtener el artículo
-        $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
+        $articulo = Articulo::findOrFail($id_articulo);
         $pathToFile = storage_path('app/public/' . $articulo->carta_aceptacion);
 
-        // Descargar el archivo
+        if (!file_exists($pathToFile)) {
+            return redirect()->back()->with('error', 'La carta de aceptación no se encuentra disponible.');
+        }
+
         return response()->download($pathToFile);
     }
 
-    public function downloadEvaluacion($titulo)
+    public function downloadEvaluacion($id_articulo)
     {
-        $articulo = Articulo::where('titulo', $titulo)->firstOrFail();
+        $articulo = Articulo::findOrFail($id_articulo);
         $pathToFile = storage_path('app/public/' . $articulo->archivo_evaluacion);
 
-        // Descargar el archivo
+        if (!file_exists($pathToFile)) {
+            return redirect()->back()->with('error', 'El archivo de evaluación no se encuentra disponible.');
+        }
+
         return response()->download($pathToFile);
     }
 

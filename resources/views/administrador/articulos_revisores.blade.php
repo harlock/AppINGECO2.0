@@ -142,15 +142,15 @@
 
 
                                     <td class="text-center">
-                                        <a class="btn btn-primary" href="{{ route('art.download', $articu->titulo) }}">Artículo <i class="bi bi-arrow-down-square-fill"></i></a>
+                                        <a class="btn btn-primary" href="{{ route('art.download', $articu->id_articulo) }}">Artículo <i class="bi bi-arrow-down-square-fill"></i></a>
                                         <div class="mt-2">
-                                            <a class="btn btn-danger" href="{{ route('art.downloadPlagio', $articu->titulo) }}">Antiplagio
+                                            <a class="btn btn-danger" href="{{ route('art.downloadPlagio', $articu->id_articulo) }}">Antiplagio
                                                 <i class="bi bi-arrow-down-square-fill"></i>
                                             </a>
                                         </div>
                                         @if(!empty($articu->carta_aceptacion))
                                             <div class="mt-2">
-                                                <a class="btn btn-success" href="{{ route('art.downloadCarta', $articu->titulo) }}">
+                                                <a class="btn btn-success" href="{{ route('art.downloadCarta', $articu->id_articulo) }}">
                                                     Carta Aceptación <i class="bi bi-arrow-down-square-fill"></i>
                                                 </a>
                                             </div>
@@ -181,7 +181,7 @@
 
                                         @if($articu->estado == 2)
                                             <div class="mt-2">
-                                                <a class="btn btn-danger" href="{{ route('art.downloadEvaluacion', $articu->titulo) }}">
+                                                <a class="btn btn-danger" href="{{ route('art.downloadEvaluacion', $articu->id_articulo) }}">
                                                      Carta Rechazo <i class="bi bi-arrow-down-square-fill"></i>
                                                 </a>
                                             </div>

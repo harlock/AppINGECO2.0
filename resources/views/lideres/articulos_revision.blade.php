@@ -121,10 +121,10 @@
 
 
                             <td class="text-center">
-                                <a class="btn btn-primary" href="{{route('art.download',$articu->titulo)}}">Artículo <i class="bi bi-arrow-down-square-fill"></i></a>
+                                <a class="btn btn-primary" href="{{route('art.download', $articu->id_articulo)}}">Artículo <i class="bi bi-arrow-down-square-fill"></i></a>
                             </td>
                             <td class="text-center">
-                                <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articu->titulo) }}"> Antiplagio
+                                <a class="btn btn-primary" href="{{ route('art.downloadPlagio', $articu->id_articulo) }}"> Antiplagio
                                     <i class="bi bi-arrow-down-square-fill"></i>
                                 </a>
                             </td>

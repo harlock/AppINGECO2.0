@@ -64,27 +64,27 @@
                             <td class="text-center">{{ $articulo->modalidad }}</td>
                             <td class="text-center">
                                 @if($articulo->estado == 5)
-                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articulo->titulo) }}">
+                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articulo->id_articulo) }}">
                                         <i class="bi bi-file-earmark-text-fill"></i> Artículo Reenviado
                                     </a>
                                 @else
-                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articulo->titulo) }}">
+                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.download', $articulo->id_articulo) }}">
                                         <i class="bi bi-file-earmark-text-fill"></i> Artículo
                                     </a>
                                 @endif
 
-                                <a class="btn btn-primary  d-block mb-2" href="{{ route('art.downloadPlagio', $articulo->titulo) }}">
+                                <a class="btn btn-primary  d-block mb-2" href="{{ route('art.downloadPlagio', $articulo->id_articulo) }}">
                                     <i class="bi bi-shield-lock-fill"></i> Antiplagio
                                 </a>
 
                                 @if(!empty($articulo->carta_aceptacion))
-                                    <a class="btn btn-primary d-block" href="{{ route('art.downloadCarta', $articulo->titulo) }}">
+                                    <a class="btn btn-primary d-block" href="{{ route('art.downloadCarta', $articulo->id_articulo) }}">
                                         <i class="bi bi-file-earmark-check-fill"></i> Carta Aceptación
                                     </a>
                                 @endif
 
                                 @if($articulo->estado == 2)
-                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.downloadEvaluacion', $articulo->titulo) }}">
+                                    <a class="btn btn-primary d-block mb-2" href="{{ route('art.downloadEvaluacion', $articulo->id_articulo) }}">
                                         <i class="bi bi-file-earmark-pdf-fill"></i> Carta Rechazo
                                     </a>
                                 @endif

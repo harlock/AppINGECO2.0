@@ -115,16 +115,23 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('contadores/index/{estado_pago?}', [ContadoresController::class, 'index'])->name('contadores.index');
     });
 
-    //DESCARGA WORD
-    Route::get('articulos/{titulo}/download', [ArticuloController::class, 'download', 'index'])->name('art.download');
+    //DESCARGAS DE ARTÍCULOS
     Route::get('download_zip', [ArtculoController::class, 'download_zip', 'index']);
     Route::get('changeValueArticle', [ArticuloController::class, 'download_zip', 'index']);
 
-    //Descargar PDF
-    Route::get('/articulos/download/{titulo}', [ArticuloController::class, 'download'])->name('art.download');
-    Route::get('/articulos/downloadPlagio/{titulo}', [ArticuloController::class, 'downloadPlagio'])->name('art.downloadPlagio');
-    Route::get('/articulos/{titulo}/downloadPlagio', [ArticuloController::class, 'downloadCarta'])->name('art.downloadCarta');
-    Route::get('/articulos/{titulo}/downloadEvaluacion', [ArticuloController::class, 'downloadEvaluacion'])->name('art.downloadEvaluacion');
+    // Descargar archivos usando el ID del artículo, no el título.
+    Route::get('/articulos/download/{id_articulo}', [ArticuloController::class, 'download'])
+        ->whereNumber('id_articulo')
+        ->name('art.download');
+    Route::get('/articulos/downloadPlagio/{id_articulo}', [ArticuloController::class, 'downloadPlagio'])
+        ->whereNumber('id_articulo')
+        ->name('art.downloadPlagio');
+    Route::get('/articulos/downloadCarta/{id_articulo}', [ArticuloController::class, 'downloadCarta'])
+        ->whereNumber('id_articulo')
+        ->name('art.downloadCarta');
+    Route::get('/articulos/downloadEvaluacion/{id_articulo}', [ArticuloController::class, 'downloadEvaluacion'])
+        ->whereNumber('id_articulo')
+        ->name('art.downloadEvaluacion');
     Route::get('/contadores/downloadComprobante/{id_articulo}', [ContadoresController::class, 'downloadComprobante'])->name('contadores.downloadComprobante');
     Route::get('/contadores/downloadConstancia/{id_articulo}', [ContadoresController::class, 'downloadConstancia'])->name('contadores.downloadConstancia');
     Route::get('/contadores/downloadFactura1/{id_articulo}', [ContadoresController::class, 'downloadFactura1'])->name('contadores.downloadFactura1');
@@ -140,7 +147,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 
     //RUTAS ARTICULOS
-    Route::get('articulos/{titulo}/download', [ArticuloController::class, 'download', 'index'])->name('art.download');
     Route::get('articulos/{id_articulo}/destroy', [ArticuloController::class, 'destroy', 'index'])->name('art.destroy');
     Route::get("enviar_articulo_email", [ArticuloController::class, 'sendEmail']);
 
