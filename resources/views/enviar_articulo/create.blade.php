@@ -175,11 +175,29 @@
                                     <h4>Archivo de Antiplagio*</h4>
                                 </label>
                                 <div class="col-10">
-                                    @error('archivo_plagio') <span class="alert alert-danger p-2">{{ $message }}</span>@enderror
+                                    @error('archivo_plagio')
+                                        <span class="alert alert-danger p-2">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
-                            <input id="archivo_plagio" type="file" name="archivo_plagio" class="form-control" placeholder="Inserte el archivo de plagio" value="{{ old('archivo_plagio') }}" accept=".pdf" required>
-                            <div id="emailHelp" class="form-text">Selecciona un archivo en formato PDF.</div>
+                        
+                            <input id="archivo_plagio"
+                                   type="file"
+                                   name="archivo_plagio"
+                                   class="form-control"
+                                   placeholder="Inserte el archivo de plagio"
+                                   value="{{ old('archivo_plagio') }}"
+                                   accept=".pdf"
+                                   required>
+                        
+                            <div id="emailHelp" class="form-text">
+                                Selecciona un archivo en formato PDF.
+                            </div>
+                        
+                            <div class="alert alert-warning mt-2 mb-0" role="alert">
+                                <strong>Nota:</strong> Agrega también el documento
+                                <strong>“Declaración del uso de IA”</strong> debidamente firmado.
+                            </div>
                         </div>
 
                         <script>
